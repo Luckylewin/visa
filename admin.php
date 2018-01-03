@@ -16,11 +16,11 @@ $config = yii\helpers\ArrayHelper::merge(
 //var_dump($config);exit();
 $config['components']['view'] = [
     'theme' => [
-        'basePath' => '@statics/themes/admin',
-        'baseUrl' => '@statics/themes/admin',
+        'basePath' => '@statics/themes/newadmin',
+        'baseUrl' => '@statics/themes/newadmin',
         'pathMap' => [
             '@backend/views' => [
-                '@statics/themes/' . 'admin' . '/views',
+                '@statics/themes/' . 'newadmin' . '/views',
             ],
         ],
     ],

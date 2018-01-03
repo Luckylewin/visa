@@ -12,7 +12,8 @@ use yii\web\NotFoundHttpException;
 class ConfigController extends BaseController
 {
 
-    public function actionBasic() {
+    public function actionBasic()
+    {
         $model = Config::find()->where(['keyid' => 'basic'])->one();
         if(Yii::$app->request->isPost) {
             if(empty($model)) {

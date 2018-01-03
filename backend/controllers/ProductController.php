@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class ProductController extends BaseController
 {
+
     /**
      * @inheritdoc
      */

@@ -3,7 +3,8 @@ namespace backend\controllers;
 
 use Yii;
 
-class DatabaseController extends BaseController {
+class DatabaseController extends BaseController
+{
 
     public function actionExport() {
         $infos = Yii::$app->db->createCommand('SHOW TABLE STATUS')->queryAll();

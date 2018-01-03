@@ -10,9 +10,10 @@ use backend\models\AuthItem;
 use backend\models\search\AuthItemSearch;
 
 
-class RoleController extends BaseController {
-
+class RoleController extends BaseController
+{
     public $type = Item::TYPE_ROLE;
+
 
     public function actionIndex() {
         $searchModel = new AuthItemSearch();

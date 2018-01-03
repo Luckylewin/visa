@@ -10,7 +10,7 @@ return [
     'controllerNamespace' => 'backend\controllers', //控制器默认命名空间
     'bootstrap' => ['log'],
     'modules' => [],    //模块
-    'defaultRoute' => 'index/index',   //默认路由
+    'defaultRoute' => 'index/frame',   //默认路由
     'layout' => 'main',//布局文件 优先级: 控制器>配置文件>系统默认
     //组件
     'components' => [

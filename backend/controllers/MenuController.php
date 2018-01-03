@@ -15,7 +15,6 @@ use common\libs\Tree;
  */
 class MenuController extends BaseController
 {
-
     /**
      * Lists all Menu models.
      * @return mixed

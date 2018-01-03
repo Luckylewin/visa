@@ -15,6 +15,7 @@ use Yii;
  */
 class Combo extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -33,6 +34,7 @@ class Combo extends \yii\db\ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['uid'], 'integer'],
             [['combo_name'], 'string', 'max' => 100],
+            [['country'], 'exist', 'skipOnError' => true, 'targetClass' => Country::className(), 'targetAttribute' => ['country_id' => 'id']]
         ];
     }
 
@@ -46,7 +48,13 @@ class Combo extends \yii\db\ActiveRecord
             'combo_name' => '套餐名称',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'country' => '国家',
             'uid' => '用户id',
         ];
+    }
+
+    public function getCountry()
+    {
+        $this->hasOne(Country::className(), ['id' => 'country_id']);
     }
 }

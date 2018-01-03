@@ -12,6 +12,7 @@ use common\models\Product;
  */
 class ProductQuery extends Product
 {
+
     /**
      * @inheritdoc
      */
@@ -19,7 +20,7 @@ class ProductQuery extends Product
     {
         return [
             [['id', 'country_id'], 'integer'],
-            [['name', 'picture', 'type', 'order_type'], 'safe'],
+            [['name', 'picture', 'type', 'order_type', 'country_id'], 'safe'],
             [['cost'], 'number'],
         ];
     }
@@ -66,9 +67,7 @@ class ProductQuery extends Product
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'picture', $this->picture])
-            ->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'order_type', $this->order_type]);
+            ->andFilterWhere(['like', 'picture', $this->picture]);
 
         return $dataProvider;
     }

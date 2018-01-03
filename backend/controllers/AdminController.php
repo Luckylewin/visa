@@ -17,6 +17,7 @@ class AdminController extends BaseController
 
     public $type = Item::TYPE_ROLE;
 
+
     /**
      * Lists all Admin models.
      * @return mixed

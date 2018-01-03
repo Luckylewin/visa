@@ -44,4 +44,9 @@ class Country extends \yii\db\ActiveRecord
             'cinfo' => '国家中文',
         ];
     }
+
+    public static function getDropdownList()
+    {
+        return self::find()->orderBy('id desc')->all();
+    }
 }

@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class ComboController extends BaseController
 {
+
     /**
      * @inheritdoc
      */
@@ -36,7 +37,7 @@ class ComboController extends BaseController
     public function actionIndex()
     {
         $searchModel = new ComboQuery();
-        $dataProvider = $searchModel->search(null);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
