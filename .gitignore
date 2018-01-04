@@ -11,6 +11,7 @@ composer.phar
 
 # Mac DS_Store Files
 .DS_Store
+.idea
 
 /storage/assets
 /storage/runtime
