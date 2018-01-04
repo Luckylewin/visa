@@ -90,7 +90,7 @@ class Menu extends \yii\db\ActiveRecord
     }
 
     public static function getMenu() {
-        $menus = static::find()->where(['display' => 1])->asArray()->all();
+        $menus = static::find()->where(['display' => 1])->orderBy('sort asc')->asArray()->all();
         $treeObj = new Tree($menus);
         return $treeObj->getTreeArray();
     }
