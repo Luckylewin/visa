@@ -67,6 +67,7 @@ class ComboController extends BaseController
         $model = new Combo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+	 
             return $this->redirect(['view', 'id' => $model->combo_id]);
         } else {
             return $this->render('create', [
