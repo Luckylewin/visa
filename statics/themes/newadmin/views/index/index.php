@@ -29,7 +29,7 @@
         <h4>消息 <span class="badge badge-info pull-right">16</span></h4>
         <div class="feed-element">
             <a href="index_3.html#" class="pull-left">
-                <img alt="image" class="img-circle" src="img/a1.jpg">
+                <img alt="image" class="img-circle" src="statics/themes/newadmin/img/a1.jpg">
             </a>
             <div class="media-body">
                 跑步呐，最重要的是要有动力
@@ -39,7 +39,7 @@
         </div>
         <div class="feed-element">
             <a href="index_3.html#" class="pull-left">
-                <img alt="image" class="img-circle" src="img/a2.jpg">
+                <img alt="image" class="img-circle" src="statics/themes/newadmin/img/a2.jpg">
             </a>
             <div class="media-body">
                 V信已经提前恢复，也算是个好消息吧
@@ -49,7 +49,7 @@
         </div>
         <div class="feed-element">
             <a href="index_3.html#" class="pull-left">
-                <img alt="image" class="img-circle" src="img/a3.jpg">
+                <img alt="image" class="img-circle" src="statics/themes/newadmin/img/a3.jpg">
             </a>
             <div class="media-body">
                 是你对不对
@@ -59,7 +59,7 @@
         </div>
         <div class="feed-element">
             <a href="index_3.html#" class="pull-left">
-                <img alt="image" class="img-circle" src="img/a4.jpg">
+                <img alt="image" class="img-circle" src="statics/themes/newadmin/img/a4.jpg">
             </a>
             <div class="media-body">
                 发布了一篇文章
