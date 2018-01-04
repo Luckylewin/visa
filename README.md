@@ -20,5 +20,7 @@ Yii-admin 是使用Yii2开发的一个后台管理系统
 ![image](https://github.com/qiaohongbo/yii2-admin/blob/master/statics/images/05.png)
 
 
+注意
+如果是Apache [Apache推荐配置](http://www.yiiframework.com/doc-2.0/guide-start-installation.html#recommended-apache-configuration "Apache推荐配置") 
 
-
+如果是Nginx配置 [Nginx推荐配置](http://www.yiiframework.com/doc-2.0/guide-start-installation.html#recommended-nginx-configuration "Nginx推荐配置")
