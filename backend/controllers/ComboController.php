@@ -70,8 +70,11 @@ class ComboController extends BaseController
 	 
             return $this->redirect(['view', 'id' => $model->combo_id]);
         } else {
+            $product_id = Yii::$app->request->get('id');
+
             return $this->render('create', [
                 'model' => $model,
+                'product_id' => $product_id
             ]);
         }
     }

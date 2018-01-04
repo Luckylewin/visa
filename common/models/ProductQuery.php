@@ -49,6 +49,22 @@ class ProductQuery extends Product
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize'=>12],
+            'sort' => [
+//                'defaultOrder' => [
+//                    'id' => SORT_DESC
+//                ],
+/*                'attributes' => [
+                    'authorName' => [
+                        'desc' => [
+                            'adminuser.nickname' => SORT_DESC,
+                        ],
+                        'asc'  => [
+                            'adminuser.nickname' => SORT_ASC
+                        ],
+                    ]
+                ]*/
+            ]
         ]);
 
         $this->load($params);

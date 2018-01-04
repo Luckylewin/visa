@@ -8,22 +8,31 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="combo-form">
+<div class="product-form col-md-12">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <?= $model->isNewRecord ? '新增套餐' : '编辑套餐内容';?>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-6">
 
-    <?= $form->field($model, 'combo_name')->textInput() ?>
+                <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
+                <?= $form->field($model, 'combo_name')->textInput() ?>
 
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+                <?= $form->field($model, 'product_id')->hiddenInput(['value'=>$product_id])->label(false) ?>
 
-    <?= $form->field($model, 'uid')->textInput() ?>
+                <div class="form-group">
+                    <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                </div>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                <?php ActiveForm::end(); ?>
+        </div>
     </div>
 
-    <?php ActiveForm::end(); ?>
 
 </div>
+

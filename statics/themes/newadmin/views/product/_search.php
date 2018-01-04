@@ -21,8 +21,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'picture') ?>
 
-    <?= $form->field($model, 'type') ?>
-
     <?= $form->field($model, 'cost') ?>
 
     <?php // echo $form->field($model, 'country_id') ?>

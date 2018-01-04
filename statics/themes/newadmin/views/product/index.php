@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\ProductQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Products';
+$this->title = '产品列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">
@@ -15,52 +15,99 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Product', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php
 
-    <?=
-    GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            [
+      echo  GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                [
                     'class' => 'yii\grid\SerialColumn',
                     'header' => '序号',
-                    'options' => ['width'=>'70px;']
+                    'options' => ['width'=>'50px;']
+                ],
+                [
+                    'attribute' => 'id',
+                    'options' => ['width'=>'80px']
+                ],
+                'name',
+                /* [
+                     'attribute' => 'type',
+                     'value' =>  function ($model,$key,$index,$column) {
+                                     return $model->type==1?'男':'女';
+                                 },
+                     'filter' => array('1'=>'正常',2=>'加急',3=>'特急')
+                 ],*/
+                [
+                    'attribute' => 'cost',
+                    'options' => ['width'=>'150px']
+                ],
+                [
+                    'attribute' => 'country_id',
+                    'value'     => 'country.cinfo',
+                    'filter'    => \common\models\Country::find()
+                                                        ->select(['cinfo','id'])
+                                                        ->orderBy('id desc')
+                                                        ->indexBy('id')
+                                                        ->column(),
+                    'options'   => [ 'width'=>'200px']
+                ],
+                [
+                    'header' => '操作',
+                    'class'    => 'yii\grid\ActionColumn',
+                    'template' => '{combo}&nbsp{view}&nbsp;{update}&nbsp;{delete}&nbsp;{check}',
+                    'options' => ['style'=>'width: 300px'],
+                    'buttons'  => [
+                        //查看按钮
+                        'view' => function($url, $model, $key) {
+                            $options = [
+                                    'title' => Yii::t('backend', 'View'),
+                                    'aria-label' => Yii::t('backend', 'View'),
+                                    'data-pjax' => '0',
+                                    'class' => 'btn btn-primary btn-sm',
+                            ];
+                            return Html::a(Yii::t('backend','View'), $url, $options);
+                        },
+                        //更新按钮
+                        'update' => function ($url, $model, $key) {
+                            $options = [
+                                    'title' => Yii::t('backend', 'Edit'),
+                                    'aria-label' => Yii::t('backend', 'Edit'),
+                                    'data-pjax' => '0',
+                                    'class' => 'btn btn-info btn-sm'
+                            ];
+                            return Html::a(Yii::t('backend','Edit'), $url, $options);
+                        },
+                        //删除按钮
+                        'delete' => function ($url, $model, $key) {
+                            $options = [
+                                    'title' => Yii::t('backend', 'Delete'),
+                                    'aria-lable' => Yii::t('yii', 'Delete'),
+                                    'data-pjax' => '0',
+                                    'class' => 'btn btn-danger btn-sm'
+                            ];
+                            return Html::a(Yii::t('backend', 'Delete'), $url, $options);
+                        },
+                        //发布套餐按钮
+                        'combo' => function ($url, $model, $key) {
+                            $url = \yii\helpers\Url::toRoute(['combo/index', 'id' => $key]);
+                            $options = [
+                                'title' => Yii::t('backend', 'ComboIndex'),
+                                'aria-lable' => Yii::t('yii', 'ComboIndex'),
+                                'data-pjax' => '0',
+                                'class' => 'btn btn-info btn-sm'
+                            ];
+                            return Html::a(Yii::t('backend', 'ComboIndex'), $url, $options);
+                        }
+                    ]
+                ],
             ],
-            [
-                'attribute' => 'id',
-                'options' => ['width'=>'80px']
-            ],
-            'name',
-           /* [
-                'attribute' => 'type',
-                'value' =>  function ($model,$key,$index,$column) {
-                                return $model->type==1?'男':'女';
-                            },
-                'filter' => array('1'=>'正常',2=>'加急',3=>'特急')
-            ],*/
-            [
-                'attribute' => 'cost',
-                'options' => ['width'=>'140px']
-            ],
-            [
-                'attribute' => 'country_id',
-                'value'     => 'country.cinfo',
-                'filter'    => \common\models\Country::find()
-                                ->select(['cinfo','id'])
-                                ->orderBy('id desc')
-                                ->indexBy('id')
-                                ->column(),
-                'options'   => [ 'width'=>'80px']
-            ],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'header' => '操作',
-                'options' => ['width'=>'300px']
-            ],
-        ],
-    ]);
+        ]);
+
+
     ?>
 </div>
+
+<p>
+    <?= Html::a('录入产品', ['create'], ['class' => 'btn btn-success']) ?>
+</p>

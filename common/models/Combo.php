@@ -30,11 +30,10 @@ class Combo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['combo_name', 'created_at', 'updated_at', 'uid'], 'required'],
+            [['combo_name','product_id'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['uid'], 'integer'],
+            [['uid','product_id'], 'integer'],
             [['combo_name'], 'string', 'max' => 100],
-            [['country'], 'exist', 'skipOnError' => true, 'targetClass' => Country::className(), 'targetAttribute' => ['country_id' => 'id']]
         ];
     }
 
@@ -44,17 +43,35 @@ class Combo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'combo_id' => 'Combo ID',
+            'combo_id' => 'ID',
             'combo_name' => '套餐名称',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
             'country' => '国家',
             'uid' => '用户id',
+            'product_id' => '产品id',
         ];
     }
 
     public function getCountry()
     {
         $this->hasOne(Country::className(), ['id' => 'country_id']);
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->created_at = $this->updated_at = date('Y-m-d');
+            } else {
+                $this->updated_at = date('Y-m-d');
+            }
+            return true;
+        }
+        return false;
     }
 }

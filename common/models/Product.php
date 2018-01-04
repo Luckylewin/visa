@@ -57,4 +57,9 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Country::className(), ['id'=>'country_id']);
     }
+
+    public function getCombo()
+    {
+        return $this->hasMany(Combo::className(), ['product_id'=>'id'])->filterWhere(['product_id'=>$this->id]);
+    }
 }
