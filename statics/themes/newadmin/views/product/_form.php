@@ -26,7 +26,7 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'picture')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'cost')->textInput(['maxlength' => true])->opti ?>
+            <?= $form->field($model, 'cost')->textInput(['maxlength' => true]); ?>
 
             <?= $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::getDropdownList(), 'id', 'cinfo')); ?>
 

@@ -440,7 +440,7 @@ ROW_FORMAT = Dynamic;
 /*产品表*/
 DROP TABLE IF EXISTS `yii2_product`;
 CREATE TABLE `yii2_product` (
-`id` int(11) NOT NULL COMMENT '产品id',
+`id` int(11) NOT NULL COMMENT '产品id' AUTO_INCREMENT,
 `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
 `picture` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
 `cost` decimal(10,2) NOT NULL COMMENT '支出成本',

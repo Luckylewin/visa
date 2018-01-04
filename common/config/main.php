@@ -8,7 +8,7 @@ return [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=127.0.0.1;dbname=visa',
             'username' => 'root',
-            'password' => 'root',
+            'password' => '12345678',
             'charset' => 'utf8',
             'tablePrefix' => 'yii2_',
         ],

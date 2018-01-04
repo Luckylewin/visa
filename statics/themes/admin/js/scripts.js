@@ -164,6 +164,6 @@
 
     // popovers
 
-    $('.popovers').popover();
+ // #$('.popovers').popover();
 
 })(jQuery);

@@ -32,7 +32,7 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'picture', 'cost', 'country_id'], 'required'],
+            [['name', 'picture', 'cost', 'country_id'], 'required'],
             [['id', 'country_id'], 'integer'],
             [['cost'], 'number'],
             [['name', 'picture'], 'string', 'max' => 255],
