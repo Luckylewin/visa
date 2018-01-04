@@ -30,7 +30,22 @@ $this->params['breadcrumbs'][] = $this->title;
                             'name',
                             'picture',
                             'cost',
-                            'country_id',
+                            [
+                               'attribute' => 'country_id',
+                               'value' => $model->country->cinfo
+                            ],
+                            [
+                                'label' => '套餐',
+                                'format' => 'html',
+                                'value' => function ($model){
+
+                                    $str='';
+                                    foreach($model->combo as $value){
+                                        $str = $str. ("<span class='btn btn-info'>" . $value->combo_name . "</span>&nbsp;");
+                                    }
+                                    return $str;
+                                }
+                            ],
                         ],
                     ]) ?>
                 </div>
