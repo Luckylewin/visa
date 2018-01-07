@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'combo_name')->textInput() ?>
 
-
+                <?= $form->field($model, 'combo_cost')->textInput() ?>
 
                 <?php if($model->isNewRecord) echo $form->field($model, 'product_id')->hiddenInput(['value'=>$product_id])->label(false) ?>
 

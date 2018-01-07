@@ -32,7 +32,7 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'picture', 'cost', 'country_id'], 'required'],
+            [['name','cost', 'country_id'], 'required'],
             [['id', 'country_id'], 'integer'],
             [['cost'], 'number'],
             [['name', 'picture'], 'string', 'max' => 255],
@@ -62,4 +62,11 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Combo::className(), ['product_id'=>'id']);
     }
+
+    public static function getJsonData()
+    {
+        return self::find()->select(['id','name'])->asArray()->limit(1)->all();
+    }
+
+
 }

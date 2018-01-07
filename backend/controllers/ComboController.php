@@ -9,6 +9,7 @@ use common\models\ComboQuery;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * ComboController implements the CRUD actions for Combo model.
@@ -137,5 +138,13 @@ class ComboController extends BaseController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionQueryCombo($id)
+    {
+       $response = Yii::$app->getResponse();
+       $response->format = Response::FORMAT_JSON;
+       $response->data = Combo::find()->select(['combo_id','combo_name'])->where(['product_id' => $id])->limit(100)->all();
+       return $response->send();
     }
 }

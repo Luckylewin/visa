@@ -8,7 +8,57 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+
+
+
 <div class="order-form">
+
+    <div class="well">
+        <div style="cursor: pointer;">
+            <h4><i class="fa fa-plus"></i> 添加产品</h4>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="input-group" style="width: 300px;">
+                    <input type="text" class="form-control" id="taobao">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="margin-left: 20px;">
+                <div class="input-group col-md-12">
+                    <select id="combo" data-placeholder="请选择套餐" class="form-control m-b" name="account">
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group" style="width: 300px;">
+                    <button id="add-to-body" class="btn btn-info">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-chose hidden">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>产品名称</th>
+                <th>套餐名称</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody class="product-body">
+
+            </tbody>
+        </table>
+    </div>
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -125,3 +175,10 @@ use yii\widgets\ActiveForm;
 
     <script src="/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js"></script>
 </div>
+
+<script>
+
+</script>
+
+
+

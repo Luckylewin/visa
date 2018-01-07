@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->product->name,
             ],
             'combo_name',
+            'combo_cost',
             'created_at',
             [
                 'attribute' => 'updated_at',

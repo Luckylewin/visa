@@ -7,11 +7,11 @@ use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use yii\web\AssetBundle as AppAsset;
+/*use yii\web\AssetBundle as AppAsset;*/
 use common\widgets\Alert;
 use backend\models\Menu;
 
-AppAsset::register($this);
+/*AppAsset::register($this);*/
 $allMenus = Menu::getMenu();
 ?>
 <?php $this->beginPage() ?>

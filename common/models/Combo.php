@@ -3,6 +3,7 @@
 namespace common\models;
 
 use backend\models\Admin;
+use \yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -12,9 +13,11 @@ use Yii;
  * @property string $combo_name
  * @property string $created_at
  * @property string $updated_at
+ * @property string $product_id
+ * @property string $combo_cost
  * @property integer $uid
  */
-class Combo extends \yii\db\ActiveRecord
+class Combo extends ActiveRecord
 {
 
     /**
@@ -31,7 +34,7 @@ class Combo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['combo_name','product_id'], 'required'],
+            [['combo_name','product_id','combo_cost'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['uid','product_id'], 'integer'],
             [['combo_name'], 'string', 'max' => 100],
@@ -51,6 +54,7 @@ class Combo extends \yii\db\ActiveRecord
             'country' => '国家',
             'uid' => '用户id',
             'product_id' => '产品id',
+            'combo_cost' => '支出成本',
         ];
     }
 

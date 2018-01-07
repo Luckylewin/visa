@@ -6,8 +6,11 @@ use Yii;
 use common\models\Product;
 use common\models\ProductQuery;
 use backend\controllers\BaseController;
+use yii\db\Query;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -127,5 +130,55 @@ class ProductController extends BaseController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionQuery()
+    {
+        $this->layout = false;
+        $callback = Yii::$app->getRequest()->get('callback');
+        $keyword = Yii::$app->getRequest()->get('q');
+
+        try {
+            $data = Yii::$app->db->createCommand("SELECT id,name FROM yii2_product WHERE name LIKE '%$keyword%' ORDER BY id desc LIMIT 500")->queryAll();
+        }catch(\Exception $e) {
+            $data = [];
+        }
+        array_walk($data, function (&$v,$k){
+           return $v = array_values($v);
+        });
+        $data = json_encode(['result'=>$data]);
+
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_HTML;
+        $response->data = $callback . "($data)";
+        //$response->data = $callback . '({"result":[["最初的爱情最后的仪式","1204"],["最初的你是我最后的爱","68"],["最初和最终的自由","453"],["最初的梦想","358"],["最初三分钟","179"],["最初的90天","119"],["最初梦想潮流店","552"],["最初的梦想伴奏","44"],["最初的爱情,最后的仪式","83"],["最初的爱最后的爱","318"]]})';
+        $response->send();
+    }
+
+    public function actionProduct()
+    {
+        ini_set("max_execution_time", "900");
+        $db = \Yii::$app->db->createCommand();
+        $data = Product::find()->all();
+
+        for ($i=0;$i<=count($data);$i++) {
+            Yii::$app->db->createCommand()->insert('yii2_combo', [
+                'combo_name' => '测试套餐'. ord(mt_rand(47,90)).mt_rand(1,1000),
+                'combo_cost' => mt_rand(100,10000),
+                'created_at' => date('Y-m-d'),
+                'updated_at' => date('Y-m-d'),
+                'product_id' => $data[$i]->id,
+                'uid' => 0
+            ])->execute();
+        }
+        exit('执行完毕');
+        $this->layout = false;
+       /* $data = '{"message":"2222","value":[{"userName":"淳芸","shortAccount":"chunyun","userId":20001},{"userName":"orion-01","shortAccount":"orion-01","userId":20000},{"userName":"唐宏禹14","shortAccount":"TANGHONGYU","userId":20011},{"userName":"唐宏禹13","shortAccount":"tanghongyu","userId":20011},{"userName":"穆晓晨","shortAccount":"mUXIAOCHEN","userId":20002},{"userName":"张欢引","shortAccount":"zhanghuanyin","userId":20003},{"userName":"吴琼","shortAccount":"wuqiong","userId":20004},{"userName":"吴东鹏","shortAccount":"wudongpeng","userId":20005},{"userName":"黄少铅","shortAccount":"huangshaoqian","userId":20006},{"userName":"胡运燕","shortAccount":"yunyan","userId":20007},{"userName":"刘幸","shortAccount":"liuxing","userId":20008},{"userName":"陈媛媛","shortAccount":"CHENYUANYUAN","userId":20009},{"userName":"李大鹏","shortAccount":"dapeng","userId":20010},{"userName":"唐宏禹","shortAccount":"tanghongyu","userId":20011},{"userName":"旷东林","shortAccount":"kuangdonglin","userId":20010},{"userName":"唐宏禹15","shortAccount":"TANGhongyu","userId":20011},{"userName":"唐宏禹12","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹11","shortAccount":"TangHongYu","userId":20011},{"userName":"旷东林","shortAccount":"kuangdonglin","userId":20010},{"userName":"唐宏禹10","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹9","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹8","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹7","shortAccount":"tanghongyu","userId":20011},{"userName":"旷东林","shortAccount":"kuangdonglin","userId":20010},{"userName":"唐宏禹6","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹5","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹4","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹3","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹2","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹1","shortAccount":"tanghongyu","userId":20011}],"code":200,"redirect":""}';
+        $data = json_decode($data, true);
+        print_r($data);exit;*/
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+        $response->data = ['message'=>'success', 'value' => Product::getJsonData()];
+        $response->send();
     }
 }

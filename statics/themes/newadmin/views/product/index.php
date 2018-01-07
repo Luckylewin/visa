@@ -17,12 +17,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel' => $searchModel,
             'tableOptions' => ['class' => 'table table-bordered'],
             'layout' => '{items}{summary}{pager}',
+            'pager'=>[
+                //'options'=>['class'=>'hidden']//关闭自带分页
+                'firstPageLabel'=>"第一页",
+                'prevPageLabel'=>'上一页',
+                'nextPageLabel'=>'下一页',
+                'lastPageLabel'=>'最后一页',
+            ],
             'columns' => [
-                [
+                /*[
                     'class' => 'yii\grid\SerialColumn',
                     'header' => '序号',
                     'options' => ['width'=>'50px;']
-                ],
+                ],*/
                 [
                     'attribute' => 'id',
                     'options' => ['width'=>'80px']
