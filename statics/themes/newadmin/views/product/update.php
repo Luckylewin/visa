@@ -6,13 +6,11 @@ use yii\helpers\Html;
 /* @var $model common\models\Product */
 
 $this->title = Yii::t('backend','Update') .': '. $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '产品列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = Yii::t('backend','Update');
 ?>
 <div class="product-update">
-
-    <h2><?= Html::encode($this->title) ?></h2>
 
     <?= $this->render('_form', [
         'model' => $model,

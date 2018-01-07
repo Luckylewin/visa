@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 
-<div class="product-form col-md-12">
+<div class="product-form">
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
             </h3>
         </div>
         <div class="panel-body">
-            <div class="col-md-6">
+            <div >
 
             <?php $form = ActiveForm::begin(); ?>
 
@@ -31,7 +31,11 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::getDropdownList(), 'id', 'cinfo')); ?>
 
             <div class="form-group">
-                <?= Html::submitButton($model->isNewRecord ? '新增' : '更新', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                <?= Html::button(Yii::t('backend', 'GoBack'), [
+                        'class' => 'btn btn-danger',
+                        'onclick' => 'history.go(-1)'
+                ]) ?>
             </div>
 
             </div>

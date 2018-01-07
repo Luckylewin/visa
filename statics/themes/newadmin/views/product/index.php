@@ -7,19 +7,16 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\ProductQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '产品列表';
+$this->title = Yii::t('backend', 'Products');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?php
-
-      echo  GridView::widget([
+    <?php  echo  GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
+            'tableOptions' => ['class' => 'table table-bordered'],
+            'layout' => '{items}{summary}{pager}',
             'columns' => [
                 [
                     'class' => 'yii\grid\SerialColumn',
@@ -50,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ->orderBy('id desc')
                                                         ->indexBy('id')
                                                         ->column(),
-                    'options'   => [ 'width'=>'200px']
+                    'options'   => ['style'=>'width:250px;text-align:center' ]
                 ],
                 [
                     'header' => '操作',
@@ -88,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ];
                             return Html::a(Yii::t('backend', 'Delete'), $url, $options);
                         },
-                        //发布套餐按钮
+                        /*//发布套餐按钮
                         'combo' => function ($url, $model, $key) {
                             $url = \yii\helpers\Url::toRoute(['combo/index', 'id' => $key]);
                             $options = [
@@ -98,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'class' => 'btn btn-info btn-sm'
                             ];
                             return Html::a(Yii::t('backend', 'ComboIndex'), $url, $options);
-                        }
+                        }*/
                     ]
                 ],
             ],
@@ -107,7 +104,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ?>
 </div>
+<hr>
 
-<p>
-    <?= Html::a('录入产品', ['create'], ['class' => 'btn btn-success']) ?>
-</p>
+<div class="col-md-12">
+    <div class="col-md-11"></div>
+    <div >
+        <p>
+            <?= Html::a('录入产品', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    </div>
+</div>

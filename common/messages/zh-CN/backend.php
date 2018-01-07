@@ -16,6 +16,17 @@ return [
     'View' => '查看',
     'Edit' => '编辑',
     'Delete' => '删除',
-    'RelatedCombo' => '发布套餐',
+    'RelatedCombo' => '录入套餐',
     'ComboIndex' => '套餐列表',
+    'Products' => '产品列表',
+    'Product' => '产品',
+    'Save' => '保存',
+    'Combo' => '套餐',
+    'Detail' => '详情',
+    'Cancel' => '取消',
+    'GoBack' => '返回',
+    'Belong' => '所属',
+    'Last Update' => '最后编辑更新',
+    'Input User' => '录入用户',
+    'Orders' => '订单列表'
 ];

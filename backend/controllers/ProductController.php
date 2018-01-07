@@ -24,7 +24,7 @@ class ProductController extends BaseController
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    /*'delete' => ['POST'],*/
                 ],
             ],
         ];
@@ -49,6 +49,7 @@ class ProductController extends BaseController
      * Displays a single Product model.
      * @param integer $id
      * @return mixed
+     * @throws
      */
     public function actionView($id)
     {
@@ -67,7 +68,9 @@ class ProductController extends BaseController
         $model = new Product();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-	    return $this->redirect(['view', 'id' => $model->id]);
+
+            Yii::$app->getSession()->setFlash('success','操作成功');
+	        return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -80,12 +83,14 @@ class ProductController extends BaseController
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->getSession()->setFlash('info','操作成功');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -99,6 +104,7 @@ class ProductController extends BaseController
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws
      */
     public function actionDelete($id)
     {

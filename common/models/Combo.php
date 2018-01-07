@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\models\Admin;
 use Yii;
 
 /**
@@ -73,5 +74,15 @@ class Combo extends \yii\db\ActiveRecord
             return true;
         }
         return false;
+    }
+
+    public function getProduct()
+    {
+        return $this->hasOne(Product::className(), ['id' => 'product_id']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(Admin::className(), ['id' => 'uid']);
     }
 }

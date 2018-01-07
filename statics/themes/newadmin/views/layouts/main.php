@@ -23,23 +23,38 @@ $allMenus = Menu::getMenu();
     <?= Html::csrfMetaTags() ?>
     <title><?= Yii::$app->params['basic']['sitename'].' - '.Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <link href="/statics/themes/newadmin/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="/statics/themes/newadmin/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/statics/themes/newadmin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="/statics/themes/newadmin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/statics/themes/newadmin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
 <body>
 <?php $this->beginBody() ?>
 
-<?= Alert::widget() ?>
+
 <div class="wrapper">
     <div class="panel">
         <div class="panel-body">
-            <?= $content ?>
+            <div class="col-md-12">
+                <!-- 面包屑导航 -->
+                <div>
+                    <?=    Breadcrumbs::widget([
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        'homeLink' => false
+                    ]); ?>
+                </div>
+
+                <?= $content ?>
+                <!--alert 表单-->
+                <?= Alert::widget();?>
+            </div>
         </div>
     </div>
 </div>
 
 <?php $this->endBody() ?>
-<script src="/statics/themes/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
-<script src="/statics/themes/admin/js/jquery.nicescroll.js"></script>
-<script src="/statics/themes/admin/js/scripts.js"></script>
 </body>
 </html>
+<script src="/statics/themes/newadmin/js/bootstrap.min.js?v=3.3.6"></script>
 <?php $this->endPage() ?>
+
