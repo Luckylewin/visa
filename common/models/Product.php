@@ -65,7 +65,7 @@ class Product extends \yii\db\ActiveRecord
 
     public static function getJsonData()
     {
-        return self::find()->select(['id','name'])->asArray()->limit(1)->all();
+        return self::find()->select(['id','name'])->asArray()->limit(100)->all();
     }
 
 
