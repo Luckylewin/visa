@@ -3,13 +3,12 @@ namespace backend\controllers;
 
 use Yii;
 use yii\web\Controller;
-use backend\models\LoginForm;
 use yii\filters\VerbFilter;
-//use yii\filters\AccessControl;
 use backend\components\AccessControl;
 use backend\models\Config;
 
-class BaseController extends Controller {
+class BaseController extends Controller
+{
 
     /**
      * @inheritdoc
@@ -19,19 +18,26 @@ class BaseController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                //'except' => ['logout'], except是除了以外
                 'rules' => [
+                    //行为过滤器
                     [
-                        'actions' => ['login', 'error'],
+                        //表示无条件通过
+                        'actions' => ['error','login'],
                         'allow' => true,
                     ],
                     [
+                        //表示只允许认证过的用户执行 其roles用@表示 游客用?表示
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
-                    ],
+                    ]
                 ],
             ],
             'verbs' => [
+                /**
+                 * 过滤http请求的行为过滤器
+                 */
                 'class' => VerbFilter::className(),
                 'actions' => [
                     //'logout' => ['post'],
@@ -57,32 +63,13 @@ class BaseController extends Controller {
      * 初始化配置信息
      * 网站配置或模板配置等
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
         Yii::$app->params['basic'] = Config::getConfigs('basic');
         return true;
     }
 
-    /**
-     * 后台登录
-     */
-    public function actionLogin() {
-        $this->layout = false;
-        if (!Yii::$app->user->isGuest) return $this->goHome();
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) return $this->goBack();
-        else return $this->render('login', [
-                'model' => $model,
-            ]);
-    }
-
-    /**
-     * 退出登录
-     */
-    public function actionLogout() {
-        Yii::$app->user->logout();
-        return $this->goHome();
-    }
 
 }

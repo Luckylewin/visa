@@ -5,7 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Order;
 use common\models\OrderQuery;
-use backend\controllers\BaseController;
+
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -14,20 +14,6 @@ use yii\filters\VerbFilter;
  */
 class OrderController extends BaseController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all Order models.

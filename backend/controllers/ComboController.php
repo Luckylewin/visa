@@ -6,9 +6,7 @@ use common\models\Product;
 use Yii;
 use common\models\Combo;
 use common\models\ComboQuery;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\Response;
 
 /**
@@ -16,21 +14,6 @@ use yii\web\Response;
  */
 class ComboController extends BaseController
 {
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all Combo models.
