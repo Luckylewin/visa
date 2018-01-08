@@ -29,6 +29,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <script type="text/javascript">
 
+    //全局选择锁
+    var lock = false;
+
+    Array.prototype.del=function(value) {
+      for (var i=0; i < this.length; i++) {
+
+          if(value === this[i]) {
+              this.splice(i,1);
+          }
+      }
+    };
+
     //当前选择的产品-套餐
     var currentProductCombo = [];
 
@@ -71,6 +83,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     });
                 }
                 console.log(data);
+                //锁定状态
+                lock = false;
                 return data;
             }
         }).on('onSetSelectValue', function (e, keyword, data) {
@@ -82,8 +96,13 @@ $this->params['breadcrumbs'][] = $this->title;
             $.getJSON(_url, function(data) {
                 console.log(data);
                 var option = '';
-                for (var i in data) {
-                    option += "<option value='" + data[i].combo_id + "'>" + data[i].combo_name + "</option>";
+                if (data.length > 0) {
+                    for (var i in data) {
+                        if (typeof(data[i].combo_id) !== 'undefined') {
+                            option += "<option value='" + data[i].combo_id + "'>" + data[i].combo_name + "</option>";
+                        }
+                    }
+                    lock = true;
                 }
                 $('#combo').empty().append(option);
             });
@@ -91,29 +110,34 @@ $this->params['breadcrumbs'][] = $this->title;
 
     //确定添加产品套餐
     $('#add-to-body').click(function(){
-
+        //添加之前 判断锁定状态
+        if  (lock === false) {
+            layer.msg('该产品没有可以选择的套餐!');
+            return false;
+        }
         //添加之前 确定是否有重复
         var product = $('#taobao');
         var combo = $('#combo');
-
         var product_id = product.attr('product-id');
         var combo_id = combo.val();
-
         var comboName = combo.find("option:selected").text();
         var comboBody = '<tr>';
+        var key = product_id + '-' + combo_id;
 
-        if (!checkTer.checkIsRepeat(product_id, combo_id)) {
+        if (!checkTer.checkIsRepeat(key)) {
            layer.msg('不能重复添加!');
            return false;
         }
 
-        comboBody += ('<td>' + product.val() + '</td>' + '<td>' + comboName + '</td><td><button class="btn btn-danger btn-sm combo-del"><i class="fa fa-trash-o"></i> 取消</button></td>');
+        comboBody += ('<td>' + product.val() + '</td>' + '<td>' + comboName + '</td><td><button key="' + key +'" class="btn btn-danger btn-sm combo-del"><i class="fa fa-trash-o"></i> 取消</button></td>');
         $('.product-chose').removeClass('hidden');
         $('.product-body').append(comboBody);
     });
+
     var checkTer = {
-        'checkIsRepeat' : function(product_id, combo_id) {
-            var key = product_id + '-' + combo_id;
+        //判断是否重复
+        'checkIsRepeat' : function(key) {
+
             if (currentProductCombo.length !== 0) {
                 for (var i in currentProductCombo) {
                     if (currentProductCombo[i] === key) return false;
@@ -124,11 +148,14 @@ $this->params['breadcrumbs'][] = $this->title;
             return true;
         }
     };
+
     $('.product-body').on('click', 'button', function() {
         var _this = $(this);
         layer.confirm('确定取消添加该产品套餐吗?', {
             btn: ['是','否'] //按钮
         }, function(){
+            currentProductCombo.del(_this.attr('key'));
+            console.log(currentProductCombo);
             layer.msg('已取消', {icon: 1});
             _this.parent().parent().remove();
         });
