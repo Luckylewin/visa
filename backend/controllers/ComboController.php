@@ -104,6 +104,7 @@ class ComboController extends BaseController
 
             return $this->render('update', [
                 'model' => $model,
+                'productModel' => $model->getProduct(),
             ]);
         }
     }

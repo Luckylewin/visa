@@ -29,13 +29,13 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'combo_cost')->textInput() ?>
 
-                <?php if($model->isNewRecord) echo $form->field($model, 'product_id')->hiddenInput(['value'=>$product_id])->label(false) ?>
+                <?php if($model->isNewRecord) echo $form->field($model, 'product_id')->hiddenInput(['value'=>$productModel->id])->label(false) ?>
 
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-info']) ?>
                     <?= Html::button(Yii::t('backend', 'GoBack'), [
                             'class' => 'btn btn-danger',
-                            'onclick' => 'history.go(-1)'
+                            'onclick' => 'history.back(-1)'
                     ]) ?>
                 </div>
 
