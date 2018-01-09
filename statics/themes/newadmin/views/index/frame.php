@@ -51,15 +51,15 @@ $allMenus = Menu::getMenu();
 <!--                        <span><img alt="image" class="img-circle" src="/statics/themes/newadmin/img/profile_small.jpg" /></span>-->
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
+                               <span class="block m-t-xs"><strong class="font-bold">Admin</strong></span>
                                 <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
                                 </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
+                           <!-- <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
                             </li>
                             <li><a class="J_menuItem" href="profile.html">个人资料</a>
-                            </li>
+                            </li>-->
 
                             <li class="divider"></li>
                             <li><a href="<?= Url::to(['index/logout']) ?>">安全退出</a>
@@ -87,7 +87,7 @@ $allMenus = Menu::getMenu();
                     </li>
                 <?php } ?>
 
-                <li>
+                <!--<li>
                     <a href="#">
                         <i class="fa fa-home"></i>
                         <span class="nav-label">主页</span>
@@ -398,7 +398,7 @@ $allMenus = Menu::getMenu();
                         <li><a class="J_menuItem" href="form_builder.html">表单构建器</a>
                         </li>
                     </ul>
-                </li>
+                </li>-->
 
             </ul>
         </div>
@@ -416,7 +416,7 @@ $allMenus = Menu::getMenu();
                     </form>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
-                    <li class="dropdown">
+                    <!--<li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                             <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
                         </a>
@@ -490,7 +490,7 @@ $allMenus = Menu::getMenu();
                                 </div>
                             </li>
                         </ul>
-                    </li>
+                    </li>-->
                     <!--<li class="hidden-xs">
                         <a href="index_v1.html" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> 购买</a>
                     </li>-->
@@ -532,7 +532,7 @@ $allMenus = Menu::getMenu();
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?= Url::to('/admin.php?r=index%2Findex')?>" frameborder="0" data-id="<?= Url::to('/admin.php?r=index%2Findex')?>" seamless></iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">&copy; 2014-2017 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>
+            <div class="pull-right">&copy; Powered by  <a href="http://www.yiiframework.com/" target="_blank">Yii Framework</a>
             </div>
         </div>
     </div>
@@ -548,14 +548,14 @@ $allMenus = Menu::getMenu();
                         <i class="fa fa-gear"></i> 主题
                     </a>
                 </li>
-                <li class=""><a data-toggle="tab" href="#tab-2">
+                <!--<li class=""><a data-toggle="tab" href="#tab-2">
                         通知
                     </a>
                 </li>
                 <li><a data-toggle="tab" href="#tab-3">
                         项目进度
                     </a>
-                </li>
+                </li>-->
             </ul>
 
             <div class="tab-content">
@@ -854,7 +854,7 @@ $allMenus = Menu::getMenu();
     </div>
     <!--右侧边栏结束-->
     <!--mini聊天窗口开始-->
-    <div class="small-chat-box fadeInRight animated">
+   <!-- <div class="small-chat-box fadeInRight animated">
 
         <div class="heading" draggable="true">
             <small class="chat-date pull-right">
@@ -944,7 +944,7 @@ $allMenus = Menu::getMenu();
             <i class="fa fa-comments"></i>
 
         </a>
-    </div>
+    </div>-->
     <!--mini聊天窗口结束-->
 </div>
 
