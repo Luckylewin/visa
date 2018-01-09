@@ -4,7 +4,8 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 
-class LoginForm extends Model {
+class LoginForm extends Model
+{
 
     public $username;
     public $password;
@@ -12,7 +13,16 @@ class LoginForm extends Model {
 
     private $_user;
 
-    public function rules() {
+    public function attributeLabels()
+    {
+        return [
+            'username' => '用户名',
+            'password' => '密码'
+        ];
+    }
+
+    public function rules()
+    {
         return [
             // username and password are both required
             [['username', 'password'], 'required'],
@@ -26,7 +36,8 @@ class LoginForm extends Model {
     /**
      * 验证密码
      */
-    public function validatePassword($attribute, $params) {
+    public function validatePassword($attribute, $params)
+    {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
@@ -39,8 +50,10 @@ class LoginForm extends Model {
      * 使用用户名和密码登录
      * @return boolean
      */
-    public function login() {
-        if ($this->validate()) {
+    public function login()
+    {
+        if ($this->validate())
+        {
             $model = $this->getUser();
             $isLogin = Yii::$app->user->login($model, $this->rememberMe ? 3600 * 24 * 30 : 0);
             //登录成功,记录登录时间和IP
@@ -58,7 +71,8 @@ class LoginForm extends Model {
     /**
      * 通过username查找用户
      */
-    protected function getUser() {
+    protected function getUser()
+    {
         if ($this->_user === null) {
             $this->_user = Admin::findByUsername($this->username);
         }

@@ -7,7 +7,8 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
-class Admin extends ActiveRecord implements IdentityInterface {
+class Admin extends ActiveRecord implements IdentityInterface
+{
 
     public $password;
 

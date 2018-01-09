@@ -23,7 +23,7 @@ $allMenus = Menu::getMenu();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
 
-    <title>H+ 后台主题UI框架 - 主页</title>
+    <title>签证订单管理系统</title>
 
     <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
     <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
@@ -60,12 +60,9 @@ $allMenus = Menu::getMenu();
                             </li>
                             <li><a class="J_menuItem" href="profile.html">个人资料</a>
                             </li>
-                            <li><a class="J_menuItem" href="contacts.html">联系我们</a>
-                            </li>
-                            <li><a class="J_menuItem" href="mailbox.html">信箱</a>
-                            </li>
+
                             <li class="divider"></li>
-                            <li><a href="login.html">安全退出</a>
+                            <li><a href="<?= Url::to(['index/logout']) ?>">安全退出</a>
                             </li>
                         </ul>
                     </div>
@@ -529,7 +526,7 @@ $allMenus = Menu::getMenu();
                     </li>
                 </ul>
             </div>
-            <a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+            <a href="<?= Url::to(['index/logout']) ?>" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?= Url::to('/admin.php?r=index%2Findex')?>" frameborder="0" data-id="<?= Url::to('/admin.php?r=index%2Findex')?>" seamless></iframe>
