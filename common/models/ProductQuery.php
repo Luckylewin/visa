@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Product;
+
 
 /**
  * ProductQuery represents the model behind the search form about `common\models\Product`.
@@ -20,8 +20,7 @@ class ProductQuery extends Product
     {
         return [
             [['id', 'country_id'], 'integer'],
-            [['name', 'picture', 'type', 'order_type', 'country_id'], 'safe'],
-            [['cost'], 'number'],
+            [['name', 'type', 'order_type', 'country_id'], 'safe'],
         ];
     }
 
@@ -82,8 +81,7 @@ class ProductQuery extends Product
             'country_id' => $this->country_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'picture', $this->picture]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

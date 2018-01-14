@@ -15,6 +15,7 @@ use Yii;
  * @property string $updated_at
  * @property string $product_id
  * @property string $combo_cost
+ * @property string $combo_type
  * @property integer $uid
  */
 class Combo extends ActiveRecord
@@ -34,7 +35,7 @@ class Combo extends ActiveRecord
     public function rules()
     {
         return [
-            [['combo_name','product_id','combo_cost'], 'required'],
+            [['combo_name','product_id','combo_cost','combo_type'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['uid','product_id'], 'integer'],
             [['combo_name'], 'string', 'max' => 100],
@@ -52,6 +53,7 @@ class Combo extends ActiveRecord
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
             'country' => '国家',
+            'combo_type' => '套餐类型',
             'uid' => '用户id',
             'product_id' => '产品id',
             'combo_cost' => '支出成本',

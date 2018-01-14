@@ -18,17 +18,13 @@ use yii\widgets\ActiveForm;
             </h3>
         </div>
         <div class="panel-body">
-            <div >
+            <div class="col-md-6">
 
             <?php $form = ActiveForm::begin(); ?>
 
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-            <?= $form->field($model, 'picture')->textInput(['maxlength' => true]) ?>
-
-            <?= $form->field($model, 'cost')->textInput(['maxlength' => true]); ?>
-
             <?= $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::getDropdownList(), 'id', 'cinfo')); ?>
+
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
             <div class="form-group">
                 <?= Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -41,7 +41,7 @@ class BaseController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     //'logout' => ['post'],
-                    'delete' => ['POST'],
+                    //'delete' => ['get'],
                 ],
             ],
         ];

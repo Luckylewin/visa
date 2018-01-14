@@ -20,6 +20,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => Yii::t('backend','Belong') . Yii::t('backend', 'Product'),
                 'value' => $model->product->name,
             ],
+            [
+                 'attribute' => 'combo_type',
+                 'value' => function($model) {
+                    $data = ['1'=>'正常','2'=>'加急','3'=>'特急'];
+                    return $data[$model->combo_type];
+                 } ,
+            ],
             'combo_name',
             'combo_cost',
             'created_at',
@@ -36,8 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div>
         <p>
-
-
             <?php $form = \yii\widgets\ActiveForm::begin([
                     'action' => \yii\helpers\Url::to(['combo/delete']),
                     'method' => 'post'

@@ -32,10 +32,9 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','cost', 'country_id'], 'required'],
+            [['name','country_id'], 'required'],
             [['id', 'country_id'], 'integer'],
-            [['cost'], 'number'],
-            [['name', 'picture'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
         ];
     }
 
@@ -47,8 +46,6 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => '产品id',
             'name' => '产品名称',
-            'picture' => '产品图片',
-            'cost' => '支出成本',
             'country_id' => '国家',
         ];
     }
@@ -61,6 +58,11 @@ class Product extends \yii\db\ActiveRecord
     public function getCombo()
     {
         return $this->hasMany(Combo::className(), ['product_id'=>'id']);
+    }
+
+    public function getSomeCombo($combo_type)
+    {
+        return $this->hasMany(Combo::className(), ['product_id'=>'id'])->where("combo_type", $combo_type);
     }
 
     public static function getJsonData()

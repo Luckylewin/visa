@@ -10,24 +10,26 @@ use \common\models\Combo;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$combos = $model->combo;
+$types = ['1'=>'正常','2'=>'加急','3'=>'特急'];
+$colors = ['1'=>'label label-success','2'=>'label label-warning','3'=>'label label-danger'];
+
 ?>
 
 
-<div class="product-form">
+<div class="product-form col-md-6">
 
     <div class="product-view">
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'id',
-                'name',
-                'picture',
-                'cost',
                 [
                     'attribute' => 'country_id',
                     'value' => $model->country->cinfo
                 ],
-                [
+//                'id',
+                'name',
+                /*[
                     'label' => Yii::t('backend', 'Combo'),
                     'format' => 'html',
                     'value' => function ($model){
@@ -41,11 +43,35 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                         return $str;
                     }
-                ],
+                ],*/
             ],
         ]) ?>
     </div>
 
+
+    <table class="table table-hover">
+        <caption>套餐列表</caption>
+        <thead>
+        <tr>
+            <th>分类</th>
+            <th>套餐名称</th>
+            <th>支出成本</th>
+            <th>添加用户</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($combos as $combo){ ?>
+            <tr>
+                <td>
+                <span class="<?= $colors[$combo->combo_type] ?>"><?= $types[$combo->combo_type] ?></span>
+                </td>
+                <td><?= $combo->combo_name; ?></td>
+                <td><?= $combo->combo_cost; ?></td>
+                <td><?= $combo->user->username; ?></td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
 
     <p>
         <?= Html::a(Yii::t('backend', 'Edit'), ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
@@ -61,5 +87,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+
 
 

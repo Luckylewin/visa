@@ -84,7 +84,6 @@ class ComboController extends BaseController
             Yii::$app->getSession()->setFlash('info','操作成功');
             return $this->redirect(['product/view', 'id' => $model->product->id]);
         } else {
-
             return $this->render('update', [
                 'model' => $model,
                 'productModel' => $model->getProduct(),
@@ -98,9 +97,9 @@ class ComboController extends BaseController
      * @return mixed
      * @throws
      */
-    public function actionDelete()
+    public function actionDelete($id)
     {
-        $combo = $this->findModel(Yii::$app->request->post('id'));
+        $combo = $this->findModel($id);
         $product_id = $combo->product->id;
         $combo->delete();
 

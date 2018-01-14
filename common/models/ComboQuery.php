@@ -19,7 +19,7 @@ class ComboQuery extends Combo
     {
         return [
             [['combo_id', 'uid'], 'integer'],
-            [['combo_name', 'created_at', 'updated_at'], 'safe'],
+            [['combo_name','combo_type', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 

@@ -17,13 +17,15 @@ use yii\widgets\ActiveForm;
             </h3>
         </div>
         <div class="panel-body">
-            <div class="col-md-12">
+            <div class="col-md-6">
 
                 <?php $form = ActiveForm::begin(); ?>
 
-                <?= $form->field($productModel, 'name')->textInput([
+<!--                $form->field($productModel, 'name')->textInput([
                     'readonly' => true
-                ]) ?>
+                ])-->
+
+                <?= $form->field($model, 'combo_type')->dropDownList(['1'=>'正常','2'=>'加急','3' => '特急']); ?>
 
                 <?= $form->field($model, 'combo_name')->textInput() ?>
 

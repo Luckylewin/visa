@@ -10,8 +10,8 @@ use yii\grid\GridView;
 $this->title = Yii::t('backend', 'Products');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-index">
 
+<div class="product-index">
     <?php  echo  GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
@@ -31,8 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['width'=>'50px;']
                 ],*/
                 [
-                    'attribute' => 'id',
-                    'options' => ['width'=>'80px']
+                    'attribute' => 'country_id',
+                    'value'     => 'country.cinfo',
+                    'filter'    => \common\models\Country::find()
+                        ->select(['cinfo','id'])
+                        ->orderBy('id desc')
+                        ->indexBy('id')
+                        ->column(),
+                    'options'   => ['style'=>'width:250px;text-align:center' ]
                 ],
                 'name',
                 /* [
@@ -42,20 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                  },
                      'filter' => array('1'=>'正常',2=>'加急',3=>'特急')
                  ],*/
-                [
-                    'attribute' => 'cost',
-                    'options' => ['width'=>'150px']
-                ],
-                [
-                    'attribute' => 'country_id',
-                    'value'     => 'country.cinfo',
-                    'filter'    => \common\models\Country::find()
-                                                        ->select(['cinfo','id'])
-                                                        ->orderBy('id desc')
-                                                        ->indexBy('id')
-                                                        ->column(),
-                    'options'   => ['style'=>'width:250px;text-align:center' ]
-                ],
+
                 [
                     'header' => '操作',
                     'class'    => 'yii\grid\ActionColumn',

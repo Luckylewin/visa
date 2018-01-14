@@ -46,7 +46,9 @@ $allMenus = Menu::getMenu();
 
                 <?= $content ?>
                 <!--alert 表单-->
-                <?= Alert::widget();?>
+                <div class="col-md-12">
+                    <?= Alert::widget();?>
+                </div>
             </div>
         </div>
     </div>

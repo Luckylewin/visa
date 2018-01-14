@@ -162,4 +162,31 @@ class ProductController extends BaseController
         $response->data = ['message'=>'success', 'value' => Product::getJsonData()];
         $response->send();
     }
+
+    /**
+     * @param $country_id
+     * @param $type
+     */
+    public function actionMyProduct($country_id, $type)
+    {
+        $this->layout = false;
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+        $query = (new Query())
+                ->select('c.*')
+                ->from('yii2_product AS a')
+                ->leftJoin('yii2_combo AS c','c.product_id = a.id')
+                ->where(['country_id'=>$country_id,'combo_type'=>$type])
+                ->orderBy('combo_type ASC')
+                ->all();
+
+        if (isset($query[0]) && !empty($query)) {
+            $response->data = ['error'=>'success','message'=>'success', 'value' => $query];
+        } else {
+            $response->data = ['error'=>'fail','message'=>'no data', 'value' => ''];
+        }
+
+        $response->send();
+
+    }
 }

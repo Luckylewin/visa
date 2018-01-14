@@ -44,6 +44,9 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
+
+    public $country_id;
+
     /**
      * @inheritdoc
      */
@@ -60,7 +63,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['pid', 'order_num', 'order_date', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'transactor_name', 'balance_sum', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date'], 'required'],
             [['pid', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person', 'delivercompany_id'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date'], 'safe'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','country_id'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
             [['back_address', 'remark'], 'string'],
             [['order_classify', 'order_type', 'audit_status'], 'string', 'max' => 1],
@@ -79,8 +82,8 @@ class Order extends \yii\db\ActiveRecord
             'id' => 'ID',
             'pid' => '产品id',
             'order_num' => '订单号',
-            'order_classify' => '订单来源',//1网店2直客3同业
-            'order_type' => '订单分类',//1正常2加急3特急
+            'order_classify' => '订单分类',//1网店2直客3同业
+            'order_type' => '分类',//1正常2加急3特急
             'order_date' => '订单日期',
             'customer_id' => '客户id',
             'combo_id' => '套餐id',

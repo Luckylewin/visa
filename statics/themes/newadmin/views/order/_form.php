@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 
 <div class="order-form">
-    <div class="panel panel-danger">
+    <div class="panel panel-danger  hidden">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <b>不清楚的地方</b>
@@ -43,7 +43,7 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-    <div class="panel panel-info">
+    <div class="panel panel-info hidden">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <b>选择产品-套餐</b>
@@ -115,11 +115,13 @@ use yii\widgets\ActiveForm;
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
                 <?= $form->field($model, 'custom_servicer_id')->textInput() ?>
+                <?= $form->field($model, 'custom_servicer_id')->textInput()->label('接待客服'); ?>
                 <?= $form->field($model, 'order_num')->textInput() ?>
-                <?= $form->field($model, 'customer_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->orderBy('id desc')->all(), 'id' ,'cinfo'))->label('国家'); ?>
-                <?= $form->field($model, 'customer_id')->textInput(); ?>
-                <?= $form->field($model, 'customer_id')->dropDownList(['1'=>'这里有疑问 '])->label('套餐'); ?>
-                <?= $form->field($model, 'order_type')->dropDownList(['1' => '正常', '2' => '加急', '3' => '特急']) ?>
+
+                <?= $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->orderBy('id desc')->all(), 'id' ,'cinfo'))->label('国家'); ?>
+                <?= $form->field($model, 'order_type')->dropDownList(['1' => '正常', '2' => '加急', '3' => '特急'], ['prompt'=>'请选择','prompt_val'=>'0']) ?>
+                <?= $form->field($model, 'customer_id')->dropDownList(['1'=>'加载中 '])->label('套餐'); ?>
+
                 <?= $form->field($model, 'single_sum')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'total_person')->textInput() ?>
                 <?= $form->field($model, 'balance_order')->textInput(['maxlength' => true]) ?>
