@@ -107,7 +107,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="panel-body">
             <div class="col-md-3">
-                <?= $form->field($model, 'order_classify')->dropDownList(['1' => '网店', '2' => '直客', '3' => '同业']) ?>
+                <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify()) ?>
                 <?= $form->field($model, 'order_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
@@ -118,9 +118,9 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'custom_servicer_id')->textInput()->label('接待客服'); ?>
                 <?= $form->field($model, 'order_num')->textInput() ?>
 
-                <?= $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->orderBy('id desc')->all(), 'id' ,'cinfo'))->label('国家'); ?>
-                <?= $form->field($model, 'order_type')->dropDownList(['1' => '正常', '2' => '加急', '3' => '特急'], ['prompt'=>'请选择','prompt_val'=>'0']) ?>
-                <?= $form->field($model, 'customer_id')->dropDownList(['1'=>'加载中 '])->label('套餐'); ?>
+                <?= $form->field($model, 'cid')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->orderBy('id desc')->all(), 'id' ,'cinfo'))->label('国家'); ?>
+                <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), ['prompt'=>'请选择','prompt_val'=>'0']) ?>
+                <?= $form->field($model, 'combo_id')->dropDownList(['1'=>'加载中 '])->label('套餐'); ?>
 
                 <?= $form->field($model, 'single_sum')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'total_person')->textInput() ?>

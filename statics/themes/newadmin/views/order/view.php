@@ -9,6 +9,7 @@ use yii\widgets\DetailView;
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="order-view">
 
@@ -34,6 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'order_type',
             'order_date',
             'customer_id',
+            [
+                    'attribute' => 'cid',
+                    'value' => $model->country->cinfo
+            ],
             'combo_id',
             'custom_servicer_id',
             'transactor_id',

@@ -3,15 +3,19 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use \common\models\Combo;
-
+use common\models\Type;
 /* @var $this yii\web\View */
 /* @var $model common\models\Product */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 $combos = $model->combo;
-$types = ['1'=>'正常','2'=>'加急','3'=>'特急'];
+$combosRowSpan = Type::getGroup($combos);
+
+$types = Type::getComboType();
+$classify = Type::getComboClassify();
 $colors = ['1'=>'label label-success','2'=>'label label-warning','3'=>'label label-danger'];
 
 ?>
@@ -53,6 +57,7 @@ $colors = ['1'=>'label label-success','2'=>'label label-warning','3'=>'label lab
         <caption>套餐列表</caption>
         <thead>
         <tr>
+            <th>订单分类</th>
             <th>分类</th>
             <th>套餐名称</th>
             <th>支出成本</th>
@@ -62,6 +67,12 @@ $colors = ['1'=>'label label-success','2'=>'label label-warning','3'=>'label lab
         <tbody>
         <?php foreach ($combos as $combo){ ?>
             <tr>
+                <?php if($combosRowSpan[$combo->combo_classify]['status']):?>
+                <td style="text-align:center;font-weight:bolder;vertical-align: middle !important;" rowspan="<?= $combosRowSpan[$combo->combo_classify]['rowspan'] ?>">
+                    <?= $classify[$combo->combo_classify] ?>
+                </td>
+                <?php $combosRowSpan[$combo->combo_classify]['status'] = false; ?>
+                <?php endif; ?>
                 <td>
                 <span class="<?= $colors[$combo->combo_type] ?>"><?= $types[$combo->combo_type] ?></span>
                 </td>

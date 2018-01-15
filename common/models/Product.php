@@ -57,7 +57,7 @@ class Product extends \yii\db\ActiveRecord
 
     public function getCombo()
     {
-        return $this->hasMany(Combo::className(), ['product_id'=>'id']);
+        return $this->hasMany(Combo::className(), ['product_id'=>'id'])->orderBy('combo_classify asc,combo_type asc');
     }
 
     public function getSomeCombo($combo_type)

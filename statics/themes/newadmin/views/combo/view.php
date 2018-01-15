@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\Type;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Combo */
@@ -23,9 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                  'attribute' => 'combo_type',
                  'value' => function($model) {
-                    $data = ['1'=>'正常','2'=>'加急','3'=>'特急'];
+                    $data = Type::getComboType();
                     return $data[$model->combo_type];
                  } ,
+            ],
+            [
+                'attribute' => 'combo_classify',
+                'value' => function($model) {
+                    $data = Type::getComboClassify();
+                    return $data[$model->combo_classify];
+                } ,
             ],
             'combo_name',
             'combo_cost',

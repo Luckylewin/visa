@@ -14,6 +14,7 @@ use Yii;
  * @property string $order_type
  * @property string $order_date
  * @property integer $customer_id
+ * @property string $cid
  * @property integer $combo_id
  * @property integer $custom_servicer_id
  * @property integer $transactor_id
@@ -45,8 +46,6 @@ use Yii;
 class Order extends \yii\db\ActiveRecord
 {
 
-    public $country_id;
-
     /**
      * @inheritdoc
      */
@@ -61,15 +60,16 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pid', 'order_num', 'order_date', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'transactor_name', 'balance_sum', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date'], 'required'],
-            [['pid', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person', 'delivercompany_id'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','country_id'], 'safe'],
+            [['order_num', 'order_date', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'transactor_name', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'cid'], 'required'],
+            [['pid', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person', 'delivercompany_id'], 'integer'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
-            [['back_address', 'remark'], 'string'],
+            [['back_address', 'remark','cid'], 'string'],
             [['order_classify', 'order_type', 'audit_status'], 'string', 'max' => 1],
             [['transactor_name', 'operator', 'back_addressee'], 'string', 'max' => 50],
             [['balance_order', 'flushphoto_order', 'carrier_order', 'deliver_order'], 'string', 'max' => 64],
             [['back_telphone'], 'string', 'max' => 36],
+            [['balance_sum','flushphoto_sum','carrier_sum'], 'default', 'value' => '0.000'],
         ];
     }
 
@@ -87,7 +87,7 @@ class Order extends \yii\db\ActiveRecord
             'order_date' => '订单日期',
             'customer_id' => '客户id',
             'combo_id' => '套餐id',
-            'custom_servicer_id' => '客服id',
+            'custom_servicer_id' => '客服ID',
             'transactor_id' => '办理人ID',
             'transactor_name' => '办理人名称',
             'single_sum' => '单项实收金额',
@@ -107,12 +107,18 @@ class Order extends \yii\db\ActiveRecord
             'back_addressee' => '收件人',
             'back_telphone' => '收件人电话',
             'delivergood_date' => '发货日期',
-            'deliver_order' => '快递编号',
+            'deliver_order' => '快递单号',
             'delivercompany_id' => '快递公司ID',
             'remark' => '备注',
             'receipt_date' => '收款日期',
             'pay_date' => '支付日期',
+            'cid' => '国家id',
             'audit_status' => '审核状态',//1审核中2审核未通过3审核通过
         ];
+    }
+
+    public function getCountry()
+    {
+        return $this->hasOne(Country::className(), ['id' => 'cid']);
     }
 }

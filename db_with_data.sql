@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-01-15 01:09:44
+Date: 2018-01-16 00:16:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -185,6 +185,7 @@ CREATE TABLE `yii2_combo` (
   `combo_content` varchar(255) NOT NULL COMMENT '套餐内容',
   `combo_cost` decimal(10,3) DEFAULT '0.000' COMMENT '支出成本',
   `combo_type` char(1) NOT NULL COMMENT '套餐类型',
+  `combo_classify` char(1) NOT NULL DEFAULT '1' COMMENT '来源分类',
   `created_at` date NOT NULL,
   `updated_at` date NOT NULL,
   `uid` smallint(6) NOT NULL COMMENT '用户id',
@@ -192,17 +193,23 @@ CREATE TABLE `yii2_combo` (
   PRIMARY KEY (`combo_id`),
   KEY `ppid` (`product_id`) USING BTREE,
   CONSTRAINT `combo_product_id` FOREIGN KEY (`product_id`) REFERENCES `yii2_product` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=39295 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=39301 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_combo
 -- ----------------------------
-INSERT INTO `yii2_combo` VALUES ('39288', '198/7', '', '170.000', '1', '2018-01-14', '2018-01-14', '0', '67632');
-INSERT INTO `yii2_combo` VALUES ('39289', '258/5', '', '210.000', '2', '2018-01-14', '2018-01-14', '0', '67632');
-INSERT INTO `yii2_combo` VALUES ('39290', '520/3', '', '400.000', '3', '2018-01-14', '2018-01-14', '0', '67632');
-INSERT INTO `yii2_combo` VALUES ('39292', '268/3', '', '210.000', '1', '2018-01-14', '2018-01-14', '0', '67633');
-INSERT INTO `yii2_combo` VALUES ('39293', '278/3', '', '220.000', '2', '2018-01-14', '2018-01-14', '0', '67633');
-INSERT INTO `yii2_combo` VALUES ('39294', '520/2', '', '450.000', '3', '2018-01-14', '2018-01-14', '0', '67633');
+INSERT INTO `yii2_combo` VALUES ('39288', '198/7', '', '170.000', '1', '1', '2018-01-14', '2018-01-14', '0', '67632');
+INSERT INTO `yii2_combo` VALUES ('39289', '258/5', '', '210.000', '2', '1', '2018-01-14', '2018-01-14', '0', '67632');
+INSERT INTO `yii2_combo` VALUES ('39290', '520/3', '', '400.000', '3', '1', '2018-01-14', '2018-01-14', '0', '67632');
+INSERT INTO `yii2_combo` VALUES ('39292', '268/3', '', '210.000', '1', '1', '2018-01-14', '2018-01-14', '0', '67633');
+INSERT INTO `yii2_combo` VALUES ('39293', '278/3', '', '220.000', '2', '1', '2018-01-14', '2018-01-14', '0', '67633');
+INSERT INTO `yii2_combo` VALUES ('39294', '520/2', '', '450.000', '3', '2', '2018-01-14', '2018-01-14', '0', '67633');
+INSERT INTO `yii2_combo` VALUES ('39295', '259/5', '', '210.000', '1', '2', '2018-01-15', '2018-01-15', '0', '67632');
+INSERT INTO `yii2_combo` VALUES ('39296', '445/3', '', '310.000', '3', '2', '2018-01-15', '2018-01-15', '0', '67632');
+INSERT INTO `yii2_combo` VALUES ('39297', '666/3', '', '550.000', '2', '2', '2018-01-15', '2018-01-15', '0', '67632');
+INSERT INTO `yii2_combo` VALUES ('39298', '223/3', '', '210.000', '1', '3', '2018-01-15', '2018-01-15', '0', '67632');
+INSERT INTO `yii2_combo` VALUES ('39299', '450/2', '', '360.000', '2', '3', '2018-01-15', '2018-01-15', '0', '67632');
+INSERT INTO `yii2_combo` VALUES ('39300', '666/1', '', '500.000', '3', '3', '2018-01-15', '2018-01-15', '0', '67632');
 
 -- ----------------------------
 -- Table structure for yii2_config
@@ -343,7 +350,7 @@ CREATE TABLE `yii2_order` (
   `order_classify` char(1) NOT NULL DEFAULT '1' COMMENT '1网店2直客3同业',
   `order_type` char(1) NOT NULL DEFAULT '1' COMMENT '1正常2加急3特急',
   `order_date` date NOT NULL COMMENT '订单日期',
-  `customer_id` int(11) NOT NULL COMMENT '客户id',
+  `customer_id` varchar(100) NOT NULL COMMENT '客户id',
   `combo_id` int(11) NOT NULL COMMENT '套餐id',
   `custom_servicer_id` smallint(6) NOT NULL COMMENT '客服id',
   `transactor_id` int(11) NOT NULL COMMENT '办理人ID',
@@ -351,7 +358,7 @@ CREATE TABLE `yii2_order` (
   `single_sum` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '单项实收金额',
   `total_person` smallint(5) NOT NULL DEFAULT '0' COMMENT '人数',
   `balance_order` varchar(64) NOT NULL DEFAULT '0.00' COMMENT '补差订单号',
-  `balance_sum` decimal(10,2) NOT NULL COMMENT '补差订单金额',
+  `balance_sum` decimal(10,3) NOT NULL DEFAULT '0.000' COMMENT '补差订单金额',
   `flushphoto_order` varchar(64) NOT NULL COMMENT '代冲洗照片订单号',
   `flushphoto_sum` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '代冲洗照片订单金额',
   `carrier_order` varchar(64) NOT NULL COMMENT '快递费补差订单号',
@@ -371,15 +378,19 @@ CREATE TABLE `yii2_order` (
   `receipt_date` date NOT NULL COMMENT '收款日期',
   `pay_date` date NOT NULL COMMENT '支付日期',
   `audit_status` char(1) NOT NULL DEFAULT '1' COMMENT '1审核中2审核未通过3审核通过',
+  `cid` smallint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_transator_id` (`transactor_id`) USING BTREE,
   KEY `order_deliverycompany_id` (`delivercompany_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yii2_order
 -- ----------------------------
-INSERT INTO `yii2_order` VALUES ('1', '1', '6666', '1', '1', '2018-01-18', '1', '1', '1', '1', '1', '1.00', '1', '1', '1.00', '1', '1.00', '1', '1.00', '2018-01-24', '2018-01-24', '2018-01-04', '2018-01-25', 'asd', 'asda是', '阿斯顿', 'asda是', '0000-00-00', '34234234', '32767', '324234324', '2018-02-01', '2018-01-11', '3');
+INSERT INTO `yii2_order` VALUES ('2', '0', '73464844660638393', '1', '2', '2018-01-15', 'xqf90000', '1', '1', '1', '许青峰2', '198.00', '1', '', '0.000', '', '0.00', '', '0.00', '2018-01-15', '2018-01-15', '2018-01-15', '2018-01-15', '小阳', '海南省  海口市  秀英区  长流镇长滨东四街6号海口市中改院专家公寓1-2-1303  570311', '许青峰', '13807590000', '2018-01-15', '72582469886030839', '1', '测试', '2018-01-15', '2018-01-15', '2', '251');
+INSERT INTO `yii2_order` VALUES ('3', '0', '5634534545', '1', '1', '2018-01-16', 'xyz', '39288', '233', '1', '小阳', '198.00', '1', '', '0.000', '', '0.00', '', '0.00', '2018-01-16', '2018-01-16', '2018-01-16', '2018-01-16', '测试', '测试', '测试', '13807590000', '2018-01-16', '72582469886030839', '1', '1', '2018-01-16', '2018-01-16', '1', '3');
+INSERT INTO `yii2_order` VALUES ('4', '0', '5634534545', '1', '1', '2018-01-16', 'xyz', '39288', '233', '1', '小阳', '198.00', '1', '', '0.000', '', '0.00', '', '0.00', '2018-01-16', '2018-01-16', '2018-01-16', '2018-01-16', '测试', '测试', '测试', '13807590000', '2018-01-16', '72582469886030839', '1', '1', '2018-01-16', '2018-01-16', '1', '2');
+INSERT INTO `yii2_order` VALUES ('5', '0', '5634534545', '1', '3', '2018-01-16', 'xyz', '39290', '233', '1', '小阳', '198.00', '1', '', '0.000', '', '0.00', '', '0.00', '2018-01-16', '2018-01-16', '2018-01-16', '2018-01-16', '测试', '测试', '测试', '13807590000', '2018-01-16', '72582469886030839', '1', '1', '2018-01-16', '2018-01-16', '1', '1');
 
 -- ----------------------------
 -- Table structure for yii2_order_product
@@ -408,7 +419,7 @@ CREATE TABLE `yii2_product` (
   PRIMARY KEY (`id`),
   KEY `product_country_id` (`country_id`),
   CONSTRAINT `product_country_id` FOREIGN KEY (`country_id`) REFERENCES `yii2_country` (`id`) ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=67636 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=67634 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_product
@@ -446,8 +457,7 @@ CREATE TABLE `yii2_session` (
 -- ----------------------------
 -- Records of yii2_session
 -- ----------------------------
-INSERT INTO `yii2_session` VALUES ('hg5tpova1cvnblcbjj520uc412', '1515951182', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
-INSERT INTO `yii2_session` VALUES ('sqtp9mhn409e7u81mvkud4ljk1', '1515511831', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
+INSERT INTO `yii2_session` VALUES ('hl1ivbk291ef208m1er5ec8q03', '1516034410', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 
 -- ----------------------------
 -- Table structure for yii2_test

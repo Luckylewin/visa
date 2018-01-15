@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use \common\models\Type;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Combo */
@@ -21,12 +22,10 @@ use yii\widgets\ActiveForm;
 
                 <?php $form = ActiveForm::begin(); ?>
 
-<!--                $form->field($productModel, 'name')->textInput([
-                    'readonly' => true
-                ])-->
+                <?= $form->field($model, 'combo_classify')->dropDownList(Type::getComboClassify()); ?>
 
-                <?= $form->field($model, 'combo_type')->dropDownList(['1'=>'正常','2'=>'加急','3' => '特急']); ?>
-
+                <?= $form->field($model, 'combo_type')->dropDownList(Type::getComboType()); ?>
+                
                 <?= $form->field($model, 'combo_name')->textInput() ?>
 
                 <?= $form->field($model, 'combo_cost')->textInput() ?>

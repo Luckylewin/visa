@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'back_addressee',
             'back_telphone',
             'deliver_order',
-
+            'cid',
             // 'id',
             //'pid',
             // 'order_type',
