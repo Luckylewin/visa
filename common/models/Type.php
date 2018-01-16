@@ -11,6 +11,12 @@ namespace common\models;
 
 class Type
 {
+
+    public static function getSex()
+    {
+        return [1=>'男',2=>'女'];
+    }
+
     public static function getComboType()
     {
         return ['1'=>'正常','2'=>'加急','3' => '特急'];

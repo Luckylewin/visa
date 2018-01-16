@@ -18,7 +18,6 @@ use Yii;
  * @property integer $combo_id
  * @property integer $custom_servicer_id
  * @property integer $custom_servicer
- * @property integer $transactor_id
  * @property string $transactor_name
  * @property string $single_sum
  * @property integer $total_person
@@ -39,7 +38,6 @@ use Yii;
  * @property string $delivergood_date
  * @property string $deliver_order
  * @property integer $delivercompany_id
- * @property integer $delivercompany
  * @property string $remark
  * @property string $receipt_date
  * @property string $pay_date
@@ -47,6 +45,9 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
+
+    public $transactor_id;
+    public $delivercompany;
 
     /**
      * @inheritdoc
@@ -62,16 +63,20 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_num', 'order_date', 'customer_id', 'combo_id', 'custom_servicer_id', 'custom_servicer', 'transactor_id', 'transactor_name', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'cid', 'total_person', 'single_sum', 'delivercompany'], 'required'],
-            [['pid', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person', 'delivercompany_id'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid'], 'safe'],
+            [['order_num', 'order_date', 'customer_id', 'combo_id', 'custom_servicer_id', 'custom_servicer', 'transactor_name', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'cid', 'total_person', 'single_sum', 'delivercompany'], 'required'],
+            [['pid', 'combo_id', 'custom_servicer_id',  'total_person', 'delivercompany_id'], 'integer'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
             [['back_address', 'remark','cid'], 'string','max' => 300],
             [['order_classify', 'order_type', 'audit_status'], 'string', 'max' => 1],
-            [['transactor_name', 'operator', 'back_addressee', 'delivercompany'], 'string', 'max' => 50],
+            [['transactor_name', 'operator', 'back_addressee'], 'string', 'max' => 50],
             [['balance_order', 'flushphoto_order', 'carrier_order', 'deliver_order'], 'string', 'max' => 64],
             [['back_telphone'], 'string', 'max' => 36],
             [['balance_sum','flushphoto_sum','carrier_sum'], 'default', 'value' => '0.000'],
+            [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => date('Y-m-d')],
+            [['single_sum'],'default','value' => '0.000'],
+            [['total_person'],'default','value' => '1'],
+
         ];
     }
 
@@ -87,11 +92,10 @@ class Order extends \yii\db\ActiveRecord
             'order_classify' => '订单分类',//1网店2直客3同业
             'order_type' => '分类',//1正常2加急3特急
             'order_date' => '订单日期',
-            'customer_id' => '客户id',
+            'customer_id' => '客人ID',
             'combo_id' => '套餐id',
             'custom_servicer_id' => '客服ID',
             'custom_servicer' => '接待客服',
-            'transactor_id' => '办理人ID',
             'transactor_name' => '办理人名称',
             'single_sum' => '单项实收金额',
             'total_person' => '人数',
@@ -124,5 +128,14 @@ class Order extends \yii\db\ActiveRecord
     public function getCountry()
     {
         return $this->hasOne(Country::className(), ['id' => 'cid']);
+    }
+
+    public function beforeSave($insert)
+    {
+       if (parent::beforeSave($insert)) {
+           unset($this->transactor_id);
+           return true;
+       }
+       return false;
     }
 }

@@ -3,62 +3,71 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Order;
-use common\models\OrderQuery;
-use common\models\Transator;
+use common\models\Servicer;
+use yii\data\ActiveDataProvider;
+use backend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * OrderController implements the CRUD actions for Order model.
+ * ServicerController implements the CRUD actions for Servicer model.
  */
-class OrderController extends BaseController
+class ServicerController extends BaseController
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
 
     /**
-     * Lists all Order models.
+     * Lists all Servicer models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new OrderQuery();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Servicer::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Order model.
-     * @param string $id
+     * Displays a single Servicer model.
+     * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id)
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Order model.
+     * Creates a new Servicer model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Order();
-        $data = Yii::$app->request->post();
+        $model = new Servicer();
 
-        if ($model->load(Yii::$app->request->post()) && ($order_id = $model->save())) {
-            Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            if ($model->hasErrors()) {
-                print_r($model->getErrors());
-            }
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -66,9 +75,9 @@ class OrderController extends BaseController
     }
 
     /**
-     * Updates an existing Order model.
+     * Updates an existing Servicer model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -85,9 +94,9 @@ class OrderController extends BaseController
     }
 
     /**
-     * Deletes an existing Order model.
+     * Deletes an existing Servicer model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -98,15 +107,15 @@ class OrderController extends BaseController
     }
 
     /**
-     * Finds the Order model based on its primary key value.
+     * Finds the Servicer model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Order the loaded model
+     * @param integer $id
+     * @return Servicer the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Order::findOne($id)) !== null) {
+        if (($model = Servicer::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -3,25 +3,40 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Order;
-use common\models\OrderQuery;
 use common\models\Transator;
+use common\models\TransatorQuery;
+use backend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
- * OrderController implements the CRUD actions for Order model.
+ * TransatorController implements the CRUD actions for Transator model.
  */
-class OrderController extends BaseController
+class TransatorController extends BaseController
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
 
     /**
-     * Lists all Order models.
+     * Lists all Transator models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new OrderQuery();
+        $searchModel = new TransatorQuery();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -31,44 +46,55 @@ class OrderController extends BaseController
     }
 
     /**
-     * Displays a single Order model.
-     * @param string $id
+     * Displays a single Transator model.
+     * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id)
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Order model.
+     * Creates a new Transator model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Order();
-        $data = Yii::$app->request->post();
+        $model = new Transator();
 
-        if ($model->load(Yii::$app->request->post()) && ($order_id = $model->save())) {
-            Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id);
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->tid]);
         } else {
-            if ($model->hasErrors()) {
-                print_r($model->getErrors());
-            }
             return $this->render('create', [
                 'model' => $model,
             ]);
         }
     }
 
+    public function actionCreateByAjax()
+    {
+        $this->enableCsrfValidation = false;
+        $model = new Transator();
+        $response = Yii::$app->getResponse();
+        $response->format = Response::FORMAT_JSON;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           return $data = ['error' => 'success','msg' => 'success', 'data'=>['tid'=>$model->tid,'name'=>$model->name]];
+        }else {
+           return $data = ['error' => 'error','msg' => current($model->getFirstErrors()), 'data'=>''];
+        }
+
+
+    }
+
     /**
-     * Updates an existing Order model.
+     * Updates an existing Transator model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -76,7 +102,7 @@ class OrderController extends BaseController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->tid]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -85,9 +111,9 @@ class OrderController extends BaseController
     }
 
     /**
-     * Deletes an existing Order model.
+     * Deletes an existing Transator model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -98,15 +124,15 @@ class OrderController extends BaseController
     }
 
     /**
-     * Finds the Order model based on its primary key value.
+     * Finds the Transator model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Order the loaded model
+     * @param integer $id
+     * @return Transator the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Order::findOne($id)) !== null) {
+        if (($model = Transator::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

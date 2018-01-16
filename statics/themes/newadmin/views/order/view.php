@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'combo_id',
             'custom_servicer_id',
-            'transactor_id',
+
             'transactor_name',
             'single_sum',
             'total_person',

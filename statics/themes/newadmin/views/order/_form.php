@@ -2,10 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use common\models\Servicer;
+use common\models\Transator;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Order */
 /* @var $form yii\widgets\ActiveForm */
+$tranlator = new Transator();
 ?>
 
 <style>
@@ -120,8 +124,8 @@ use yii\widgets\ActiveForm;
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
-                <?= $form->field($model, 'custom_servicer_id')->textInput() ?>
-                <?= $form->field($model, 'custom_servicer')->textInput(); ?>
+                <?= $form->field($model, 'custom_servicer_id')->dropDownList(ArrayHelper::map(Servicer::find()->all(),'id','name')); ?>
+
                 <?= $form->field($model, 'order_num')->textInput() ?>
 
                 <?= $form->field($model, 'cid')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->orderBy('id desc')->all(), 'id' ,'cinfo'))->label('国家'); ?>
@@ -140,18 +144,28 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'carrier_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空']) ?>
             </div>
             <div class="col-md-3">
-                <?= $form->field($model, 'transactor_name')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($model, 'customer_id')->textInput() ?>
-                <?= $form->field($model, 'transactor_id')->textInput() ?>
 
-                <div style="height: 523px">
+                <div style="position: relative;">
 
+                    <?= $form->field($model, 'transactor_name')->textInput([
+                        'class'=>'form-control',
+                        'style' => 'width:200px;',
+                        'readonly' => true,
+                        'placeholder' => '请点击右边加号添加'
+                    ])->label('办理人'); ?>
+                    <i class="fa fa-plus-square-o add-transator" style="position: absolute;top: 40%;left: 80%;font-size: 36px;cursor: pointer"></i>
                 </div>
 
+
+                <div style="margin-top: 540px;">
+
+                </div>
+                <?= $form->field($model, 'customer_id')->textInput() ?>
                 <?= $form->field($model, 'balance_sum')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'flushphoto_sum')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'carrier_sum')->textInput(['maxlength' => true]) ?>
             </div>
+
             <div class="col-md-3">
                 <?= $form->field($model, 'collect_date')->textInput([
                     'class' => 'form-control layer-date',
@@ -198,9 +212,7 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'deliver_order')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'delivercompany')->textInput() ?>
-                <?= $form->field($model, 'remark')->textInput() ?>
-
+                <?= $form->field($model, 'delivercompany_id')->textInput() ?>
 
             </div>
             <div class="col-md-3">
@@ -221,6 +233,11 @@ use yii\widgets\ActiveForm;
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
+
+                <?= $form->field($model, 'remark')->textarea(['rows'=>4]) ?>
+
+                <?= $form->field($model, 'transactor_id')->hiddenInput(['rows'=>4])->label(false) ?>
+
             </div>
         </div>
     </div>
@@ -232,12 +249,27 @@ use yii\widgets\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 
+    <?php $form = ActiveForm::begin(); ?>
+    <div class="well transactor hidden">
+        <?= $form->field($tranlator, 'name')->textInput([
+            'class' => 'form-control',
+        ]) ?>
+        <?= $form->field($tranlator, 'sex')->dropDownList(\common\models\Type::getSex(),[
+            'class' => 'form-control',
+            'style' => 'width:100px;'
+        ]) ?>
+        <?= $form->field($tranlator, 'phone')->textInput() ?>
+        <?= $form->field($tranlator, 'identify')->textInput() ?>
+        <?= $form->field($tranlator, 'address')->textarea(['rows'=>2]) ?>
+        <button class="btn btn-primary create-transator">添加</button>
+    </div>
+    <?php ActiveForm::end(); ?>
+
+
     <script src="/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js"></script>
 </div>
 
-<script>
 
-</script>
 
 
 
