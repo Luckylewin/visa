@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'pid',
+//            'pid',
             'order_classify',
             'order_type',
             'order_date',
@@ -61,7 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'back_telphone',
             'delivergood_date',
             'deliver_order',
-            'delivercompany_id',
+//            'delivercompany_id',
+            'delivercompany',
             'remark:ntext',
             'receipt_date',
             'pay_date',

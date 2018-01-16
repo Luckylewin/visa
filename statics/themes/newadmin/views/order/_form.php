@@ -8,7 +8,13 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-
+<style>
+    div.required label:after {
+        content: " *";
+        color: red;
+        vertical-align: middle;
+    }
+</style>
 <div class="order-form">
     <div class="panel panel-danger  hidden">
         <div class="panel-heading">
@@ -115,25 +121,30 @@ use yii\widgets\ActiveForm;
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
                 <?= $form->field($model, 'custom_servicer_id')->textInput() ?>
-                <?= $form->field($model, 'custom_servicer_id')->textInput()->label('接待客服'); ?>
+                <?= $form->field($model, 'custom_servicer')->textInput(); ?>
                 <?= $form->field($model, 'order_num')->textInput() ?>
 
                 <?= $form->field($model, 'cid')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->orderBy('id desc')->all(), 'id' ,'cinfo'))->label('国家'); ?>
                 <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), ['prompt'=>'请选择','prompt_val'=>'0']) ?>
-                <?= $form->field($model, 'combo_id')->dropDownList(['1'=>'加载中 '])->label('套餐'); ?>
+
+                <?php if($model->isNewRecord): ?>
+                    <?= $form->field($model, 'combo_id')->dropDownList(['1'=>'无'])->label('套餐'); ?>
+                <?php else: ?>
+                    <?= $form->field($model, 'combo_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Combo::findAll(['combo_id'=>$model->combo_id]),'combo_id','combo_name'))->label('当前套餐'); ?>
+                <?php endif; ?>
 
                 <?= $form->field($model, 'single_sum')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'total_person')->textInput() ?>
-                <?= $form->field($model, 'balance_order')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($model, 'flushphoto_order')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($model, 'carrier_order')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'balance_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空']) ?>
+                <?= $form->field($model, 'flushphoto_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空']) ?>
+                <?= $form->field($model, 'carrier_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空']) ?>
             </div>
             <div class="col-md-3">
                 <?= $form->field($model, 'transactor_name')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'customer_id')->textInput() ?>
                 <?= $form->field($model, 'transactor_id')->textInput() ?>
 
-                <div style="height: 517px">
+                <div style="height: 523px">
 
                 </div>
 
@@ -172,7 +183,7 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'operator')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'back_address')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'back_address')->textarea(['rows'=>4,'maxlength' => true]) ?>
 
                 <?= $form->field($model, 'back_addressee')->textInput(['maxlength' => true]) ?>
 
@@ -187,14 +198,9 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'deliver_order')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'delivercompany_id')->textInput() ?>
+                <?= $form->field($model, 'delivercompany')->textInput() ?>
                 <?= $form->field($model, 'remark')->textInput() ?>
-                <?= $form->field($model, 'receipt_date')->textInput([
-                    'class' => 'form-control layer-date',
-                    'placeholder' => '请选择日期',
-                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                    'style' => 'display:block!important;max-width:350px!important'
-                ]) ?>
+
 
             </div>
             <div class="col-md-3">
@@ -202,9 +208,14 @@ use yii\widgets\ActiveForm;
                     'style' => 'max-width:350px;'
                 ]) ?>
 
-
-
                 <?= $form->field($model, 'pay_date')->textInput([
+                    'class' => 'form-control layer-date',
+                    'placeholder' => '请选择日期',
+                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                    'style' => 'display:block!important;max-width:350px!important'
+                ]) ?>
+
+                <?= $form->field($model, 'receipt_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
