@@ -95,7 +95,7 @@ class Order extends \yii\db\ActiveRecord
             'order_classify' => '订单分类',//1网店2直客3同业
             'order_type' => '分类',//1正常2加急3特急
             'order_date' => '订单日期',
-            'customer_id' => '客户ID',
+            'customer_id' => '客户ID(淘宝ID等)',
             'combo_id' => '套餐名称',
             'custom_servicer_id' => '接待客服',
             'custom_servicer' => '接待客服',

@@ -59,7 +59,7 @@ class Transator extends \yii\db\ActiveRecord
             'is_valid' => '是否有效',
             'expire_time' => '操作过期时间',
             'order_id' => '订单ID',
-            'remark' => '备注'
+            'remark' => '个人信息'
         ];
     }
     
