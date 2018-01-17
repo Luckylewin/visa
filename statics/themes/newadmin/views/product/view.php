@@ -83,6 +83,9 @@ $colors = ['1'=>'label label-success','2'=>'label label-warning','3'=>'label lab
                 <td>
                     <?= Html::a("修改", \yii\helpers\Url::to(['combo/update', 'id' => $combo->combo_id]), [
                         'class' => 'btn btn-info btn-xs'
+                    ]); ?>&nbsp;
+                    <?= Html::a("删除", \yii\helpers\Url::to(['combo/delete', 'id' => $combo->combo_id]), [
+                        'class' => 'btn btn-danger btn-xs'
                     ]); ?>
                 </td>
             </tr>
