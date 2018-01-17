@@ -52,8 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div>
         <p>
             <?php $form = \yii\widgets\ActiveForm::begin([
-                    'action' => \yii\helpers\Url::to(['combo/delete']),
-                    'method' => 'post'
+                    'action' => \yii\helpers\Url::to(['combo/delete', 'id' => $model->combo_id]),
+                    'method' => 'get'
             ]);?>
             <?= Html::hiddenInput('id',$model->combo_id);?>
             <?= Html::a(Yii::t('backend', 'Edit'), ['update', 'id' => $model->combo_id], ['class' => 'btn btn-primary']) ?>
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => 'Are you sure you want to delete this item?',
-                    'method' => 'post',
+                    'method' => 'get',
                 ],
             ]) ?>
             <?php $form::end(); ?>

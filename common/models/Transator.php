@@ -16,6 +16,7 @@ use Yii;
  * @property string $is_valid
  * @property integer $expire_time
  * @property integer $order_id
+ * @property string $remark
  */
 class Transator extends \yii\db\ActiveRecord
 {
@@ -33,10 +34,10 @@ class Transator extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'sex', 'phone', 'address'], 'required'],
+            [['name'], 'required'],
             [['expire_time','order_id'], 'integer'],
             [['name'], 'string', 'max' => 50],
-            [['address'], 'string', 'max' => 255],
+            [['address','remark'], 'string', 'max' => 255],
             [['sex', 'is_valid'], 'string', 'max' => 1],
             [['phone'], 'string', 'max' => 32],
             [['identify'], 'string', 'max' => 30],
@@ -58,6 +59,7 @@ class Transator extends \yii\db\ActiveRecord
             'is_valid' => '是否有效',
             'expire_time' => '操作过期时间',
             'order_id' => '订单ID',
+            'remark' => '备注'
         ];
     }
     

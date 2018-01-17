@@ -201,7 +201,7 @@ $this->params['breadcrumbs'][] = $this->title;
             title:'添加办理人信息',
             type: 1,
             skin: 'layui-layer-rim', //加上边框
-            area: ['450px', '505px'], //宽高
+            area: ['450px', '330px'], //宽高
             content: html
         });
     });
@@ -210,23 +210,23 @@ $this->params['breadcrumbs'][] = $this->title;
 <script>
    $('body').on('click','.create-transator', function() {
        var content = $('.layui-layer-content');
-       var sex = content.find('#transator-sex').val();
        var name = content.find('#transator-name').val();
-       var phone = content.find('#transator-phone').val();
-       var address = content.find('#transator-address').val();
-       var identify = content.find('#transator-identify').val();
+       var remark = content.find('#transator-remark').val();
        var _csrf = '<?= Yii::$app->request->getCsrfToken()?>';
-       var data = {Transator:{name:name,sex:sex,phone:phone,address:address,identify:identify,_csrf:_csrf}};
-
+       var data = {Transator:{name:name,_csrf:_csrf,remark:remark}};
        var url = '<?= \yii\helpers\Url::to(['transator/create-by-ajax'])?>';
 
        $.post(url, data, function(d){
             if(d.error === 'success') {
                 var transator = $('#order-transactor_id');
                 var transator_name = $('#order-transactor_name');
-
+                var val = transator.val();
+                var splitStr = '|';
+                if (val === '') {
+                    splitStr = '';
+                }
                 transator.val(transator.val() + d.data.tid + '|');
-                transator_name.val(transator_name.val() + d.data.name + '|');
+                transator_name.val(  transator_name.val() + splitStr + d.data.name);
                 layer.closeAll();
                 layer.msg('添加成功',{time:2000},function(){
                     layer.closeAll();

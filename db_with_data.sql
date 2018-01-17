@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-01-17 15:41:15
+Date: 2018-01-17 16:52:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -474,9 +474,9 @@ CREATE TABLE `yii2_session` (
 -- ----------------------------
 -- Records of yii2_session
 -- ----------------------------
-INSERT INTO `yii2_session` VALUES ('4fiomltmaim67b4qdlkspf67t1', '1516176242', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('7ruekmm0d00rjumdr9v98d22d7', '1516034922', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B);
 INSERT INTO `yii2_session` VALUES ('hl1ivbk291ef208m1er5ec8q03', '1516124901', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
+INSERT INTO `yii2_session` VALUES ('nn1ss1f3jt0n39fgfo1gbbfv01', '1516180548', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 
 -- ----------------------------
 -- Table structure for yii2_test
@@ -500,25 +500,25 @@ DROP TABLE IF EXISTS `yii2_transator`;
 CREATE TABLE `yii2_transator` (
   `tid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL COMMENT '姓名',
-  `sex` char(1) NOT NULL COMMENT '性别',
-  `phone` varchar(32) NOT NULL COMMENT '手机号',
-  `address` varchar(255) NOT NULL COMMENT '地址',
-  `identify` varchar(30) NOT NULL COMMENT '身份证',
+  `sex` char(1) NOT NULL DEFAULT '' COMMENT '性别',
+  `phone` varchar(32) NOT NULL DEFAULT '' COMMENT '手机号',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '地址',
+  `identify` varchar(30) NOT NULL DEFAULT '' COMMENT '身份证',
   `is_valid` char(1) NOT NULL DEFAULT '0' COMMENT '是否有效',
   `expire_time` int(10) NOT NULL COMMENT '操作过期时间',
   `order_id` int(11) NOT NULL DEFAULT '0',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`tid`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_transator
 -- ----------------------------
-INSERT INTO `yii2_transator` VALUES ('9', '黄飞鸿', '1', '111', '111', '11', '0', '1516208780', '0');
-INSERT INTO `yii2_transator` VALUES ('12', '黎明', '1', '18938904293', '2222', '', '1', '1516209713', '16');
-INSERT INTO `yii2_transator` VALUES ('13', '张学友', '1', '18938904293', '656456', '546456456', '1', '1516209729', '16');
-INSERT INTO `yii2_transator` VALUES ('15', '祥顺', '1', '13453456452', '宝安', '', '1', '1516239036', '17');
-INSERT INTO `yii2_transator` VALUES ('16', '龚韵佳', '1', '13356542345', '云南省  昆明市  盘龙区  金辰街道穿金路省生物制药有限公司生活区（农贸市场旁）', '', '1', '1516260064', '18');
-INSERT INTO `yii2_transator` VALUES ('17', '徐鼎黄', '2', '13436354625', '云南省  昆明市  盘龙区  金辰街道穿金路省生物制药有限公司生活区（农贸市场旁）  650051  徐鼎黄', '', '1', '1516260183', '18');
+INSERT INTO `yii2_transator` VALUES ('12', '黎明', '1', '18938904293', '2222', '', '1', '1516209713', '16', '');
+INSERT INTO `yii2_transator` VALUES ('13', '张学友', '1', '18938904293', '656456', '546456456', '1', '1516209729', '16', '');
+INSERT INTO `yii2_transator` VALUES ('15', '祥顺', '1', '13453456452', '宝安', '', '1', '1516239036', '17', '4444');
+INSERT INTO `yii2_transator` VALUES ('16', '龚韵佳', '1', '13356542345', '云南省  昆明市  盘龙区  金辰街道穿金路省生物制药有限公司生活区（农贸市场旁）', '', '1', '1516260064', '18', '');
+INSERT INTO `yii2_transator` VALUES ('17', '徐鼎黄', '2', '13436354625', '云南省  昆明市  盘龙区  金辰街道穿金路省生物制药有限公司生活区（农贸市场旁）  650051  徐鼎黄', '', '1', '1516260183', '18', '');
 
 -- ----------------------------
 -- Table structure for yii2_user

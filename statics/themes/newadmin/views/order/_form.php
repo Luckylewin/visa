@@ -257,13 +257,7 @@ $tranlator = new Transator();
         <?= $form->field($tranlator, 'name')->textInput([
             'class' => 'form-control',
         ]) ?>
-        <?= $form->field($tranlator, 'sex')->dropDownList(\common\models\Type::getSex(),[
-            'class' => 'form-control',
-            'style' => 'width:100px;'
-        ]) ?>
-        <?= $form->field($tranlator, 'phone')->textInput() ?>
-        <?= $form->field($tranlator, 'identify')->textInput() ?>
-        <?= $form->field($tranlator, 'address')->textarea(['rows'=>2]) ?>
+        <?= $form->field($tranlator, 'remark')->textarea(['rows'=>3]) ?>
         <button class="btn btn-primary create-transator">添加</button>
     </div>
     <?php ActiveForm::end(); ?>

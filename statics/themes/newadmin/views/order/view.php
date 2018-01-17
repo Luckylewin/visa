@@ -47,13 +47,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'combo_id',
                     'format' => 'raw',
                     'value' => function($model) {
-                           $combo = $model->combo;
-                           return Html::a($combo->combo_name, Url::to(['combo/view', 'id' => $combo->combo_id]));
+                           try {
+                               $combo = $model->combo;
+                               return Html::a($combo->combo_name, Url::to(['combo/view', 'id' => $combo->combo_id]));
+                           }catch (\Exception $e) {
+                               return '<i class="fa fa-trash"></i>已被删除';
+                           }
                     },
             ],
             [
                     'attribute' => 'combo_id',
-                    'value' => $model->combo->combo_cost . "元",
+                    'format' =>'raw',
+                    'value' => function($model) {
+                        try {
+                            return $model->combo->combo_cost . "元";
+                        }catch (\Exception $e) {
+                            return '<i class="fa fa-trash"></i>已被删除';
+                        }
+                    },
                     'label' => '支出成本'
             ],
             [

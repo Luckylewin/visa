@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Transator */
 
-$this->title = 'Update Transator: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Transators', 'url' => ['index']];
+$this->title = '编辑: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => '办理人', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->tid]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = '更新';
 ?>
 <div class="transator-update">
 
