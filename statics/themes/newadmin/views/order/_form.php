@@ -152,15 +152,17 @@ $tranlator = new Transator();
                         'style' => 'width:200px;',
                         'readonly' => true,
                         'placeholder' => '请点击右边加号添加'
+                    ],[
+                            'template' => '{input}'
                     ])->label('办理人'); ?>
-                    <i class="fa fa-plus-square-o add-transator" style="position: absolute;top: 40%;left: 80%;font-size: 36px;cursor: pointer"></i>
-                </div>
-
-
-                <div style="margin-top: 540px;">
-
+                    <i class="fa fa-plus-square-o add-transator" style="position: absolute;top: 40%;left: 90%;font-size: 36px;cursor: pointer"></i>
                 </div>
                 <?= $form->field($model, 'customer_id')->textInput() ?>
+
+                <div style="margin-top: 535px;">
+
+                </div>
+
                 <?= $form->field($model, 'balance_sum')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'flushphoto_sum')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'carrier_sum')->textInput(['maxlength' => true]) ?>
@@ -195,9 +197,9 @@ $tranlator = new Transator();
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
-                <?= $form->field($model, 'operator')->textInput(['maxlength' => true]) ?>
+                <!--$form->field($model, 'operator')->hiddenInput(['maxlength' => true])-->
 
-                <?= $form->field($model, 'back_address')->textarea(['rows'=>4,'maxlength' => true]) ?>
+                <?= $form->field($model, 'back_address')->textarea(['rows'=>3,'maxlength' => true]) ?>
 
                 <?= $form->field($model, 'back_addressee')->textInput(['maxlength' => true]) ?>
 
@@ -212,11 +214,12 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'deliver_order')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'delivercompany_id')->textInput() ?>
+                <?= $form->field($model, 'delivercompany')->textInput() ?>
 
+                <?= $form->field($model, 'remark')->textarea(['rows' => 3]) ?>
             </div>
             <div class="col-md-3">
-                <?= $form->field($model, 'audit_status')->dropDownList(['1'=>'未提交','2'=>'审核中','3'=>'已通过','4'=>'未通过'], [
+                <?= $form->field($model, 'audit_status')->dropDownList(\common\models\Type::getStatus(), [
                     'style' => 'max-width:350px;'
                 ]) ?>
 
@@ -234,7 +237,7 @@ $tranlator = new Transator();
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
-                <?= $form->field($model, 'remark')->textarea(['rows'=>4]) ?>
+
 
                 <?= $form->field($model, 'transactor_id')->hiddenInput(['rows'=>4])->label(false) ?>
 

@@ -3,6 +3,7 @@
 namespace common\models;
 
 use backend\models\Admin;
+use yii\behaviors\TimestampBehavior;
 use \yii\db\ActiveRecord;
 use Yii;
 
@@ -62,26 +63,25 @@ class Combo extends ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at']
+                ],
+                'value' => time()
+            ]
+        ];
+    }
+
     public function getCountry()
     {
         $this->hasOne(Country::className(), ['id' => 'country_id']);
-    }
-
-    /**
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            if ($this->isNewRecord) {
-                $this->created_at = $this->updated_at = date('Y-m-d');
-            } else {
-                $this->updated_at = date('Y-m-d');
-            }
-            return true;
-        }
-        return false;
     }
 
     public function getProduct()

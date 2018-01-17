@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Transator */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Transators', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '办理人列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transator-view">
@@ -15,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->tid], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->tid], [
+        <?= Html::a('编辑', ['update', 'id' => $model->tid], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->tid], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '确定要删除该项吗?',
                 'method' => 'post',
             ],
         ]) ?>

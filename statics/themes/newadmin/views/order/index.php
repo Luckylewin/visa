@@ -2,12 +2,14 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Type;
+use common\models\Country;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\OrderQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Orders';
+$this->title = '订单列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-index">
@@ -16,16 +18,49 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Order', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager'=>[
+            //'options'=>['class'=>'hidden']//关闭自带分页
+            'firstPageLabel'=>"第一页",
+            'prevPageLabel'=>'上一页',
+            'nextPageLabel'=>'下一页',
+            'lastPageLabel'=>'最后一页',
+        ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'order_classify',
-            'order_date',
+            [
+                'attribute' => 'cid',
+                'value' => 'country.cinfo',
+                'filter' => Country::find()
+                            ->select(['cinfo','id'])
+                            ->orderBy('id desc')
+                            ->indexBy('id')
+                            ->column(),
+                'options' => ['style'=>'width:95px'],
+            ],
+            [
+                    'attribute' => 'order_classify',
+                    'value' => function($model) {
+                        $classify = Type::getComboClassify();
+                        return $classify[$model->order_classify];
+                    },
+                    'filter' => Type::getComboClassify(),
+                    'options' => ['style'=>'width:100px;']
+            ],
+            [
+                    'attribute' => 'order_date',
+                    'options' => ['style'=>'width:95px;']
+            ],
+            [
+                'attribute' => 'transactor_name',
+                'value' => function($model) {
+                    return trim($model->transactor_name,'|');
+                },
+                'options' => ['style'=>'width:75px;']
+            ],
             'customer_id',
             'order_num',
 
@@ -35,11 +70,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'putsign_date',
             'delivergood_date',
 
-            'transactor_name',
+
             'back_addressee',
             'back_telphone',
             'deliver_order',
-            'cid',
+            [
+                    'class' => 'yii\grid\ActionColumn',
+                    'header' => '操作',
+                    'options' => ['style'=>'width:75px;']
+            ],
             // 'id',
             //'pid',
             // 'order_type',
@@ -63,7 +102,6 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'audit_status',
 
 
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

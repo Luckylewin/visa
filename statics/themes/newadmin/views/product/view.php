@@ -62,6 +62,7 @@ $colors = ['1'=>'label label-success','2'=>'label label-warning','3'=>'label lab
             <th>套餐名称</th>
             <th>支出成本</th>
             <th>添加用户</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -79,6 +80,11 @@ $colors = ['1'=>'label label-success','2'=>'label label-warning','3'=>'label lab
                 <td><?= $combo->combo_name; ?></td>
                 <td><?= $combo->combo_cost; ?></td>
                 <td><?= $combo->user->username; ?></td>
+                <td>
+                    <?= Html::a("修改", \yii\helpers\Url::to(['combo/update', 'id' => $combo->combo_id]), [
+                        'class' => 'btn btn-info btn-xs'
+                    ]); ?>
+                </td>
             </tr>
         <?php } ?>
         </tbody>

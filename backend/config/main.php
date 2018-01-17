@@ -59,4 +59,5 @@ return [
         ],*/
     ],
     'params' => $params,
+    'timeZone'=>'Asia/Shanghai',
 ];

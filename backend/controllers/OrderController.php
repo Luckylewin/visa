@@ -76,8 +76,16 @@ class OrderController extends BaseController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->getSession()->setFlash('success', '保存成功');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+
+            if (Yii::$app->getRequest()->isPost) {
+                $error = $model->getFirstErrors();
+                $error = !empty($error) ? $error : "未知错误";
+                Yii::$app->getSession()->setFlash('error', $error);
+            }
+
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -92,7 +100,8 @@ class OrderController extends BaseController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+
+        $res = $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }

@@ -22,9 +22,13 @@ use \common\models\Type;
 
                 <?php $form = ActiveForm::begin(); ?>
 
-                <?= $form->field($model, 'combo_classify')->dropDownList(Type::getComboClassify()); ?>
+                <?= $form->field($model, 'combo_classify')->dropDownList(Type::getComboClassify(),[
+                        'disabled' => $model->isNewRecord ? false : true
+                ]); ?>
 
-                <?= $form->field($model, 'combo_type')->dropDownList(Type::getComboType()); ?>
+                <?= $form->field($model, 'combo_type')->dropDownList(Type::getComboType(), [
+                        'disabled' => $model->isNewRecord ? false : true
+                ]); ?>
                 
                 <?= $form->field($model, 'combo_name')->textInput() ?>
 

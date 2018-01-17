@@ -12,6 +12,11 @@ namespace common\models;
 class Type
 {
 
+    public static function getStatus()
+    {
+        return ['1'=>'未提交','2'=>'审核中','3'=>'已通过','4'=>'未通过'];
+    }
+
     public static function getSex()
     {
         return [1=>'男',2=>'女'];

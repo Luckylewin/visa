@@ -18,8 +18,8 @@ class OrderQuery extends Order
     public function rules()
     {
         return [
-            [['id', 'pid', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person', 'delivercompany_id'], 'integer'],
-            [['order_num', 'order_classify', 'order_type', 'order_date', 'transactor_name', 'balance_order', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'audit_status'], 'safe'],
+            [['id', 'pid', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person'], 'integer'],
+            [['order_num', 'order_classify', 'order_type', 'order_date', 'transactor_name', 'balance_order', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'audit_status', 'cid'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
         ];
     }
@@ -48,6 +48,7 @@ class OrderQuery extends Order
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize'=>8],
         ]);
 
         $this->load($params);
@@ -78,13 +79,13 @@ class OrderQuery extends Order
             'entry_date' => $this->entry_date,
             'putsign_date' => $this->putsign_date,
             'delivergood_date' => $this->delivergood_date,
-            'delivercompany_id' => $this->delivercompany_id,
             'receipt_date' => $this->receipt_date,
             'pay_date' => $this->pay_date,
+            'cid' => $this->cid,
+            'order_classify' => $this->order_classify
         ]);
 
-        $query->andFilterWhere(['like', 'order_classify', $this->order_classify])
-            ->andFilterWhere(['like', 'order_type', $this->order_type])
+        $query->andFilterWhere(['like', 'order_type', $this->order_type])
             ->andFilterWhere(['like', 'transactor_name', $this->transactor_name])
             ->andFilterWhere(['like', 'balance_order', $this->balance_order])
             ->andFilterWhere(['like', 'flushphoto_order', $this->flushphoto_order])

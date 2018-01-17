@@ -35,7 +35,8 @@ class Transator extends \yii\db\ActiveRecord
         return [
             [['name', 'sex', 'phone', 'address'], 'required'],
             [['expire_time','order_id'], 'integer'],
-            [['name', 'address'], 'string', 'max' => 50],
+            [['name'], 'string', 'max' => 50],
+            [['address'], 'string', 'max' => 255],
             [['sex', 'is_valid'], 'string', 'max' => 1],
             [['phone'], 'string', 'max' => 32],
             [['identify'], 'string', 'max' => 30],

@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Servicers';
+$this->title = '客服列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="servicer-index">
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Servicer', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('添加客服', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,7 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'tb_servicer_id',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => '操作'
+            ],
         ],
     ]); ?>
 </div>
