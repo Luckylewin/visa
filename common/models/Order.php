@@ -153,7 +153,13 @@ class Order extends \yii\db\ActiveRecord
        if (parent::beforeSave($insert)) {
            unset($this->transactor_id);
            if ($this->isNewRecord) {
+               //记录操作用户
                $this->operator_id = Yii::$app->getUser()->id;
+               //记录快照
+               $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
+               if (!is_null($snapShot)) {
+                   $this->combo_id = $snapShot->id;
+               }
            }
            $this->transactor_name = trim($this->transactor_name, '|');
            return true;
@@ -171,6 +177,12 @@ class Order extends \yii\db\ActiveRecord
     public function getCombo()
     {
         return $this->hasOne(Combo::className(), ['combo_id' =>'combo_id']);
+    }
+
+    //快照
+    public function getSnapshot()
+    {
+        return $this->hasOne(Snapshot::className(), ['id' => 'combo_id']);
     }
 
     //客服

@@ -48,8 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                     'value' => function($model) {
                            try {
-                               $combo = $model->combo;
-                               return Html::a($combo->combo_name, Url::to(['combo/view', 'id' => $combo->combo_id]));
+                                $combo = $model->snapshot;
+                                return $combo->combo_name;
                            }catch (\Exception $e) {
                                return '<i class="fa fa-trash"></i>已被删除';
                            }
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' =>'raw',
                     'value' => function($model) {
                         try {
-                            return $model->combo->combo_cost . "元";
+                            return $model->snapshot->combo_cost . "元";
                         }catch (\Exception $e) {
                             return '<i class="fa fa-trash"></i>已被删除';
                         }

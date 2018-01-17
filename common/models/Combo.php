@@ -5,6 +5,7 @@ namespace common\models;
 use backend\models\Admin;
 use yii\behaviors\TimestampBehavior;
 use \yii\db\ActiveRecord;
+use common\models\Snapshot;
 use Yii;
 
 /**
@@ -92,5 +93,49 @@ class Combo extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(Admin::className(), ['id' => 'uid']);
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->uid = Yii::$app->getUser()->id;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            //新增快照
+            $this->_addSnapShot();
+            return true;
+        }else {
+            unset($changedAttributes['updated_at']);
+            if (!empty($changedAttributes)) {
+                //更新快照
+                Snapshot::updateAll(['is_valid' => 0], ['snap_combo_id' => $this->combo_id]);
+                $this->_addSnapShot();
+            }
+
+        }
+
+    }
+
+    private function _addSnapShot()
+    {
+        $snapShot = new Snapshot();
+        $snapShot->combo_name = $this->combo_name;
+        $snapShot->combo_cost = $this->combo_cost;
+        $snapShot->combo_classify = $this->combo_classify;
+        $snapShot->combo_type = $this->combo_type;
+        $snapShot->snap_combo_id = $this->combo_id;
+        $snapShot->combo_country = $this->product->country->cinfo;
+        $snapShot->is_valid = 1;
+        $snapShot->save();
+        return true;
     }
 }
