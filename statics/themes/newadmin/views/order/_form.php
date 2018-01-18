@@ -13,11 +13,15 @@ $this->registerCssFile('/statics/themes/newadmin/js/plugins/select2/select2.min.
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/select2/select2.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 $this->registerJsFile('/statics/themes/newadmin/js/bootstrap.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset']]);
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
 
 $tranlator = new Transator();
 ?>
 
 <style>
+    .control-label {
+        min-width: 200px;
+    }
     div.required label:after {
         content: " *";
         color: red;
@@ -52,7 +56,7 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), ['prompt'=>'请选择','prompt_val'=>'0']) ?>
 
                 <?php if($model->isNewRecord): ?>
-                    <?= $form->field($model, 'combo_id')->dropDownList(['1'=>'无'])->label('套餐'); ?>
+                    <?= $form->field($model, 'combo_id')->dropDownList([], ['prompt' => '请选择套餐'])->label('套餐'); ?>
                 <?php else: ?>
                     <?= $form->field($model, 'combo_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Combo::findAll(['combo_id'=>$model->combo_id]),'combo_id','combo_name'))->label('当前套餐'); ?>
                 <?php endif; ?>
@@ -68,23 +72,18 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'carrier_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空']) ?>
             </div>
             <div class="col-md-3">
-
                 <div style="position: relative;">
                     <?= $form->field($model, 'transactor_id')->dropDownList([],[
                         'class'=>'form-control js-example-basic-multiple',
-                        'style' => 'width:200px;',
-                        'readonly' => true,
-                        'placeholder' => '请点击右边加号添加',
+                        'style' => 'width:230px;',
                         'multiple' => "multiple",
-                    ])->label('办理人'); ?>
-                    <i class="fa fa-plus-square-o add-transator" style="position: absolute;top: 27%;left: 85%;font-size: 36px;cursor: pointer"></i>&nbsp;
+                    ]); ?>
+                    <i class="fa fa-plus-square-o add-transator" style="position: absolute;top: 42%;left: 89%;font-size: 36px;cursor: pointer"></i>
                 </div>
 
                 <?= $form->field($model, 'customer_id')->textInput() ?>
 
-                <div style="margin-top: 520px;">
-
-                </div>
+                <div style="margin-top: 540px;"></div>
 
                 <?= $form->field($model, 'balance_sum')->textInput(['maxlength' => true]) ?>
 
@@ -122,8 +121,6 @@ $tranlator = new Transator();
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
-                <!--$form->field($model, 'operator')->hiddenInput(['maxlength' => true])-->
-
                 <?= $form->field($model, 'back_address')->textarea(['rows'=>3,'maxlength' => true]) ?>
 
                 <?= $form->field($model, 'back_addressee')->textInput(['maxlength' => true]) ?>
@@ -131,10 +128,10 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'back_telphone')->textInput(['maxlength' => true]) ?>
 
                 <?= $form->field($model, 'delivergood_date')->textInput([
-                    'class' => 'form-control layer-date',
-                    'placeholder' => '请选择日期',
-                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                    'style' => 'display:block!important;max-width:350px!important'
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
                 <?= $form->field($model, 'deliver_order')->textInput(['maxlength' => true]) ?>
@@ -184,15 +181,14 @@ $tranlator = new Transator();
     </div>
     <?php ActiveForm::end(); ?>
 
-    <script src="/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js"></script>
 </div>
 
 <script>
+    //办理人json字符串
     var data = [<?= $model->isNewRecord ? "" : $model->getTransactorJson();?>];
 </script>
 
 <?php \common\widgets\Jsblock::begin() ?>
-
 
 <script type="text/javascript">
 
@@ -228,7 +224,6 @@ $tranlator = new Transator();
     for (i=0; i<data.length; i++) {
         currentTransactor.add(data[i].id,data[i].text);
     }
-
     var checkTer = {
         //判断是否重复
         'checkIsRepeat' : function(key) {
@@ -243,7 +238,6 @@ $tranlator = new Transator();
             return true;
         }
     };
-
 
     //选择套餐
     $("#order-order_type").change(function() {
@@ -273,7 +267,6 @@ $tranlator = new Transator();
     //弹窗显示添加
     $('.add-transator').click(function() {
         var html = "<div style='width: 80%;margin: 10px auto'>" + $('.transactor').html() + '</div>';
-
         //页面层
         layer.open({
             title:'添加办理人信息',
@@ -303,7 +296,6 @@ $tranlator = new Transator();
                     selected.push(currentTransactor[0][i]);
                 }
                 //console.log(data);
-
                 var transactor_select = $('.js-example-basic-multiple');
                 transactor_select.select2({
                     data:data

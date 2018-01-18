@@ -166,6 +166,14 @@ class Order extends \yii\db\ActiveRecord
        return false;
     }
 
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            Transator::deleteAll(['order_id' => $this->id]);
+            return true;
+        }
+    }
+
     //国家
     public function getCountry()
     {
