@@ -82,12 +82,20 @@ class TransatorController extends BaseController
         $response = Yii::$app->getResponse();
         $response->format = Response::FORMAT_JSON;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $post = Yii::$app->request->post();
+        //先查找一下有没有这个人
+
+        $transactor = Transator::findOne(['name'=>$post[$model->formName()]['name'], 'is_valid' => '0']);
+
+        if (!is_null($transactor) && $transactor->expire_time < (time() +86400)) {
+            return $data = ['error' => 'success','msg' => 'success', 'data'=>['tid'=>$transactor->tid,'name'=>$transactor->name]];
+        }
+
+        if ($model->load($post) && $model->save()) {
            return $data = ['error' => 'success','msg' => 'success', 'data'=>['tid'=>$model->tid,'name'=>$model->name]];
         }else {
            return $data = ['error' => 'error','msg' => current($model->getFirstErrors()), 'data'=>''];
         }
-
 
     }
 

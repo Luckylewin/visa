@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "yii2_transator".
@@ -86,9 +87,18 @@ class Transator extends \yii\db\ActiveRecord
         if (!$order_id) {
             return false;
         }
-        $ids = explode('|',trim($ids, '|'));
+        //先找出所有的
+        $originTid = self::find()->where(['order_id' => $order_id])->select('tid')->all();
+        $originTid = ArrayHelper::getColumn($originTid, 'tid');
+
 
         if (!empty($ids)) {
+            //删除更新时剔除的
+            foreach ($originTid as $tid) {
+                if (!in_array($tid, $ids)) {
+                    self::findOne(['tid' => $tid])->delete();
+                }
+            }
             foreach ($ids as $id) {
                 if ($transactor = self::findOne(['tid' => $id])) {
                     $transactor->order_id = $order_id;

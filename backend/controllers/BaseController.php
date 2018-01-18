@@ -25,6 +25,7 @@ class BaseController extends Controller
                         //表示无条件通过
                         'actions' => ['error','login'],
                         'allow' => true,
+                        'roles' => ['?'],
                     ],
                     [
                         //表示只允许认证过的用户执行 其roles用@表示 游客用?表示

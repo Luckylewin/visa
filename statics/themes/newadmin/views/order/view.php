@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
             ],
             [
-                'attribute' => 'transactor_name',
+                'attribute' => 'transactor_id',
                 'format' => 'raw',
                 'value' => function($model) {
                     $str = '';
@@ -98,28 +98,108 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->total_person . "人"
             ],
 
-            'balance_order',
+            [
+                 'attribute' => 'balance_order',
+                 'format' => 'raw',
+                 'value' => function($model) {
+                    if (!empty($model->balance_order)) {
+                        return $model->balance_order;
+                    }
+                    return '——';
+                 }
+            ],
             [
                 'attribute' => 'balance_sum',
-                'value' => $model->balance_sum . "元"
+                'value' => function($model) {
+                    if ($model->balance_sum != '0.000') {
+                        return $model->balance_sum . "元";
+                    }
+                    return "——";
+                }
             ],
 
-            'flushphoto_order',
+
+
+            [
+                'attribute' => 'flushphoto_order',
+                'value' => function($model) {
+                    if ($model->flushphoto_order) {
+                        return $model->flushphoto_order;
+                    }
+                    return "——";
+                }
+            ],
+
             [
                 'attribute' => 'flushphoto_sum',
-                'value' => $model->flushphoto_sum . "元"
+                'value' => function($model) {
+                    if ($model->flushphoto_sum != '0.00') {
+                        return $model->flushphoto_sum . "元";
+                    }
+                    return "——";
+                }
             ],
 
-            'carrier_order',
+            [
+                'attribute' => 'carrier_order',
+                'value' => function($model) {
+                    if ($model->carrier_order) {
+                        return $model->carrier_order;
+                    }
+                    return "——";
+                }
+            ],
+
             [
                 'attribute' => 'carrier_sum',
-                'value' => $model->carrier_sum . "元"
+                'value' => function($model) {
+                    if ($model->carrier_sum != '0.00') {
+                        return $model->carrier_sum . "元";
+                    }
+                    return "——";
+                }
             ],
 
-            'collect_date',
-            'deliver_date',
-            'entry_date',
-            'putsign_date',
+
+            [
+               'attribute' => 'collect_date',
+               'value' => function($model) {
+                   if ($model->collect_date != '0000-00-00') {
+                        return $model->collect_date;
+                   }
+                   return '未填写';
+                }
+            ],
+            [
+                'attribute' => 'deliver_date',
+                'value' => function($model) {
+                    if ($model->deliver_date != '0000-00-00') {
+                        return $model->deliver_date;
+                    }
+                    return '未填写';
+                }
+            ],
+
+            [
+                'attribute' => 'entry_date',
+                'value' => function($model) {
+                    if ($model->entry_date != '0000-00-00') {
+                        return $model->entry_date;
+                    }
+                    return '未填写';
+                }
+            ],
+
+            [
+                'attribute' => 'putsign_date',
+                'value' => function($model) {
+                    if ($model->putsign_date != '0000-00-00') {
+                        return $model->putsign_date;
+                    }
+                    return '未填写';
+                }
+            ],
+
              [
                  'attribute' => 'operator_id',
                  'value' => $model->operator->username
@@ -127,13 +207,46 @@ $this->params['breadcrumbs'][] = $this->title;
             'back_address:ntext',
             'back_addressee',
             'back_telphone',
-            'delivergood_date',
+            [
+                'attribute' => 'delivergood_date',
+                'value' => function($model) {
+                    if ($model->delivergood_date != '0000-00-00') {
+                        return $model->delivergood_date;
+                    }
+                    return '未填写';
+                }
+            ],
             'deliver_order',
 //            'delivercompany_id',
             'delivercompany',
-            'remark:ntext',
-            'receipt_date',
-            'pay_date',
+            [
+                 'attribute' => 'remark',
+                 'format' => 'ntext',
+                 'value' => function($model) {
+                    if ($model->remark) {
+                        return $model->remark;
+                    }
+                    return "未填写";
+                 }
+            ],
+            [
+                'attribute' => 'receipt_date',
+                'value' => function($model) {
+                    if ($model->receipt_date != '0000-00-00') {
+                        return $model->receipt_date;
+                    }
+                    return '未填写';
+                }
+            ],
+            [
+                'attribute' => 'pay_date',
+                'value' => function($model) {
+                    if ($model->pay_date != '0000-00-00') {
+                        return $model->pay_date;
+                    }
+                    return '未填写';
+                }
+            ],
             [
                     'attribute' => 'audit_status',
                     'value' => function($model) {

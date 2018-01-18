@@ -52,7 +52,8 @@ class OrderController extends BaseController
         $model = new Order();
         $data = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && ($order_id = $model->save())) {
+
+        if ($model->load($data) && ($order_id = $model->save())) {
             Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -74,8 +75,11 @@ class OrderController extends BaseController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $data = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load($data) && $model->save()) {
+
+            Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id);
             Yii::$app->getSession()->setFlash('success', '保存成功');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

@@ -20,7 +20,6 @@ use yii\db\ActiveRecord;
  * @property string $cid
  * @property integer $combo_id
  * @property integer $custom_servicer_id
- * @property string $transactor_name
  * @property string $single_sum
  * @property integer $total_person
  * @property string $balance_order
@@ -65,18 +64,18 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_num', 'order_date', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_name', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'receipt_date', 'pay_date', 'cid', 'total_person', 'single_sum', 'delivercompany'], 'required'],
+            [['order_num',  'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'back_addressee' ,'back_telphone',  'deliver_order',  'cid', 'total_person', 'single_sum', 'delivercompany'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person'], 'integer'],
             [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
             [['back_address', 'remark','cid'], 'string','max' => 300],
             [['delivercompany'], 'string', 'max' => 50],
             [['order_classify', 'order_type', 'audit_status'], 'string', 'max' => 1],
-            [['transactor_name', 'back_addressee'], 'string', 'max' => 50],
+            [['back_addressee'], 'string', 'max' => 50],
             [['balance_order', 'flushphoto_order', 'carrier_order', 'deliver_order'], 'string', 'max' => 64],
             [['back_telphone'], 'string', 'max' => 36],
             [['balance_sum','flushphoto_sum','carrier_sum'], 'default', 'value' => '0.000'],
-            [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => date('Y-m-d')],
+            [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => '0000-00-00'],
             [['single_sum'],'default','value' => '0.000'],
             [['total_person'],'default','value' => '1'],
 
@@ -99,7 +98,6 @@ class Order extends \yii\db\ActiveRecord
             'combo_id' => '套餐名称',
             'custom_servicer_id' => '接待客服',
             'custom_servicer' => '接待客服',
-            'transactor_name' => '办理人',
             'single_sum' => '单项实收金额',
             'total_person' => '人数',
             'balance_order' => '补差订单号',
@@ -126,7 +124,8 @@ class Order extends \yii\db\ActiveRecord
             'cid' => '国家',
             'audit_status' => '审核状态',//1审核中2审核未通过3审核通过
             'created_at' => '创建时间',
-            'updated_at' => '修改时间'
+            'updated_at' => '修改时间',
+            'transactor_id' => '办理人'
         ];
     }
 
@@ -161,7 +160,7 @@ class Order extends \yii\db\ActiveRecord
                    $this->combo_id = $snapShot->id;
                }
            }
-           $this->transactor_name = trim($this->transactor_name, '|');
+
            return true;
        }
        return false;
@@ -195,6 +194,20 @@ class Order extends \yii\db\ActiveRecord
     public function getTransactor()
     {
         return $this->hasMany(Transator::className(), ['order_id' => 'id']);
+    }
+
+    //前端选择框
+    public function getTransactorJson()
+    {
+        $transactor = $this->getTransactor()->all();
+        $str = '';
+        if (!empty($transactor)) {
+            foreach ($transactor as $t) {
+                $str .= '{id:'. $t->tid . ",text:'". $t->name . "'},";
+            }
+            return trim($str, ',');
+        }
+        return "";
     }
 
     //操作员
