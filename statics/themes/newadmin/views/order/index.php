@@ -31,6 +31,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'lastPageLabel'=>'最后一页',
         ],
         'columns' => [
+
+            [
+                    'attribute' => 'customer_id',
+                    'label' => '客户ID'
+            ],
+
+            [
+                    'attribute' => 'order_num',
+                    'label' => '淘宝订单号'
+            ],
+
             [
                 'attribute' => 'cid',
                 'value' => 'country.cinfo',
@@ -41,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ->column(),
                 'options' => ['style'=>'width:95px'],
             ],
+
             [
                     'attribute' => 'order_classify',
                     'value' => function($model) {
@@ -55,22 +67,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['style'=>'width:95px;']
             ],
             [
-                'attribute' => 'transactor_name',
+                'attribute' => 'transactor_id',
+                'format' => 'raw',
                 'value' => function($model) {
-                    return trim($model->transactor_name,'|');
+                   $transactors = $model->transactor;
+                   $str = '';
+                   foreach ($transactors as $transactor) {
+                       $str .= Html::a($transactor->name, \yii\helpers\Url::to('transator/view', ['id' => $transactor->tid])) . "&nbsp;";
+                   }
+                   return $str;
                 },
-                'options' => ['style'=>'width:75px;']
+                'options' => ['style'=>'width:125px;']
             ],
-            'customer_id',
-            'order_num',
+
 
             'collect_date',
             'deliver_date',
             'entry_date',
             'putsign_date',
             'delivergood_date',
-
-
             'back_addressee',
             'back_telphone',
             'deliver_order',
