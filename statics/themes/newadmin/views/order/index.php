@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 }
             ],
-           
+
             [
                 'attribute' => 'combo_id',
                 'format' => 'raw',
@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                    $str = '';
                    foreach ($transactors as $transactor) {
-                       $str .= Html::a($transactor['name'], \yii\helpers\Url::to('transator/view', ['id' => $transactor['tid']])) . "&nbsp;";
+                       $str .= Html::a($transactor['name'], \yii\helpers\Url::to(['transator/view', 'id' => $transactor['tid']])) . "&nbsp;";
                    }
                    return $str;
                 },
