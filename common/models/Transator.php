@@ -79,32 +79,47 @@ class Transator extends \yii\db\ActiveRecord
      * 绑定订单关系
      * @param $ids
      * @param $order_id
+     * @param $isNewRecord
      * @return bool
      * @throws
      */
-    public static function appendToOrder($ids,$order_id)
+    public static function appendToOrder($ids,$order_id,$isNewRecord)
     {
-        if (!$order_id) {
+        if (!$order_id || empty($ids)) {
             return false;
         }
         //先找出所有的
-        $originTid = self::find()->where(['order_id' => $order_id])->select('tid')->all();
-        $originTid = ArrayHelper::getColumn($originTid, 'tid');
+        $originTid = Yii::$app->db->createCommand("SELECT * FROM yii2_order_to_transactor WHERE o_id = $order_id")->queryAll();
+        $originTid = ArrayHelper::getColumn($originTid, 't_id');
 
+        if ($isNewRecord) {
+            $batchInsert = [];
+            foreach ($ids as $id) {
+                if ($transactor = self::findOne(['tid' => $id])) {
+                    $transactor->is_valid = 1;
+                    $transactor->update(false);
 
-        if (!empty($ids)) {
+                    $batchInsert[] = [$id, $order_id];
+                }
+            }
+            //批量插入关联关系
+            if (!empty($batchInsert)) {
+                Yii::$app->getDb()->createCommand()->batchInsert('yii2_order_to_transactor', ['t_id', 'o_id'], $batchInsert)->execute();
+            }
+        } else {
             //删除更新时剔除的
             foreach ($originTid as $tid) {
                 if (!in_array($tid, $ids)) {
-                    self::findOne(['tid' => $tid])->delete();
+                    //self::findOne(['tid' => $tid])->delete();
+                    Yii::$app->db->createCommand()->delete('yii2_order_to_transactor',['t_id'=>$tid,'o_id'=>$order_id])->execute();
                 }
             }
-            foreach ($ids as $id) {
-                if ($transactor = self::findOne(['tid' => $id])) {
-                    $transactor->order_id = $order_id;
-                    $transactor->is_valid = 1;
-                    $transactor->update(false);
-                }
+            $updateDiff = array_diff($ids,$originTid);
+            //增加更新时增加的
+            if (!empty($updateDiff)) {
+                 foreach ($updateDiff as $tid) {
+                    Yii::$app->db->createCommand()->insert('yii2_order_to_transactor',['o_id'=>$order_id , 't_id'=>$tid])->execute();
+                 }
             }
         }
     }

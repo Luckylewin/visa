@@ -54,7 +54,7 @@ class OrderController extends BaseController
 
 
         if ($model->load($data) && ($order_id = $model->save())) {
-            Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id);
+            Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id ,$model->isNewRecord);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             if ($model->hasErrors()) {
@@ -79,7 +79,7 @@ class OrderController extends BaseController
 
         if ($model->load($data) && $model->save()) {
 
-            Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id);
+            Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id ,$model->isNewRecord);
             Yii::$app->getSession()->setFlash('success', '保存成功');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

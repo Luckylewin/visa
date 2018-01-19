@@ -14,30 +14,53 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/select2/select2.min.j
 $this->registerJsFile('/statics/themes/newadmin/js/bootstrap.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/suggest/bootstrap-suggest.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 
 $tranlator = new Transator();
 ?>
 
-<style>
-    .control-label {
-        min-width: 200px;
-    }
-    div.required label:after {
-        content: " *";
-        color: red;
-        vertical-align: middle;
-    }
-</style>
+<?php \common\widgets\Cssblock::begin() ?>
+    <style>
+        .control-label {
+            min-width: 200px;
+        }
+        div.required label:after {
+            content: " *";
+            color: red;
+            vertical-align: middle;
+        }
+        #order-transactor_id{
+            max-height: 33px;
+        }
+    </style>
+<?php \common\widgets\Cssblock::end() ?>
+
 <div class="order-form">
 
     <?php $form = ActiveForm::begin(); ?>
+    <div class="product-chose hidden">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>产品名称</th>
+                <th>套餐名称</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody class="product-body">
+
+            </tbody>
+        </table>
+    </div>
 
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title"><b>填写订单信息</b></h3>
         </div>
+
         <div class="panel-body">
             <div class="col-md-3">
+
                 <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify()) ?>
 
                 <?= $form->field($model, 'order_date')->textInput([
@@ -51,14 +74,23 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'order_num')->textInput() ?>
 
-                <?= $form->field($model, 'cid')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->orderBy('id desc')->all(), 'id' ,'cinfo'))->label('国家'); ?>
+                <?= $form->field($model, 'cid')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->orderBy('id desc')->all(), 'id' ,'cinfo'),[
+                    'disabled' => $model->isNewRecord ? false : true
+                ])->label('国家'); ?>
 
-                <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), ['prompt'=>'请选择','prompt_val'=>'0']) ?>
+                <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), [
+                        'prompt' => '请选择',
+                        'prompt_val' => '0',
+                        'disabled' => $model->isNewRecord ? false : true
+                ]) ?>
+
 
                 <?php if($model->isNewRecord): ?>
                     <?= $form->field($model, 'combo_id')->dropDownList([], ['prompt' => '请选择套餐'])->label('套餐'); ?>
                 <?php else: ?>
-                    <?= $form->field($model, 'combo_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Combo::findAll(['combo_id'=>$model->combo_id]),'combo_id','combo_name'))->label('当前套餐'); ?>
+                    <?= $form->field($model, 'combo_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Snapshot::findAll(['id'=>$model->combo_id]),'id','combo_name'), [
+                        'disabled' => $model->isNewRecord ? false : true
+                    ])->label('当前套餐'); ?>
                 <?php endif; ?>
 
                 <?= $form->field($model, 'single_sum')->textInput(['maxlength' => true]) ?>
@@ -73,11 +105,13 @@ $tranlator = new Transator();
             </div>
             <div class="col-md-3">
                 <div style="position: relative;">
+
                     <?= $form->field($model, 'transactor_id')->dropDownList([],[
                         'class'=>'form-control js-example-basic-multiple',
-                        'style' => 'width:230px;',
+                        'style' => 'max-width:210px;',
                         'multiple' => "multiple",
                     ]); ?>
+
                     <i class="fa fa-plus-square-o add-transator" style="position: absolute;top: 42%;left: 89%;font-size: 36px;cursor: pointer"></i>
                 </div>
 
@@ -90,9 +124,11 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'flushphoto_sum')->textInput(['maxlength' => true]) ?>
 
                 <?= $form->field($model, 'carrier_sum')->textInput(['maxlength' => true]) ?>
+
             </div>
 
             <div class="col-md-3">
+
                 <?= $form->field($model, 'collect_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
@@ -139,6 +175,7 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'delivercompany')->textInput() ?>
 
                 <?= $form->field($model, 'remark')->textarea(['rows' => 3]) ?>
+
             </div>
             <div class="col-md-3">
 
@@ -172,12 +209,26 @@ $tranlator = new Transator();
     <?php ActiveForm::end(); ?>
 
     <?php $form = ActiveForm::begin(); ?>
-    <div class="well transactor hidden">
-        <?= $form->field($tranlator, 'name')->textInput([
-            'class' => 'form-control',
-        ]) ?>
-        <?= $form->field($tranlator, 'remark')->textarea(['rows'=>3]) ?>
-        <button class="btn btn-primary create-transator">添加</button>
+    <!--   layer隐藏页面层     -->
+
+    <div class="transactor hide" id="add-transactor">
+         <div style="width: 86%;margin: 10px auto">
+             <label for="taobao">姓名</label>
+             <div class="input-group" >
+                 <input onkeydown="if(event.keyCode === 13){return false;}" type="text" name="Transator[name]" placeholder="搜索或者新输入" class="form-control" id="transator-name">
+                 <div class="input-group-btn">
+                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                         <span class="caret"></span>
+                     </button>
+                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                     </ul>
+                 </div>
+             </div>
+
+             <?= $form->field($tranlator, 'remark')->textarea(['rows'=>3]) ?>
+             <input type="hidden" id="isNewTransactor" value="1">
+             <button class="btn btn-primary create-transator">添加</button>
+         </div>
     </div>
     <?php ActiveForm::end(); ?>
 
@@ -191,6 +242,11 @@ $tranlator = new Transator();
 <?php \common\widgets\Jsblock::begin() ?>
 
 <script type="text/javascript">
+
+    //当前选择的产品-套餐
+    var currentProductCombo = [];
+    var currentTransactor = [];
+    var isNewTransactor = false;
 
     Array.prototype.del=function(value) {
         for (var i=0; i < this.length; i++) {
@@ -217,9 +273,24 @@ $tranlator = new Transator();
         return this;
     };
 
-    //当前选择的产品-套餐
-    var currentProductCombo = [];
-    var currentTransactor = [];
+
+    function updateSelect2(id,name)
+    {
+        var data = [];
+        var selected = [];
+        currentTransactor.add(id,name);
+        for (var i=0; i<currentTransactor[0].length; i++) {
+            data.push({id:currentTransactor[0][i],text:currentTransactor[1][i]});
+            selected.push(currentTransactor[0][i]);
+        }
+        //console.log(data);
+        var transactor_select = $('.js-example-basic-multiple');
+        transactor_select.select2({
+            data:data
+        }).val(selected).trigger('change');
+    }
+
+
     //初始化currentTransactor
     for (i=0; i<data.length; i++) {
         currentTransactor.add(data[i].id,data[i].text);
@@ -239,6 +310,53 @@ $tranlator = new Transator();
         }
     };
 
+
+    //搜索建议
+    var Suggest = $("#transator-name").bsSuggest({
+        indexId: 1, //data.value 的第几个数据，作为input输入框的内容
+        indexKey: 2, //data.value 的第几个数据，作为input输入框的内容
+        allowNoKeyword: false, //是否允许无关键字时请求数据
+        multiWord: true, //以分隔符号分割的多关键字支持
+        separator: ",", //多关键字支持时的分隔符，默认为空格
+        getDataMethod: "url", //获取数据的方式，总是从 URL 获取
+        effectiveFieldsAlias: {
+            Id: "序号",
+            Keyword: "办理人ID",
+            Count: "姓名"
+        },
+        showHeader: true,
+        url:"<?= \yii\helpers\Url::to(['transator/query','q'=>''])?>",
+        /*优先从url ajax 请求 json 帮助数据，注意最后一个参数为关键字请求参数*/
+        jsonp: 'callback',
+        /*如果从 url 获取数据，并且需要跨域，则该参数必须设置*/
+        processData: function (json) { // url 获取数据时，对数据的处理，作为 getData 的回调函数
+            var i, len, data = {
+                value: []
+            };
+
+            if (!json || !json.result || json.result.length === 0) {
+                return false;
+            }
+
+            //console.log(json);
+            len = json.result.length;
+
+            for (i = 0; i < len; i++) {
+                data.value.push({
+                    "Id": (i + 1),
+                    "Keyword": json.result[i][0],
+                    "Count": json.result[i][1]
+                });
+            }
+            console.log(data);
+            return data;
+        }
+    }).on('onSetSelectValue', function (e, keyword, data) {
+        isNewTransactor = keyword.id;
+    }).on('onUnsetSelectValue', function (e) {
+        isNewTransactor = false;
+    });
+
     //选择套餐
     $("#order-order_type").change(function() {
         var country_id = $('#order-cid').val();
@@ -252,7 +370,7 @@ $tranlator = new Transator();
                 select.empty();
                 var str = '';
                 for (var i in back.value) {
-                    if ( i !=='del') {
+                    if ( typeof (back.value[i].combo_id) !== 'undefined') {
                         str += ('<option value="' + back.value[i].combo_id + '">' +  back.value[i].combo_name + '</option>');
                     }
                 }
@@ -266,41 +384,43 @@ $tranlator = new Transator();
 
     //弹窗显示添加
     $('.add-transator').click(function() {
-        var html = "<div style='width: 80%;margin: 10px auto'>" + $('.transactor').html() + '</div>';
+        //var html = "<div style='width: 80%;margin: 10px auto'>" + $('.transactor').html() + '</div>';
         //页面层
         layer.open({
             title:'添加办理人信息',
             type: 1,
             skin: 'layui-layer-rim', //加上边框
             area: ['450px', '330px'], //宽高
-            content: html
+            content: $('#add-transactor'),
+            success: function(layero, index){
+                $('.layui-layer-content').find('#add-transactor').removeClass('hide');
+            }
         });
     });
 
     //添加办理人
-    $('body').on('click','.create-transator', function() {
+    $('.create-transator').click(function() {
+
         var content = $('.layui-layer-content');
         var name = content.find('#transator-name').val();
         var remark = content.find('#transator-remark').val();
         var _csrf = '<?= Yii::$app->request->getCsrfToken()?>';
         var data = {Transator:{name:name,_csrf:_csrf,remark:remark}};
         var url = '<?= \yii\helpers\Url::to(['transator/create-by-ajax'])?>';
+        var tid= isNewTransactor;
+
+        if ( tid !== false) {
+            updateSelect2(tid, name);
+            layer.closeAll();
+            layer.msg('添加成功',{time:1000},function(){
+                layer.closeAll();
+            });
+            return false;
+        }
 
         $.post(url, data, function(d){
             if(d.error === 'success') {
-                var data = [];
-                var selected = [];
-                currentTransactor.add(d.data.tid, d.data.name);
-                for (var i=0; i<currentTransactor[0].length; i++) {
-                    data.push({id:currentTransactor[0][i],text:currentTransactor[1][i]});
-                    selected.push(currentTransactor[0][i]);
-                }
-                //console.log(data);
-                var transactor_select = $('.js-example-basic-multiple');
-                transactor_select.select2({
-                    data:data
-                }).val(selected).trigger('change');
-
+                updateSelect2(d.data.tid, d.data.name);
                 layer.closeAll();
                 layer.msg('添加成功',{time:1300},function(){
                     layer.closeAll();
@@ -312,6 +432,8 @@ $tranlator = new Transator();
                 });
             }
         });
+
+        return false;
     });
 
     //默认选中

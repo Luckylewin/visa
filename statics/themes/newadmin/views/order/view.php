@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => function($model) {
                            try {
                                 $combo = $model->snapshot;
-                                return $combo->combo_name;
+                                return Html::a($combo->combo_name, Url::to(['snapshot/view','id' => $combo->id]));
                            }catch (\Exception $e) {
                                return '<i class="fa fa-trash"></i>已被删除';
                            }
@@ -80,10 +80,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model) {
                     $str = '';
-                    $transactor = $model->transactor;
+                    $transactor = $model->relatedTransactor;
                     if (!empty($transactor)) {
                         foreach ($transactor as $_transactor) {
-                            $str .= Html::a($_transactor->name, \yii\helpers\Url::to(['transator/view','id' => $_transactor->tid])) . "&nbsp;";
+                            $str .= Html::a($_transactor['name'], \yii\helpers\Url::to(['transator/view','id' => $_transactor['tid']])) . "&nbsp;";
                         }
                     }
                     return $str;
@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if (!empty($model->balance_order)) {
                         return $model->balance_order;
                     }
-                    return '——';
+                    return '-';
                  }
             ],
             [
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->balance_sum != '0.000') {
                         return $model->balance_sum . "元";
                     }
-                    return "——";
+                    return "-";
                 }
             ],
 
@@ -126,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->flushphoto_order) {
                         return $model->flushphoto_order;
                     }
-                    return "——";
+                    return "-";
                 }
             ],
 
@@ -136,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->flushphoto_sum != '0.00') {
                         return $model->flushphoto_sum . "元";
                     }
-                    return "——";
+                    return "-";
                 }
             ],
 
@@ -146,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->carrier_order) {
                         return $model->carrier_order;
                     }
-                    return "——";
+                    return "-";
                 }
             ],
 
@@ -156,7 +156,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->carrier_sum != '0.00') {
                         return $model->carrier_sum . "元";
                     }
-                    return "——";
+                    return "-";
                 }
             ],
 
@@ -167,7 +167,7 @@ $this->params['breadcrumbs'][] = $this->title;
                    if ($model->collect_date != '0000-00-00') {
                         return $model->collect_date;
                    }
-                   return '未填写';
+                   return '-';
                 }
             ],
             [
@@ -176,7 +176,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->deliver_date != '0000-00-00') {
                         return $model->deliver_date;
                     }
-                    return '未填写';
+                    return '-';
                 }
             ],
 
@@ -186,7 +186,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->entry_date != '0000-00-00') {
                         return $model->entry_date;
                     }
-                    return '未填写';
+                    return '-';
                 }
             ],
 
@@ -196,7 +196,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->putsign_date != '0000-00-00') {
                         return $model->putsign_date;
                     }
-                    return '未填写';
+                    return '-';
                 }
             ],
 
@@ -204,16 +204,26 @@ $this->params['breadcrumbs'][] = $this->title;
                  'attribute' => 'operator_id',
                  'value' => $model->operator->username
              ],
-            'back_address:ntext',
             'back_addressee',
             'back_telphone',
+            [
+                'attribute' => 'back_address',
+                'format' => 'ntext',
+                'value' => function($model) {
+                    if ($model->back_address ) {
+                        return $model->back_address;
+                    }
+                    return '-';
+                }
+            ],
+
             [
                 'attribute' => 'delivergood_date',
                 'value' => function($model) {
                     if ($model->delivergood_date != '0000-00-00') {
                         return $model->delivergood_date;
                     }
-                    return '未填写';
+                    return '-';
                 }
             ],
             'deliver_order',
@@ -226,7 +236,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->remark) {
                         return $model->remark;
                     }
-                    return "未填写";
+                    return "-";
                  }
             ],
             [
@@ -235,7 +245,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->receipt_date != '0000-00-00') {
                         return $model->receipt_date;
                     }
-                    return '未填写';
+                    return '-';
                 }
             ],
             [
@@ -244,7 +254,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->pay_date != '0000-00-00') {
                         return $model->pay_date;
                     }
-                    return '未填写';
+                    return '-';
                 }
             ],
             [

@@ -68,7 +68,7 @@ class Order extends \yii\db\ActiveRecord
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person'], 'integer'],
             [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
-            [['back_address', 'remark','cid'], 'string','max' => 300],
+            [['back_address', 'remark'], 'string','max' => 300],
             [['delivercompany'], 'string', 'max' => 50],
             [['order_classify', 'order_type', 'audit_status'], 'string', 'max' => 1],
             [['back_addressee'], 'string', 'max' => 50],
@@ -204,14 +204,20 @@ class Order extends \yii\db\ActiveRecord
         return $this->hasMany(Transator::className(), ['order_id' => 'id']);
     }
 
+    public function getRelatedTransactor()
+    {
+        $sql = "SELECT * FROM yii2_order_to_transactor AS a LEFT JOIN yii2_transator AS b ON  a.t_id = b.tid WHERE a.o_id = " . $this->id;
+        return $data = Yii::$app->db->createCommand($sql)->queryAll();
+    }
+
     //前端选择框
     public function getTransactorJson()
     {
-        $transactor = $this->getTransactor()->all();
+        $transactor = $this->getRelatedTransactor();
         $str = '';
         if (!empty($transactor)) {
             foreach ($transactor as $t) {
-                $str .= '{id:'. $t->tid . ",text:'". $t->name . "'},";
+                $str .= '{id:'. $t['tid'] . ",text:'". $t['name'] . "'},";
             }
             return trim($str, ',');
         }

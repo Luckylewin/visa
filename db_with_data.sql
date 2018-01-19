@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-01-18 18:32:32
+Date: 2018-01-19 16:37:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,7 +40,7 @@ CREATE TABLE `yii2_admin` (
 -- ----------------------------
 -- Records of yii2_admin
 -- ----------------------------
-INSERT INTO `yii2_admin` VALUES ('1', 'admin', 'SbSY36BLw3V2lU-GB7ZAzCVJKDFx82IJ', '$2y$13$0UVcG.mXF6Og0rnjfwJd2.wixT2gdn.wDO9rN44jGtIGc6JvBqR7i', '771405950@qq.com', '2130706433', '1516241553', '2130706433', '1', '1482305564', '1516241553');
+INSERT INTO `yii2_admin` VALUES ('1', 'admin', 'SbSY36BLw3V2lU-GB7ZAzCVJKDFx82IJ', '$2y$13$0UVcG.mXF6Og0rnjfwJd2.wixT2gdn.wDO9rN44jGtIGc6JvBqR7i', '771405950@qq.com', '2130706433', '1516350969', '2130706433', '1', '1482305564', '1516350969');
 INSERT INTO `yii2_admin` VALUES ('4', 'admin2', 'SbSY36BLw3V2lU-GB7ZAzCVJKDFx82IJ', '$2y$13$0UVcG.mXF6Og0rnjfwJd2.wixT2gdn.wDO9rN44jGtIGc6JvBqR7i', '876505905@qq.com', '2130706433', '1484733705', '2130706433', '1', '1482305564', '1484733705');
 
 -- ----------------------------
@@ -394,17 +394,12 @@ CREATE TABLE `yii2_order` (
   `updated_at` int(10) NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`),
   KEY `order_deliverycompany_id` (`delivercompany`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yii2_order
 -- ----------------------------
-INSERT INTO `yii2_order` VALUES ('17', '0', '453454365435645645', '2', '1', '2018-01-17', 'zs345345', '39295', '1', '祥顺', '259.00', '1', '', '0.000', '', '0.00', '', '0.00', '2018-01-17', '2018-01-17', '2018-01-17', '2018-01-17', '1', '北京市海淀区西北旺东路10号院西区8号楼新浪总部大厦 \r\nNo.8 Sina Plaza Courtyard 10, the West XiBeiWang E.Rd HaiDian District Beijing ', '广告销售部', '4006900000', '2018-01-17', '547645634564567', '顺风快递', '无', '2018-01-17', '2018-01-17', '2', '251', '1516168987', '1516171606');
-INSERT INTO `yii2_order` VALUES ('18', '0', '72774443785866441   7969', '1', '2', '2017-10-13', '禾小小宸', '39289', '1', '龚韵佳|徐鼎黄', '520.00', '2', '422405235032456461120180117', '80.000', '', '0.00', '', '23.00', '2017-10-14', '2017-10-13', '2017-10-19', '2017-10-17', '1', '云南省  昆明市  盘龙区  金辰街道穿金路省生物制药有限公司生活区（农贸市场旁）  650051  徐鼎黄', '徐鼎黄', '13807590000', '2017-10-20', '34234235235', '天天快递', '龚韵佳拒签重办', '2017-11-03', '2017-11-08', '3', '251', '1516174472', '1516174497');
-INSERT INTO `yii2_order` VALUES ('20', '0', '', '1', '3', '2018-01-18', '', '19', '1', '', '0.00', '1', '', '0.000', '', '0.00', '', '0.00', '2018-01-18', '2018-01-18', '2018-01-18', '2018-01-18', '1', '', '', '', '2018-01-18', '', '', '', '2018-01-18', '2018-01-18', '1', '252', '1516208999', '1516208999');
-INSERT INTO `yii2_order` VALUES ('21', '0', '', '1', '', '2018-01-18', '', '1', '1', '', '0.00', '1', '', '0.000', '', '0.00', '', '0.00', '2018-01-18', '2018-01-18', '2018-01-18', '2018-01-18', '1', '', '', '', '2018-01-18', '', '', '', '2018-01-18', '2018-01-18', '1', '252', '1516263180', '1516263180');
-INSERT INTO `yii2_order` VALUES ('22', '0', '', '1', '', '2018-01-18', '', '1', '1', '', '0.00', '1', '', '0.000', '', '0.00', '', '0.00', '2018-01-18', '2018-01-18', '2018-01-18', '2018-01-18', '1', '', '', '', '2018-01-18', '', '', '', '2018-01-18', '2018-01-18', '1', '252', '1516263326', '1516263326');
-INSERT INTO `yii2_order` VALUES ('23', '0', '425051698692603', '1', '2', '0000-00-00', 'zy2010816', '39317', '1', '', '333.00', '1', '', '0.000', '', '0.00', '', '0.00', '0000-00-00', '0000-00-00', '0000-00-00', '0000-00-00', '1', '', '周杰伦', '18040631522', '0000-00-00', '20171102234324', '顺风快递', '', '0000-00-00', '0000-00-00', '1', '252', '1516266433', '1516271489');
+INSERT INTO `yii2_order` VALUES ('29', '0', '45345345345', '1', '2', '0000-00-00', 'zy2010816', '12', '1', '', '666.00', '1', '', '0.000', '', '0.00', '', '0.00', '0000-00-00', '0000-00-00', '0000-00-00', '0000-00-00', '1', '', '张旭', '18040631522', '0000-00-00', '2342342', '顺风快递', '', '0000-00-00', '0000-00-00', '1', '252', '1516347059', '1516351009');
 
 -- ----------------------------
 -- Table structure for yii2_order_product
@@ -422,6 +417,23 @@ CREATE TABLE `yii2_order_product` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for yii2_order_to_transactor
+-- ----------------------------
+DROP TABLE IF EXISTS `yii2_order_to_transactor`;
+CREATE TABLE `yii2_order_to_transactor` (
+  `o_id` int(11) NOT NULL COMMENT '订单id',
+  `t_id` int(11) NOT NULL COMMENT '办理人id'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of yii2_order_to_transactor
+-- ----------------------------
+INSERT INTO `yii2_order_to_transactor` VALUES ('27', '73');
+INSERT INTO `yii2_order_to_transactor` VALUES ('29', '74');
+INSERT INTO `yii2_order_to_transactor` VALUES ('28', '74');
+INSERT INTO `yii2_order_to_transactor` VALUES ('28', '75');
+
+-- ----------------------------
 -- Table structure for yii2_product
 -- ----------------------------
 DROP TABLE IF EXISTS `yii2_product`;
@@ -433,7 +445,7 @@ CREATE TABLE `yii2_product` (
   PRIMARY KEY (`id`),
   KEY `product_country_id` (`country_id`),
   CONSTRAINT `product_country_id` FOREIGN KEY (`country_id`) REFERENCES `yii2_country` (`id`) ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=67635 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=67634 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_product
@@ -498,7 +510,9 @@ INSERT INTO `yii2_session` VALUES ('ejpj9ct17u9b1df626qnbp88m7', '1516186497', 0
 INSERT INTO `yii2_session` VALUES ('fphem2hpu3n1ueove7mq7retk5', '1516185735', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('gqfnu7v9eafs9lluu1j3dp1rm6', '1516185831', 0x5F5F666C6173687C613A303A7B7D);
 INSERT INTO `yii2_session` VALUES ('gr1igne5trh39u4lfmaosdgeh5', '1516210896', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
+INSERT INTO `yii2_session` VALUES ('idargovfon3cdq73l721veg084', '1516352384', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('j388lm6clfn73l1gpv96gmtfk6', '1516185506', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A3235303A222F61646D696E2E7068703F6E73756B65793D3752796F7A6534544A6D474E434434797558253242375077324E6536554E43735A65364B2532427663304865644B47564D683077643057376172736E5869307751384B31344D4A58654644675874386C7A584F6A76746B656F6246413238795475647A4958484265355544253246484B5462587565394E6C384B57493461656D61585078743825324241313577622532427175704A373961595748572532467044374735515677444B3573574B504475496A483465694B53666A6D7A68623268653550384A336D714258536543354A566953765665744C303346636D6557786A7951253344253344223B);
+INSERT INTO `yii2_session` VALUES ('lhvl17vlureu3c69mf5g58hej2', '1516352451', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('m7opu5pt4q7gm80771mvocj3j5', '1516185766', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('n04f4ukpiij9lcg7n9dsgmpdg6', '1516186425', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('nlvsl8ec5q2jlnf2bcfronf1q3', '1516186324', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A313B);
@@ -577,26 +591,14 @@ CREATE TABLE `yii2_transator` (
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`tid`),
   KEY `nameindex` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_transator
 -- ----------------------------
-INSERT INTO `yii2_transator` VALUES ('12', '黎明', '1', '18938904293', '2222', '', '1', '1516209713', '16', '');
-INSERT INTO `yii2_transator` VALUES ('13', '张学友', '1', '18938904293', '656456', '546456456', '1', '1516209729', '16', '');
-INSERT INTO `yii2_transator` VALUES ('15', '祥顺', '1', '13453456452', '宝安', '', '1', '1516239036', '17', '4444');
-INSERT INTO `yii2_transator` VALUES ('16', '龚韵佳', '1', '13356542345', '云南省  昆明市  盘龙区  金辰街道穿金路省生物制药有限公司生活区（农贸市场旁）', '', '1', '1516260064', '18', '');
-INSERT INTO `yii2_transator` VALUES ('17', '徐鼎黄', '2', '13436354625', '云南省  昆明市  盘龙区  金辰街道穿金路省生物制药有限公司生活区（农贸市场旁）  650051  徐鼎黄', '', '1', '1516260183', '18', '');
-INSERT INTO `yii2_transator` VALUES ('20', 'yang', '', '', '', '', '0', '1516268843', '0', '');
-INSERT INTO `yii2_transator` VALUES ('21', 'liu', '', '', '', '', '0', '1516269101', '0', '');
-INSERT INTO `yii2_transator` VALUES ('22', '杨xx', '', '', '', '', '1', '1516269209', '19', '');
-INSERT INTO `yii2_transator` VALUES ('23', '柳yy', '', '', '', '', '1', '1516269271', '19', '');
-INSERT INTO `yii2_transator` VALUES ('24', '刘海斌', '', '', '', '', '0', '1516270574', '0', '0啊u去完');
-INSERT INTO `yii2_transator` VALUES ('25', '苏金伟', '', '', '', '', '0', '1516270583', '0', '12121');
-INSERT INTO `yii2_transator` VALUES ('58', '倪美梅', '', '', '', '', '0', '1516349619', '0', '测试');
-INSERT INTO `yii2_transator` VALUES ('59', '张三丰', '', '', '', '', '0', '1516349714', '0', '');
-INSERT INTO `yii2_transator` VALUES ('64', '周杰伦', '', '', '', '', '1', '1516352581', '23', '');
-INSERT INTO `yii2_transator` VALUES ('66', '张大军', '', '', '', '', '1', '1516356269', '23', '');
+INSERT INTO `yii2_transator` VALUES ('74', '张旭', '', '', '', '', '1', '1516430261', '0', '');
+INSERT INTO `yii2_transator` VALUES ('75', '黄晓霞', '', '', '', '', '1', '1516434366', '0', '');
+INSERT INTO `yii2_transator` VALUES ('76', '周杰伦', '', '', '', '', '0', '1516435299', '0', '');
 
 -- ----------------------------
 -- Table structure for yii2_user

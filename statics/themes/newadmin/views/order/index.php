@@ -63,30 +63,66 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['style'=>'width:100px;']
             ],
             [
-                    'attribute' => 'order_date',
-                    'options' => ['style'=>'width:95px;']
+                'attribute' => 'order_date',
+                'value' => function($model) {
+                    if ($model->order_date != '0000-00-00') {
+                        return $model->order_date;
+                    }
+
+                }
             ],
+           
+            [
+                'attribute' => 'combo_id',
+                'format' => 'raw',
+                'value' => function($model) {
+                    try {
+                        $combo = $model->snapshot;
+                        return Html::a($combo->combo_name, \yii\helpers\Url::to(['snapshot/view','id' => $combo->id]));
+                    }catch (\Exception $e) {
+                        return '<i class="fa fa-trash"></i>已被删除';
+                    }
+                },
+            ],
+
             [
                 'attribute' => 'transactor_id',
                 'format' => 'raw',
                 'value' => function($model) {
-                   $transactors = $model->transactor;
+                   $transactors = $model->relatedTransactor;
+
                    $str = '';
                    foreach ($transactors as $transactor) {
-                       $str .= Html::a($transactor->name, \yii\helpers\Url::to('transator/view', ['id' => $transactor->tid])) . "&nbsp;";
+                       $str .= Html::a($transactor['name'], \yii\helpers\Url::to('transator/view', ['id' => $transactor['tid']])) . "&nbsp;";
                    }
                    return $str;
                 },
                 'options' => ['style'=>'width:125px;']
             ],
 
+            [
+                'attribute' => 'collect_date',
+                'value' => function($model) {
+                    if ($model->collect_date != '0000-00-00') {
+                        return $model->collect_date;
+                    }
 
-            'collect_date',
-            'deliver_date',
-            'entry_date',
-            'putsign_date',
-            'delivergood_date',
-            'back_addressee',
+                }
+            ],
+            [
+                'attribute' => 'deliver_date',
+                'value' => function($model) {
+                    if ($model->deliver_date != '0000-00-00') {
+                        return $model->deliver_date;
+                    }
+
+                }
+            ],
+
+            //'entry_date',
+            //'putsign_date',
+            //'delivergood_date',
+            //'back_addressee',
             'back_telphone',
             'deliver_order',
             [

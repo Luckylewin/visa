@@ -6,6 +6,7 @@ use Yii;
 use common\models\Transator;
 use common\models\TransatorQuery;
 use backend\controllers\BaseController;
+use yii\db\Exception;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
@@ -97,6 +98,30 @@ class TransatorController extends BaseController
            return $data = ['error' => 'error','msg' => current($model->getFirstErrors()), 'data'=>''];
         }
 
+    }
+
+    //添加联系人查询
+    public function actionQuery()
+    {
+        $this->layout = false;
+        $callback = Yii::$app->getRequest()->get('callback');
+        $keyword = Yii::$app->getRequest()->get('q');
+
+        try {
+            $data = Yii::$app->db->createCommand("SELECT tid, name from yii2_transator WHERE NAME LIKE '%$keyword%' LIMIT 100")->queryAll();
+        }catch (Exception $e) {
+            $data = [];
+        }
+
+        array_walk($data, function (&$v,$k){
+            return $v = array_values($v);
+        });
+        $data = json_encode(['result'=>$data]);
+
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_HTML;
+        $response->data = $callback . "($data)";
+        $response->send();
     }
 
     /**
