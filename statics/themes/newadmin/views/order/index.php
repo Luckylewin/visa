@@ -31,28 +31,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'lastPageLabel'=>'最后一页',
         ],
         'columns' => [
-
+            ['class' => 'yii\grid\SerialColumn'],
+            //客人ID
             [
                     'attribute' => 'customer_id',
                     'label' => '客户ID'
             ],
-
+            //淘宝订单号
             [
                     'attribute' => 'order_num',
                     'label' => '淘宝订单号'
             ],
-
+            //订单日期
             [
-                'attribute' => 'cid',
-                'value' => 'country.cinfo',
-                'filter' => Country::find()
-                            ->select(['cinfo','id'])
-                            ->orderBy('id desc')
-                            ->indexBy('id')
-                            ->column(),
-                'options' => ['style'=>'width:95px'],
+                'attribute' => 'order_date',
+                'value' => function($model) {
+                    if ($model->order_date != '0000-00-00') {
+                        return $model->order_date;
+                    }
+
+                },
+                'options' => ['style'=>'width:100px;'],
             ],
 
+            //订单分类
             [
                     'attribute' => 'order_classify',
                     'value' => function($model) {
@@ -62,16 +64,87 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filter' => Type::getComboClassify(),
                     'options' => ['style'=>'width:100px;']
             ],
+
+            //收资料日
             [
-                'attribute' => 'order_date',
+                'attribute' => 'collect_date',
                 'value' => function($model) {
-                    if ($model->order_date != '0000-00-00') {
-                        return $model->order_date;
+                    if ($model->collect_date != '0000-00-00') {
+                        return $model->collect_date;
+                    }
+
+                },
+                'options' => ['style'=>'width:100px;']
+            ],
+
+            //送证日
+            [
+                'attribute' => 'deliver_date',
+                'value' => function($model) {
+                    if ($model->deliver_date != '0000-00-00') {
+                        return $model->deliver_date;
                     }
 
                 }
             ],
 
+            //入管日
+            [
+                'attribute' => 'entry_date',
+                'value' => function($model) {
+                    if ($model->entry_date != '0000-00-00') {
+                        return $model->entry_date;
+                    }
+                },
+                'options' => ['style'=>'width:100px;']
+            ],
+
+            //国家ID
+            [
+                'attribute' => 'cid',
+                'value' => 'country.cinfo',
+                'filter' => Country::find()
+                    ->select(['cinfo','id'])
+                    ->orderBy('id desc')
+                    ->indexBy('id')
+                    ->column(),
+                'options' => ['style'=>'width:95px'],
+            ],
+            //分类
+            [
+                 'attribute' => 'order_type',
+                 'filter' => Type::getComboType(),
+                 'value' => function($model) {
+                    $type = Type::getComboType();
+                    return $type[$model->order_type];
+                 },
+                'options' => ['style'=>'width:100px;']
+            ],
+            //接待销售
+            [
+                'attribute' => 'custom_servicer_id',
+                'format' => 'raw',
+                'value' => function($model){
+                    $servicer = $model->servicer;
+                    return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
+                },
+            ],
+            //办理人
+            [
+                'attribute' => 'transactor_id',
+                'format' => 'raw',
+                'value' => function($model) {
+                    $transactors = $model->relatedTransactor;
+
+                    $str = '';
+                    foreach ($transactors as $transactor) {
+                        $str .= Html::a($transactor['name'], \yii\helpers\Url::to(['transator/view', 'id' => $transactor['tid']])) . "&nbsp;";
+                    }
+                    return $str;
+                },
+                'options' => ['style'=>'width:125px;']
+            ],
+            //套餐类型
             [
                 'attribute' => 'combo_id',
                 'format' => 'raw',
@@ -84,47 +157,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 },
             ],
-
-            [
-                'attribute' => 'transactor_id',
-                'format' => 'raw',
-                'value' => function($model) {
-                   $transactors = $model->relatedTransactor;
-
-                   $str = '';
-                   foreach ($transactors as $transactor) {
-                       $str .= Html::a($transactor['name'], \yii\helpers\Url::to(['transator/view', 'id' => $transactor['tid']])) . "&nbsp;";
-                   }
-                   return $str;
-                },
-                'options' => ['style'=>'width:125px;']
-            ],
-
-            [
-                'attribute' => 'collect_date',
-                'value' => function($model) {
-                    if ($model->collect_date != '0000-00-00') {
-                        return $model->collect_date;
-                    }
-
-                }
-            ],
-            [
-                'attribute' => 'deliver_date',
-                'value' => function($model) {
-                    if ($model->deliver_date != '0000-00-00') {
-                        return $model->deliver_date;
-                    }
-
-                }
-            ],
+            'single_sum',
 
             //'entry_date',
             //'putsign_date',
             //'delivergood_date',
             //'back_addressee',
-            'back_telphone',
-            'deliver_order',
+            //'back_telphone',
+            //'deliver_order',
             [
                     'class' => 'yii\grid\ActionColumn',
                     'header' => '操作',

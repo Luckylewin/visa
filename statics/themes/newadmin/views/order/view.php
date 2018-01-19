@@ -168,7 +168,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->collect_date;
                    }
                    return '-';
-                }
+                },
+
             ],
             [
                 'attribute' => 'deliver_date',

@@ -18,7 +18,7 @@ class OrderQuery extends Order
     public function rules()
     {
         return [
-            [['id', 'pid', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person'], 'integer'],
+            [['id', 'pid',  'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person'], 'integer'],
             [['order_num', 'order_classify', 'order_type', 'order_date', 'transactor_name', 'balance_order', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'audit_status', 'cid'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
         ];
