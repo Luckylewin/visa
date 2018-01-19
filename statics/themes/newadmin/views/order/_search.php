@@ -15,77 +15,162 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'pid') ?>
 
-    <?= $form->field($model, 'order_classify') ?>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                条件搜索
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-12">
 
-    <?= $form->field($model, 'order_type') ?>
+                <div class="col-md-3">
 
-    <?= $form->field($model, 'order_date') ?>
+                    <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify()) ?>
 
-    <?php // echo $form->field($model, 'customer_id') ?>
+                    <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType()) ?>
 
-    <?php // echo $form->field($model, 'combo_id') ?>
+                    <?= $form->field($model, 'order_date')->textInput([
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:380px!important'
+                    ]) ?>
 
-    <?php // echo $form->field($model, 'custom_servicer_id') ?>
+                    <?= $form->field($model, 'customer_id') ?>
 
-    <?php // echo $form->field($model, 'transactor_id') ?>
+                    <?= $form->field($model, 'order_num') ?>
 
-    <?php // echo $form->field($model, 'transactor_name') ?>
+                </div>
 
-    <?php // echo $form->field($model, 'single_sum') ?>
+                <div class="col-md-3">
 
-    <?php // echo $form->field($model, 'total_person') ?>
+                    <?= $form->field($model, 'collect_date')->textInput([
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:380px!important'
+                    ]) ?>
 
-    <?php // echo $form->field($model, 'balance_order') ?>
+                    <?= $form->field($model, 'deliver_date')->textInput([
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:380px!important'
+                    ]) ?>
 
-    <?php // echo $form->field($model, 'balance_sum') ?>
+                    <?= $form->field($model, 'entry_date')->textInput([
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:380px!important'
+                    ]) ?>
 
-    <?php // echo $form->field($model, 'flushphoto_order') ?>
+                    <?= $form->field($model, 'putsign_date')->textInput([
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:380px!important'
+                    ]) ?>
 
-    <?php // echo $form->field($model, 'flushphoto_sum') ?>
+                    <?= $form->field($model, 'delivergood_date')->textInput([
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:380px!important'
+                    ]) ?>
 
-    <?php // echo $form->field($model, 'carrier_order') ?>
+                </div>
 
-    <?php // echo $form->field($model, 'carrier_sum') ?>
+                <div class="col-md-3">
 
-    <?php // echo $form->field($model, 'collect_date') ?>
+                    <?= $form->field($model, 'transactor_id') ?>
 
-    <?php // echo $form->field($model, 'deliver_date') ?>
+                    <?= $form->field($model, 'back_addressee') ?>
 
-    <?php // echo $form->field($model, 'entry_date') ?>
+                    <?= $form->field($model, 'back_telphone') ?>
 
-    <?php // echo $form->field($model, 'putsign_date') ?>
+                    <?= $form->field($model, 'deliver_order') ?>
 
-    <?php // echo $form->field($model, 'operator') ?>
+                    <label for="aa">提交查询</label>
+                    <div id="aa" class="form-group">
+                        <?= Html::submitButton('<i class="fa fa-search"></i>查询', ['class' => 'btn btn-primary']) ?>
+                        <?= Html::resetButton('<i class="fa fa-hand-stop-o"></i>重置', ['class' => 'btn btn-default']) ?>
+                    </div>
+                </div>
 
-    <?php // echo $form->field($model, 'back_address') ?>
-
-    <?php // echo $form->field($model, 'back_addressee') ?>
-
-    <?php // echo $form->field($model, 'back_telphone') ?>
-
-    <?php // echo $form->field($model, 'delivergood_date') ?>
-
-    <?php // echo $form->field($model, 'deliver_order') ?>
-
-    <?php // echo $form->field($model, 'delivercompany_id') ?>
-
-    <?php // echo $form->field($model, 'remark') ?>
-
-    <?php // echo $form->field($model, 'receipt_date') ?>
-
-    <?php // echo $form->field($model, 'pay_date') ?>
-
-    <?php // echo $form->field($model, 'audit_status') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+            </div>
+        </div>
     </div>
+
+
+
+
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php //$form->field($model, 'order_type') ?>
+
+<?php //$form->field($model, 'id') ?>
+
+<?php //$form->field($model, 'pid') ?>
+
+<?php // echo $form->field($model, 'customer_id') ?>
+
+<?php // echo $form->field($model, 'combo_id') ?>
+
+<?php // echo $form->field($model, 'custom_servicer_id') ?>
+
+<?php // echo $form->field($model, 'transactor_id') ?>
+
+<?php // echo $form->field($model, 'transactor_name') ?>
+
+<?php // echo $form->field($model, 'single_sum') ?>
+
+<?php // echo $form->field($model, 'total_person') ?>
+
+<?php // echo $form->field($model, 'balance_order') ?>
+
+<?php // echo $form->field($model, 'balance_sum') ?>
+
+<?php // echo $form->field($model, 'flushphoto_order') ?>
+
+<?php // echo $form->field($model, 'flushphoto_sum') ?>
+
+<?php // echo $form->field($model, 'carrier_order') ?>
+
+<?php // echo $form->field($model, 'carrier_sum') ?>
+
+<?php // echo $form->field($model, 'collect_date') ?>
+
+<?php // echo $form->field($model, 'deliver_date') ?>
+
+<?php // echo $form->field($model, 'entry_date') ?>
+
+<?php // echo $form->field($model, 'putsign_date') ?>
+
+<?php // echo $form->field($model, 'operator') ?>
+
+<?php // echo $form->field($model, 'back_address') ?>
+
+<?php // echo $form->field($model, 'back_addressee') ?>
+
+<?php // echo $form->field($model, 'back_telphone') ?>
+
+<?php // echo $form->field($model, 'delivergood_date') ?>
+
+<?php // echo $form->field($model, 'deliver_order') ?>
+
+<?php // echo $form->field($model, 'delivercompany_id') ?>
+
+<?php // echo $form->field($model, 'remark') ?>
+
+<?php // echo $form->field($model, 'receipt_date') ?>
+
+<?php // echo $form->field($model, 'pay_date') ?>
+
+<?php // echo $form->field($model, 'audit_status') ?>

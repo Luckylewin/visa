@@ -11,18 +11,22 @@ use common\models\Country;
 
 $this->title = '订单列表';
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
 ?>
+
+
 <div class="order-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
-    </p>
+
+
+    <?= $this->render('_search', ['model' => $searchModel]); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'pager'=>[
             //'options'=>['class'=>'hidden']//关闭自带分页
             'firstPageLabel'=>"第一页",
@@ -51,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
 
                 },
-                'options' => ['style'=>'width:100px;'],
+                'options' => ['style'=>'width:100px;']
             ],
 
             //订单分类
@@ -84,8 +88,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($model->deliver_date != '0000-00-00') {
                         return $model->deliver_date;
                     }
-
-                }
+                },
+                 'options' => ['style'=>'width:100px;']
             ],
 
             //入管日
@@ -128,6 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $servicer = $model->servicer;
                     return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
                 },
+                'options' => ['style'=>'width:100px;']
             ],
             //办理人
             [
@@ -196,5 +201,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 </div>
+
+<p>
+    <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
+</p>
 
 
