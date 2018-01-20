@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Order;
+use yii\helpers\ArrayHelper;
 
 /**
  * OrderQuery represents the model behind the search form about `common\models\Order`.
@@ -18,8 +19,8 @@ class OrderQuery extends Order
     public function rules()
     {
         return [
-            [['id', 'pid',  'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person'], 'integer'],
-            [['order_num', 'order_classify', 'order_type', 'order_date', 'transactor_name', 'balance_order', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'audit_status', 'cid'], 'safe'],
+            [['id', 'pid',  'combo_id', 'custom_servicer_id', 'total_person'], 'integer'],
+            [['customer_id', 'order_num', 'order_classify', 'order_type', 'order_date', 'transactor_name', 'balance_order', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'audit_status', 'cid'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
         ];
     }
@@ -51,6 +52,23 @@ class OrderQuery extends Order
             'pagination' => ['pageSize'=>8],
         ]);
 
+        if (isset($params['OrderQuery'])) {
+            $params['OrderQuery'] = array_filter($params['OrderQuery']);
+
+            //关联表处理
+            if (isset($params['OrderQuery']['transactor_id'])) {
+                 $transator = Transator::findOne(['name' => $params['OrderQuery']['transactor_id']]);
+                 if ($transator) {
+
+                     $ids = Yii::$app->db->createCommand('SELECT o_id FROM yii2_order_to_transactor WHERE t_id = '. $transator->tid)->queryAll();
+                     $ids = ArrayHelper::getColumn($ids, 'o_id');
+                     $ids = implode(',', $ids);
+                     $transator_name = $transator->name;
+                 }
+            }
+        }
+
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -62,7 +80,6 @@ class OrderQuery extends Order
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'pid' => $this->pid,
             'order_num' => $this->order_num,
             'order_date' => $this->order_date,
             'customer_id' => $this->customer_id,
@@ -82,21 +99,26 @@ class OrderQuery extends Order
             'receipt_date' => $this->receipt_date,
             'pay_date' => $this->pay_date,
             'cid' => $this->cid,
-            'order_classify' => $this->order_classify
+            'order_classify' => $this->order_classify,
+            'order_type' => $this->order_type,
         ]);
 
-        $query->andFilterWhere(['like', 'order_type', $this->order_type])
-            ->andFilterWhere(['like', 'transactor_name', $this->transactor_name])
-            ->andFilterWhere(['like', 'balance_order', $this->balance_order])
-            ->andFilterWhere(['like', 'flushphoto_order', $this->flushphoto_order])
+        $query->andFilterWhere(['like', 'transactor_name', $this->transactor_name])
             ->andFilterWhere(['like', 'carrier_order', $this->carrier_order])
             ->andFilterWhere(['like', 'operator', $this->operator])
             ->andFilterWhere(['like', 'back_address', $this->back_address])
             ->andFilterWhere(['like', 'back_addressee', $this->back_addressee])
             ->andFilterWhere(['like', 'back_telphone', $this->back_telphone])
-            ->andFilterWhere(['like', 'deliver_order', $this->deliver_order])
-            ->andFilterWhere(['like', 'remark', $this->remark])
-            ->andFilterWhere(['like', 'audit_status', $this->audit_status]);
+            ->andFilterWhere(['like', 'deliver_order', $this->deliver_order]);
+
+        if (isset($ids) && isset($transator_name)) {
+            $query->andOnCondition("id in ($ids)");
+            $this->transactor_id = $transator_name;
+        }
+
+        //$commandQuery = clone $query;
+        //echo $commandQuery->createCommand()->getRawSql();
+
 
         return $dataProvider;
     }

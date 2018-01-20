@@ -12,21 +12,28 @@ use common\models\Country;
 $this->title = '订单列表';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 ?>
 
+<?php \common\widgets\Cssblock::begin() ?>
+
+<?php \common\widgets\Cssblock::end() ?>
 
 <div class="order-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-
-
     <?= $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
+         //分页
         'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
+        'options' => [
+                "class" => "grid-view",
+                "style" =>"overflow:auto",
+                "id" => "grid"
+        ],
         'pager'=>[
             //'options'=>['class'=>'hidden']//关闭自带分页
             'firstPageLabel'=>"第一页",
@@ -35,6 +42,10 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
             'lastPageLabel'=>'最后一页',
         ],
         'columns' => [
+            [
+                "class" => "yii\grid\CheckboxColumn",
+                "name" => "id",
+            ],
             ['class' => 'yii\grid\SerialColumn'],
             //客人ID
             [
@@ -204,6 +215,35 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
 
 <p>
     <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
+    <?= Html::a("批量删除", "javascript:void(0);", ["class" => "btn btn-warning gridview"]) ?>
 </p>
 
+<?php \common\widgets\Jsblock::begin() ?>
+<script>
+    $(".gridview").on("click", function () {
+        var keys = $("#grid").yiiGridView("getSelectedRows");
+        if (keys.length < 1) {
+            layer.msg("没有选中任何数据");
+            return false;
+        }
+        var ids = {ids:keys};
+        layer.confirm('确定要删除勾选的选项吗', {
+            title: '<i class="fa fa-warning" style="color: #953b39"></i> 操作警告',
+            btn: ['确定','取消'] //按钮
+        },function(){
+            var url = '<?= \yii\helpers\Url::to(['order/delete-all']);?>';
+
+            $.post(url,ids,function(b){
+                if (b.code === '0') {
+                    window.location.href = '<?= \yii\helpers\Url::to(['order/index']);?>'
+                }else{
+                    layer.alert('删除失败', {
+                        icon: 2
+                    });
+                }
+            },'json');
+        });
+    });
+</script>
+<?php \common\widgets\Jsblock::end(); ?>
 

@@ -8,6 +8,7 @@ use common\models\OrderQuery;
 use common\models\Transator;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -108,6 +109,20 @@ class OrderController extends BaseController
         $res = $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDeleteAll()
+    {
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+        $post_ids = implode(',', Yii::$app->request->post('ids'));
+        $order = new Order();
+
+        $order->deleteAll("id in ($post_ids)");
+
+        //Yii::$app->session->setFlash('success', '操作成功');
+        $response->data = ['code'=>'0','msg'=>'success','data'=>''];
+        return $response->send();
     }
 
     /**

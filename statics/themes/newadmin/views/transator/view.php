@@ -30,10 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'tid',
             'name',
-            'sex',
+             [
+                        'attribute' => 'sex',
+                        'value' => function($model) {
+                         $sex = \common\models\Type::getSex();
+                         return $sex[$model->sex?$model->sex:1];
+                     }
+             ],
             'phone',
             'address',
             'identify',
+            'remark',
         ],
     ]) ?>
 
