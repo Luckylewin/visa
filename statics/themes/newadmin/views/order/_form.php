@@ -226,8 +226,10 @@ $tranlator = new Transator();
             </div>
 
             <?= $form->field($tranlator, 'remark')->textarea(['rows'=>3]) ?>
+            <input type="hidden" id="originRemark">
             <input type="hidden" id="isNewTransactor" value="1">
             <button class="btn btn-primary create-transator">添加</button>
+            <button class="btn btn-default cancel-create-transator">取消</button>
         </div>
     </div>
     <?php ActiveForm::end(); ?>
@@ -312,20 +314,25 @@ $tranlator = new Transator();
 
     //搜索建议
     var Suggest = $("#transator-name").bsSuggest({
+        //url :'http://suggest.taobao.com/sug?code=utf-8&extras=1&q=',
+        url:"<?= \yii\helpers\Url::to(['transator/query','q'=>''])?>",
         indexId: 1, //data.value 的第几个数据，作为input输入框的内容
         indexKey: 2, //data.value 的第几个数据，作为input输入框的内容
         allowNoKeyword: false, //是否允许无关键字时请求数据
         multiWord: true, //以分隔符号分割的多关键字支持
         separator: ",", //多关键字支持时的分隔符，默认为空格
         getDataMethod: "url", //获取数据的方式，总是从 URL 获取
+        effectiveFields: ["Id", "Keyword",'Count','Remark'],
+        delay: 100,
         effectiveFieldsAlias: {
             Id: "序号",
             Keyword: "办理人ID",
-            Count: "姓名"
+            Count: "姓名",
+            Remark : "个人信息"
         },
+        //UI
+        inputWarnColor: 'rgba(255,0,0,.1)',
         showHeader: true,
-        url:"<?= \yii\helpers\Url::to(['transator/query','q'=>''])?>",
-        //url :'http://suggest.taobao.com/sug?code=utf-8&extras=1&q=',
         /*优先从url ajax 请求 json 帮助数据，注意最后一个参数为关键字请求参数*/
         jsonp: 'callback',
         /*如果从 url 获取数据，并且需要跨域，则该参数必须设置*/
@@ -348,14 +355,21 @@ $tranlator = new Transator();
                 data.value.push({
                     "Id": (i + 1),
                     "Keyword": json.result[i][0],
-                    "Count": json.result[i][1]
+                    "Count"  : json.result[i][1],
+                    "Remark" : json.result[i][2]
                 });
             }
 
             return data;
         }
     }).on('onSetSelectValue', function (e, keyword, data) {
+        //console.log(keyword);
+        //console.log(data);
+        $('#transator-name').attr('disabled',true);
+        $('#transator-remark').val(data.Remark);
+        $('#originRemark').val(data.Remark);
         isNewTransactor = keyword.id;
+        //远程加载数据
     }).on('onUnsetSelectValue', function (e) {
         isNewTransactor = false;
     });
@@ -393,12 +407,21 @@ $tranlator = new Transator();
             title:'添加办理人信息',
             type: 1,
             skin: 'layui-layer-rim', //加上边框
-            area: ['450px', '330px'], //宽高
+            area: ['600px', '330px'], //宽高
             content: $('#add-transactor'),
             success: function(layero, index){
+                // 移除hide
                 $('.layui-layer-content').find('#add-transactor').removeClass('hide');
+                // 初始化
+                $('#transator-name').attr('disabled', false).val('');
+                $('#transator-remark').val('');
             }
         });
+    });
+
+    $('.cancel-create-transator').click(function() {
+       layer.closeAll();
+       return false;
     });
 
     //添加办理人
@@ -410,12 +433,18 @@ $tranlator = new Transator();
         var _csrf = '<?= Yii::$app->request->getCsrfToken()?>';
         var data = {Transator:{name:name,_csrf:_csrf,remark:remark}};
         var url = '<?= \yii\helpers\Url::to(['transator/create-by-ajax'])?>';
-        var tid= isNewTransactor;
+        var tid = isNewTransactor;
 
+        //如果不是新增办理人
         if ( tid !== false) {
             updateSelect2(tid, name);
             layer.closeAll();
             isNewTransactor = false;
+            if (remark !== $('#originRemark').val()) {
+                var _url = '<?= \yii\helpers\Url::to(['transator/update-by-ajax'])?>';
+                var _data = {Transator:{tid:tid,remark:remark,_csrf:_csrf}};
+                $.post(_url,_data);
+            }
             layer.msg('添加成功',{time:1000},function(){
                 layer.closeAll();
             });
@@ -424,7 +453,6 @@ $tranlator = new Transator();
 
         $.post(url, data, function(d){
             if(d.error === 'success') {
-                alert(2);
                 updateSelect2(d.data.tid, d.data.name);
                 layer.closeAll();
                 layer.msg('添加成功',{time:1300},function(){
@@ -442,9 +470,9 @@ $tranlator = new Transator();
     });
 
     //默认选中
-    var _selected = [];
+    var selected = [];
     for (var i in data) {
-        _selected.push(data[i].id);
+        selected.push(data[i].id);
     }
     var transactor_select = $('.js-example-basic-multiple');
     transactor_select.select2({
@@ -455,7 +483,7 @@ $tranlator = new Transator();
                 return "请点击右侧加号 :)";
             }
         }
-    }).val(_selected).trigger('change');
+    }).val(selected).trigger('change');
 
     transactor_select.on("change",function(e){
         // e 的话就是一个对象 然后需要什么就 “e.参数” 形式 进行获取

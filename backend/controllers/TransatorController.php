@@ -100,6 +100,15 @@ class TransatorController extends BaseController
 
     }
 
+    public function actionUpdateByAjax()
+    {
+        $model = new Transator();
+        $post = Yii::$app->request->post();
+        $transactor = $model->findOne(['tid' => $post[$model->formName()]['tid']]);
+        $transactor->remark = $post[$model->formName()]['remark'];
+        $transactor->update();
+    }
+
     //添加联系人查询
     public function actionQuery()
     {
@@ -108,13 +117,15 @@ class TransatorController extends BaseController
         $keyword = Yii::$app->getRequest()->get('q');
 
         try {
-            $data = Yii::$app->db->createCommand("SELECT tid, name from yii2_transator WHERE NAME LIKE '%$keyword%' LIMIT 100")->queryAll();
+            $data = Yii::$app->db->createCommand("SELECT tid, name,remark from yii2_transator WHERE NAME LIKE '%$keyword%' LIMIT 100")->queryAll();
         }catch (Exception $e) {
             $data = [];
         }
 
         array_walk($data, function (&$v,$k){
-            return $v = array_values($v);
+            $data = array_values($v);
+
+            return $v=$data;
         });
         $data = json_encode(['result'=>$data]);
 
