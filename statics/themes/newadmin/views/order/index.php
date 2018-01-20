@@ -55,14 +55,14 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             //淘宝订单号
             [
                     'attribute' => 'order_num',
-                    'label' => '淘宝订单号'
+                    'label' => '淘宝订单'
             ],
             //订单日期
             [
                 'attribute' => 'order_date',
                 'value' => function($model) {
                     if ($model->order_date != '0000-00-00') {
-                        return $model->order_date;
+                        return substr($model->order_date, 2);
                     }
 
                 },
@@ -85,7 +85,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 'attribute' => 'collect_date',
                 'value' => function($model) {
                     if ($model->collect_date != '0000-00-00') {
-                        return $model->collect_date;
+                        return substr($model->collect_date,2);
                     }
 
                 },
@@ -97,7 +97,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 'attribute' => 'deliver_date',
                 'value' => function($model) {
                     if ($model->deliver_date != '0000-00-00') {
-                        return $model->deliver_date;
+                        return substr($model->deliver_date,2);
                     }
                 },
                  'options' => ['style'=>'width:100px;']
@@ -108,7 +108,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 'attribute' => 'entry_date',
                 'value' => function($model) {
                     if ($model->entry_date != '0000-00-00') {
-                        return $model->entry_date;
+                        return substr($model->entry_date, 2);
                     }
                 },
                 'options' => ['style'=>'width:100px;']
@@ -173,7 +173,10 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     }
                 },
             ],
-            'single_sum',
+            [
+                    'attribute' => 'single_sum',
+                    'label' => '单项实收'
+            ],
 
             //'entry_date',
             //'putsign_date',

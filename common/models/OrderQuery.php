@@ -116,7 +116,7 @@ class OrderQuery extends Order
             $this->transactor_id = $transator_name;
         }
 
-        //$commandQuery = clone $query;
+        $commandQuery = clone $query;
         //echo $commandQuery->createCommand()->getRawSql();
 
 
