@@ -57,6 +57,6 @@ $allMenus = Menu::getMenu();
 <?php $this->endBody() ?>
 </body>
 </html>
-<script src="/statics/themes/newadmin/js/bootstrap.min.js?v=3.3.6"></script>
+<!--<script src="/statics/themes/newadmin/js/bootstrap.min.js?v=3.3.6"></script>-->
 <?php $this->endPage() ?>
 

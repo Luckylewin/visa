@@ -20,19 +20,19 @@ $tranlator = new Transator();
 ?>
 
 <?php \common\widgets\Cssblock::begin() ?>
-    <style>
-        .control-label {
-            min-width: 200px;
-        }
-        div.required label:after {
-            content: " *";
-            color: red;
-            vertical-align: middle;
-        }
-        #order-transactor_id{
-            max-height: 33px;
-        }
-    </style>
+<style>
+    .control-label {
+        min-width: 200px;
+    }
+    div.required label:after {
+        content: " *";
+        color: red;
+        vertical-align: middle;
+    }
+    #order-transactor_id{
+        max-height: 33px;
+    }
+</style>
 <?php \common\widgets\Cssblock::end() ?>
 
 <div class="order-form">
@@ -79,9 +79,9 @@ $tranlator = new Transator();
                 ])->label('国家'); ?>
 
                 <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), [
-                        'prompt' => '请选择',
-                        'prompt_val' => '0',
-                        'disabled' => $model->isNewRecord ? false : true
+                    'prompt' => '请选择',
+                    'prompt_val' => '0',
+                    'disabled' => $model->isNewRecord ? false : true
                 ]) ?>
 
 
@@ -164,10 +164,10 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'back_telphone')->textInput(['maxlength' => true]) ?>
 
                 <?= $form->field($model, 'delivergood_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:350px!important'
+                    'class' => 'form-control layer-date',
+                    'placeholder' => '请选择日期',
+                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                    'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
                 <?= $form->field($model, 'deliver_order')->textInput(['maxlength' => true]) ?>
@@ -212,23 +212,23 @@ $tranlator = new Transator();
     <!--   layer隐藏页面层     -->
 
     <div class="transactor hide" id="add-transactor">
-         <div style="width: 86%;margin: 10px auto">
-             <label for="taobao">姓名</label>
-             <div class="input-group" >
-                 <input onkeydown="if(event.keyCode === 13){return false;}" type="text" name="Transator[name]" placeholder="搜索或者新输入" class="form-control" id="transator-name">
-                 <div class="input-group-btn">
-                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                         <span class="caret"></span>
-                     </button>
-                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                     </ul>
-                 </div>
-             </div>
+        <div style="width: 86%;margin: 10px auto">
+            <label for="taobao">姓名</label>
+            <div class="input-group" >
+                <input onkeydown="if(event.keyCode === 13){return false;}" type="text" name="Transator[name]" placeholder="搜索或者新输入" class="form-control" id="transator-name">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    </ul>
+                </div>
+            </div>
 
-             <?= $form->field($tranlator, 'remark')->textarea(['rows'=>3]) ?>
-             <input type="hidden" id="isNewTransactor" value="1">
-             <button class="btn btn-primary create-transator">添加</button>
-         </div>
+            <?= $form->field($tranlator, 'remark')->textarea(['rows'=>3]) ?>
+            <input type="hidden" id="isNewTransactor" value="1">
+            <button class="btn btn-primary create-transator">添加</button>
+        </div>
     </div>
     <?php ActiveForm::end(); ?>
 
@@ -310,7 +310,6 @@ $tranlator = new Transator();
         }
     };
 
-
     //搜索建议
     var Suggest = $("#transator-name").bsSuggest({
         indexId: 1, //data.value 的第几个数据，作为input输入框的内容
@@ -326,21 +325,25 @@ $tranlator = new Transator();
         },
         showHeader: true,
         url:"<?= \yii\helpers\Url::to(['transator/query','q'=>''])?>",
+        //url :'http://suggest.taobao.com/sug?code=utf-8&extras=1&q=',
         /*优先从url ajax 请求 json 帮助数据，注意最后一个参数为关键字请求参数*/
         jsonp: 'callback',
         /*如果从 url 获取数据，并且需要跨域，则该参数必须设置*/
         processData: function (json) { // url 获取数据时，对数据的处理，作为 getData 的回调函数
+
             var i, len, data = {
                 value: []
             };
 
-            if (!json || !json.result || json.result.length === 0) {
+            if (!json || !json.result || json.result.length == 0) {
                 return false;
             }
 
             //console.log(json);
             len = json.result.length;
-
+            if (len === 0) {
+                isNewTransactor = false;
+            }
             for (i = 0; i < len; i++) {
                 data.value.push({
                     "Id": (i + 1),
@@ -348,7 +351,7 @@ $tranlator = new Transator();
                     "Count": json.result[i][1]
                 });
             }
-            console.log(data);
+
             return data;
         }
     }).on('onSetSelectValue', function (e, keyword, data) {
@@ -412,6 +415,7 @@ $tranlator = new Transator();
         if ( tid !== false) {
             updateSelect2(tid, name);
             layer.closeAll();
+            isNewTransactor = false;
             layer.msg('添加成功',{time:1000},function(){
                 layer.closeAll();
             });
@@ -420,6 +424,7 @@ $tranlator = new Transator();
 
         $.post(url, data, function(d){
             if(d.error === 'success') {
+                alert(2);
                 updateSelect2(d.data.tid, d.data.name);
                 layer.closeAll();
                 layer.msg('添加成功',{time:1300},function(){
@@ -437,9 +442,9 @@ $tranlator = new Transator();
     });
 
     //默认选中
-    var selected = [];
+    var _selected = [];
     for (var i in data) {
-        selected.push(data[i].id);
+        _selected.push(data[i].id);
     }
     var transactor_select = $('.js-example-basic-multiple');
     transactor_select.select2({
@@ -450,7 +455,7 @@ $tranlator = new Transator();
                 return "请点击右侧加号 :)";
             }
         }
-    }).val(selected).trigger('change');
+    }).val(_selected).trigger('change');
 
     transactor_select.on("change",function(e){
         // e 的话就是一个对象 然后需要什么就 “e.参数” 形式 进行获取
@@ -459,8 +464,3 @@ $tranlator = new Transator();
 </script>
 
 <?php \common\widgets\Jsblock::end()?>
-
-
-
-
-
