@@ -28,9 +28,15 @@ use yii\widgets\ActiveForm;
 
                 <div class="col-md-3">
 
-                    <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify()) ?>
+                    <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify(),[
+                        'prompt' => '请选择',
+                        'prompt_val' => '0',
+                    ]) ?>
 
-                    <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType()) ?>
+                    <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), [
+                        'prompt' => '请选择',
+                        'prompt_val' => '0',
+                    ]) ?>
 
                     <?= $form->field($model, 'order_date')->textInput([
                         'class' => 'form-control layer-date',

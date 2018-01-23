@@ -113,7 +113,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 },
                 'options' => ['style'=>'width:100px;']
             ],
-            
+
             //分类
             [
                  'attribute' => 'order_type',

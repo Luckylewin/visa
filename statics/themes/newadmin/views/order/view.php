@@ -285,5 +285,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        &nbsp;&nbsp;
+        <?= Html::button('返回', [
+                'onclick' => 'history.go(-1)',
+                'class' => 'btn btn-default'
+        ])?>
+
     </p>
 </div>

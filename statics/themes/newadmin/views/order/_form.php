@@ -61,7 +61,10 @@ $tranlator = new Transator();
         <div class="panel-body">
             <div class="col-md-3">
 
-                <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify()) ?>
+                <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify(),[
+                    'prompt' => '请选择产品',
+                    'prompt_val' => '0',
+                ]) ?>
 
                 <?= $form->field($model, 'order_date')->textInput([
                     'class' => 'form-control layer-date',
@@ -75,7 +78,7 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'order_num')->textInput() ?>
 
                 <?= $form->field($model, 'pid')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Product::find()->orderBy('id desc')->all(), 'id' ,'name'),[
-                    'disabled' => $model->isNewRecord ? false : true,
+                    'disabled' => $model->isNewRecord ? false : false,
                     'prompt' => '请选择产品',
                     'prompt_val' => '0',
                 ])->label('产品'); ?>
@@ -83,7 +86,7 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), [
                     'prompt' => '请选择分类',
                     'prompt_val' => '0',
-                    'disabled' => $model->isNewRecord ? false : true
+                    'disabled' => $model->isNewRecord ? false : false
                 ]) ?>
 
 
@@ -91,7 +94,7 @@ $tranlator = new Transator();
                     <?= $form->field($model, 'combo_id')->dropDownList([], ['prompt' => '请选择套餐'])->label('套餐'); ?>
                 <?php else: ?>
                     <?= $form->field($model, 'combo_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Snapshot::findAll(['id'=>$model->combo_id]),'id','combo_name'), [
-                        'disabled' => $model->isNewRecord ? false : true
+                        'disabled' => $model->isNewRecord ? false : false
                     ])->label('当前套餐'); ?>
                 <?php endif; ?>
 

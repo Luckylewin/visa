@@ -146,17 +146,30 @@ class Order extends \yii\db\ActiveRecord
        ];
     }
 
+
+
     public function beforeSave($insert)
     {
        if (parent::beforeSave($insert)) {
            unset($this->transactor_id);
+
+           //记录操作用户
+           $this->operator_id = Yii::$app->getUser()->id;
+
+
            if ($this->isNewRecord) {
-               //记录操作用户
-               $this->operator_id = Yii::$app->getUser()->id;
                //记录快照
                $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
                if (!is_null($snapShot)) {
                    $this->combo_id = $snapShot->id;
+               }
+           }else {
+               $snapShot = Snapshot::findOne(['id' => (int)($this->combo_id), 'is_valid' => '1']);
+               if (!$snapShot) {
+                   $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
+                   if (!is_null($snapShot)) {
+                       $this->combo_id = $snapShot->id;
+                   }
                }
            }
 
