@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-01-19 16:37:09
+Date: 2018-01-23 15:55:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -193,7 +193,7 @@ CREATE TABLE `yii2_combo` (
   PRIMARY KEY (`combo_id`),
   KEY `ppid` (`product_id`) USING BTREE,
   CONSTRAINT `combo_product_id` FOREIGN KEY (`product_id`) REFERENCES `yii2_product` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=39328 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=39336 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_combo
@@ -210,7 +210,7 @@ INSERT INTO `yii2_combo` VALUES ('39318', '555/1', '', '11.000', '3', '1', '1516
 INSERT INTO `yii2_combo` VALUES ('39319', '223/3', '', '34.000', '1', '2', '1516208109', '1516208109', '1', '67633');
 INSERT INTO `yii2_combo` VALUES ('39320', '330/5', '', '444.000', '2', '2', '1516208118', '1516208118', '1', '67633');
 INSERT INTO `yii2_combo` VALUES ('39321', '666/3', '', '222.000', '3', '2', '1516208130', '1516208130', '1', '67633');
-INSERT INTO `yii2_combo` VALUES ('39322', '333/3', '', '222.000', '1', '3', '1516208148', '1516208148', '1', '67633');
+INSERT INTO `yii2_combo` VALUES ('39322', '333/2', '', '222.000', '1', '3', '1516208148', '1516690602', '1', '67633');
 INSERT INTO `yii2_combo` VALUES ('39323', '555/3', '', '333.000', '2', '3', '1516208160', '1516208160', '1', '67633');
 INSERT INTO `yii2_combo` VALUES ('39324', '666/1', '', '555.000', '3', '3', '1516208171', '1516208171', '1', '67633');
 INSERT INTO `yii2_combo` VALUES ('39325', '788/10', '', '445.000', '1', '3', '1516209171', '1516209171', '1', '67632');
@@ -325,7 +325,6 @@ INSERT INTO `yii2_menu` VALUES ('36', '0', '套餐管理', 'combo/index', 'fa-co
 INSERT INTO `yii2_menu` VALUES ('37', '36', '套餐管理', 'combo/index', 'fa-coffee', '1', '0');
 INSERT INTO `yii2_menu` VALUES ('38', '0', '订单管理', 'order/index', 'fa-dollar', '1', '2');
 INSERT INTO `yii2_menu` VALUES ('39', '38', '订单列表', 'order/index', 'fa-dollar', '1', '0');
-INSERT INTO `yii2_menu` VALUES ('40', '0', '国家管理', 'country/index', 'fa-flag', '1', '12');
 INSERT INTO `yii2_menu` VALUES ('41', '40', '国家列表', 'country/index', 'fa-flag', '1', '1');
 INSERT INTO `yii2_menu` VALUES ('42', '0', '客服管理', 'servicer/index', 'fa-users', '0', '14');
 INSERT INTO `yii2_menu` VALUES ('43', '42', '客服列表', 'servicer/index', 'fa-users', '1', '1');
@@ -394,12 +393,13 @@ CREATE TABLE `yii2_order` (
   `updated_at` int(10) NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`),
   KEY `order_deliverycompany_id` (`delivercompany`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yii2_order
 -- ----------------------------
-INSERT INTO `yii2_order` VALUES ('29', '0', '45345345345', '1', '2', '0000-00-00', 'zy2010816', '12', '1', '', '666.00', '1', '', '0.000', '', '0.00', '', '0.00', '0000-00-00', '0000-00-00', '0000-00-00', '0000-00-00', '1', '', '张旭', '18040631522', '0000-00-00', '2342342', '顺风快递', '', '0000-00-00', '0000-00-00', '1', '252', '1516347059', '1516351009');
+INSERT INTO `yii2_order` VALUES ('31', '67633', '435345', '1', '2', '2018-01-23', 'zy2010816', '12', '1', '', '555.00', '1', '', '0.000', '', '0.00', '', '0.00', '1970-01-01', '1970-01-01', '1970-01-01', '1970-01-01', '1', '', '王', '18040631522', '1970-01-01', '234342', '顺风快递', '', '1970-01-01', '1970-01-01', '1', '0', '1516690307', '1516692049');
+INSERT INTO `yii2_order` VALUES ('32', '67632', '353453453', '3', '2', '2018-01-23', 'zy2010816', '5', '2', '', '393.00', '1', '', '0.000', '', '0.00', '', '0.00', '1970-01-01', '1970-01-01', '1970-01-01', '1970-01-01', '1', '', '张旭', '18040631522', '1970-01-01', '324234324', '顺风快递', '', '1970-01-01', '1970-01-01', '1', '0', '1516693301', '1516693301');
 
 -- ----------------------------
 -- Table structure for yii2_order_product
@@ -429,9 +429,15 @@ CREATE TABLE `yii2_order_to_transactor` (
 -- Records of yii2_order_to_transactor
 -- ----------------------------
 INSERT INTO `yii2_order_to_transactor` VALUES ('27', '73');
+INSERT INTO `yii2_order_to_transactor` VALUES ('30', '76');
 INSERT INTO `yii2_order_to_transactor` VALUES ('29', '74');
 INSERT INTO `yii2_order_to_transactor` VALUES ('28', '74');
 INSERT INTO `yii2_order_to_transactor` VALUES ('28', '75');
+INSERT INTO `yii2_order_to_transactor` VALUES ('30', '75');
+INSERT INTO `yii2_order_to_transactor` VALUES ('30', '74');
+INSERT INTO `yii2_order_to_transactor` VALUES ('31', '76');
+INSERT INTO `yii2_order_to_transactor` VALUES ('31', '74');
+INSERT INTO `yii2_order_to_transactor` VALUES ('32', '74');
 
 -- ----------------------------
 -- Table structure for yii2_product
@@ -441,17 +447,14 @@ CREATE TABLE `yii2_product` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '产品id',
   `name` varchar(255) NOT NULL,
   `cost` decimal(10,2) NOT NULL COMMENT '支出成本',
-  `country_id` smallint(4) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_country_id` (`country_id`),
-  CONSTRAINT `product_country_id` FOREIGN KEY (`country_id`) REFERENCES `yii2_country` (`id`) ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=67634 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=67637 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_product
 -- ----------------------------
-INSERT INTO `yii2_product` VALUES ('67632', '菲律宾签证', '0.00', '251');
-INSERT INTO `yii2_product` VALUES ('67633', '泰国签证', '0.00', '252');
+INSERT INTO `yii2_product` VALUES ('67632', '菲律宾签证', '0.00');
+INSERT INTO `yii2_product` VALUES ('67633', '泰国签证', '0.00');
 
 -- ----------------------------
 -- Table structure for yii2_product_combo
@@ -478,7 +481,7 @@ CREATE TABLE `yii2_servicer` (
   `name` varchar(50) NOT NULL COMMENT '客服名字',
   `tb_servicer_id` varchar(30) DEFAULT NULL COMMENT '淘宝客服id',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yii2_servicer
@@ -504,17 +507,20 @@ INSERT INTO `yii2_session` VALUES ('53pac5u5kn9u6mp5kkaqagl977', '1516185566', 0
 INSERT INTO `yii2_session` VALUES ('7io8gv784mehmv0dqtfifbr3g2', '1516184089', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('7ruekmm0d00rjumdr9v98d22d7', '1516034922', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B);
 INSERT INTO `yii2_session` VALUES ('8br30qogg1dj2n22th0jqcl3k1', '1516242942', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B);
+INSERT INTO `yii2_session` VALUES ('8chra4kugjdsilsakp97sv2ls2', '1516695519', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
+INSERT INTO `yii2_session` VALUES ('8pn4o1cqqesi6p9e6fiqcfq3s4', '1516457185', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('aijpnudqhtpr8pi78st6qpqfp1', '1516272953', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('b2jslmj7a8s18rm8q0r6lh11o2', '1516185924', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A303B);
 INSERT INTO `yii2_session` VALUES ('ejpj9ct17u9b1df626qnbp88m7', '1516186497', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('fphem2hpu3n1ueove7mq7retk5', '1516185735', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('gqfnu7v9eafs9lluu1j3dp1rm6', '1516185831', 0x5F5F666C6173687C613A303A7B7D);
 INSERT INTO `yii2_session` VALUES ('gr1igne5trh39u4lfmaosdgeh5', '1516210896', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
-INSERT INTO `yii2_session` VALUES ('idargovfon3cdq73l721veg084', '1516352384', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
+INSERT INTO `yii2_session` VALUES ('idargovfon3cdq73l721veg084', '1516360016', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('j388lm6clfn73l1gpv96gmtfk6', '1516185506', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A3235303A222F61646D696E2E7068703F6E73756B65793D3752796F7A6534544A6D474E434434797558253242375077324E6536554E43735A65364B2532427663304865644B47564D683077643057376172736E5869307751384B31344D4A58654644675874386C7A584F6A76746B656F6246413238795475647A4958484265355544253246484B5462587565394E6C384B57493461656D61585078743825324241313577622532427175704A373961595748572532467044374735515677444B3573574B504475496A483465694B53666A6D7A68623268653550384A336D714258536543354A566953765665744C303346636D6557786A7951253344253344223B);
 INSERT INTO `yii2_session` VALUES ('lhvl17vlureu3c69mf5g58hej2', '1516352451', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('m7opu5pt4q7gm80771mvocj3j5', '1516185766', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('n04f4ukpiij9lcg7n9dsgmpdg6', '1516186425', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A313B);
+INSERT INTO `yii2_session` VALUES ('neddt6hlqnmkd47vi5pajk1964', '1516532684', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A32363A222F61646D696E2E7068703F723D696E6465782532466C6F67696E223B);
 INSERT INTO `yii2_session` VALUES ('nlvsl8ec5q2jlnf2bcfronf1q3', '1516186324', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('nn1ss1f3jt0n39fgfo1gbbfv01', '1516180548', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('p0c9qlmt7kfd2msihciu0t4d34', '1516185613', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
@@ -531,33 +537,40 @@ CREATE TABLE `yii2_snapshot` (
   `combo_cost` decimal(10,3) NOT NULL COMMENT '支出成本',
   `combo_classify` char(1) NOT NULL COMMENT '订单分类',
   `combo_type` char(1) NOT NULL COMMENT '类型',
-  `combo_country` varchar(50) NOT NULL COMMENT '国家',
   `snap_combo_id` int(10) NOT NULL COMMENT '快照ID',
   `is_valid` char(1) DEFAULT '1' COMMENT '是否有效',
+  `combo_product` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yii2_snapshot
 -- ----------------------------
-INSERT INTO `yii2_snapshot` VALUES ('4', '298/5', '200.000', '1', '1', '菲律宾', '39310', '1');
-INSERT INTO `yii2_snapshot` VALUES ('5', '398/3', '300.000', '1', '2', '菲律宾', '39311', '1');
-INSERT INTO `yii2_snapshot` VALUES ('6', '520/2', '400.000', '1', '3', '菲律宾', '39312', '1');
-INSERT INTO `yii2_snapshot` VALUES ('7', '330/5', '230.000', '2', '1', '菲律宾', '39313', '1');
-INSERT INTO `yii2_snapshot` VALUES ('8', '430/3', '330.000', '2', '2', '菲律宾', '39314', '1');
-INSERT INTO `yii2_snapshot` VALUES ('11', '333/3', '11.000', '1', '1', '泰国', '39316', '1');
-INSERT INTO `yii2_snapshot` VALUES ('10', '540/1', '330.000', '2', '3', '菲律宾', '39315', '1');
-INSERT INTO `yii2_snapshot` VALUES ('12', '555/5', '33.000', '1', '2', '泰国', '39317', '1');
-INSERT INTO `yii2_snapshot` VALUES ('13', '555/1', '11.000', '1', '3', '泰国', '39318', '1');
-INSERT INTO `yii2_snapshot` VALUES ('14', '223/3', '34.000', '2', '1', '泰国', '39319', '1');
-INSERT INTO `yii2_snapshot` VALUES ('15', '330/5', '444.000', '2', '2', '泰国', '39320', '1');
-INSERT INTO `yii2_snapshot` VALUES ('16', '666/3', '222.000', '2', '3', '泰国', '39321', '1');
-INSERT INTO `yii2_snapshot` VALUES ('17', '333/3', '222.000', '3', '1', '泰国', '39322', '1');
-INSERT INTO `yii2_snapshot` VALUES ('18', '555/3', '333.000', '3', '2', '泰国', '39323', '1');
-INSERT INTO `yii2_snapshot` VALUES ('19', '666/1', '555.000', '3', '3', '泰国', '39324', '1');
-INSERT INTO `yii2_snapshot` VALUES ('20', '788/10', '445.000', '3', '1', '菲律宾', '39325', '1');
-INSERT INTO `yii2_snapshot` VALUES ('21', '888/5', '666.000', '3', '2', '菲律宾', '39326', '1');
-INSERT INTO `yii2_snapshot` VALUES ('22', '889/2', '777.000', '3', '3', '菲律宾', '39327', '1');
+INSERT INTO `yii2_snapshot` VALUES ('4', '298/5', '200.000', '1', '1', '39310', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('5', '398/3', '300.000', '1', '2', '39311', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('6', '520/2', '400.000', '1', '3', '39312', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('7', '330/5', '230.000', '2', '1', '39313', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('8', '430/3', '330.000', '2', '2', '39314', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('11', '333/3', '11.000', '1', '1', '39316', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('10', '540/1', '330.000', '2', '3', '39315', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('12', '555/5', '33.000', '1', '2', '39317', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('13', '555/1', '11.000', '1', '3', '39318', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('14', '223/3', '34.000', '2', '1', '39319', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('15', '330/5', '444.000', '2', '2', '39320', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('16', '666/3', '222.000', '2', '3', '39321', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('17', '333/3', '222.000', '3', '1', '39322', '0', '');
+INSERT INTO `yii2_snapshot` VALUES ('18', '555/3', '333.000', '3', '2', '39323', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('19', '666/1', '555.000', '3', '3', '39324', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('20', '788/10', '445.000', '3', '1', '39325', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('21', '888/5', '666.000', '3', '2', '39326', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('22', '889/2', '777.000', '3', '3', '39327', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('23', '11', '1.000', '1', '1', '39332', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('24', '1', '1.000', '1', '1', '39333', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('25', '1', '1.000', '1', '1', '39334', '1', '');
+INSERT INTO `yii2_snapshot` VALUES ('26', '333/2', '222.000', '3', '1', '39322', '1', '泰国签证');
+INSERT INTO `yii2_snapshot` VALUES ('27', '233/3', '210.000', '1', '2', '39335', '0', '越南签证');
+INSERT INTO `yii2_snapshot` VALUES ('28', '233/2', '210.000', '1', '2', '39335', '0', '越南签证');
+INSERT INTO `yii2_snapshot` VALUES ('29', '233/3', '210.000', '1', '2', '39335', '1', '越南签证');
 
 -- ----------------------------
 -- Table structure for yii2_test
@@ -581,7 +594,7 @@ DROP TABLE IF EXISTS `yii2_transator`;
 CREATE TABLE `yii2_transator` (
   `tid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL COMMENT '姓名',
-  `sex` char(1) NOT NULL DEFAULT '' COMMENT '性别',
+  `sex` char(1) NOT NULL DEFAULT '1' COMMENT '性别',
   `phone` varchar(32) NOT NULL DEFAULT '' COMMENT '手机号',
   `address` varchar(255) NOT NULL DEFAULT '' COMMENT '地址',
   `identify` varchar(30) NOT NULL DEFAULT '' COMMENT '身份证',
@@ -591,14 +604,14 @@ CREATE TABLE `yii2_transator` (
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`tid`),
   KEY `nameindex` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_transator
 -- ----------------------------
-INSERT INTO `yii2_transator` VALUES ('74', '张旭', '', '', '', '', '1', '1516430261', '0', '');
+INSERT INTO `yii2_transator` VALUES ('74', '张旭', '1', '', '', '', '1', '1516430261', '0', '');
 INSERT INTO `yii2_transator` VALUES ('75', '黄晓霞', '', '', '', '', '1', '1516434366', '0', '');
-INSERT INTO `yii2_transator` VALUES ('76', '周杰伦', '', '', '', '', '0', '1516435299', '0', '');
+INSERT INTO `yii2_transator` VALUES ('76', '杨杰', '1', '', '', '', '0', '1516435299', '0', '故事');
 
 -- ----------------------------
 -- Table structure for yii2_user
