@@ -113,18 +113,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 },
                 'options' => ['style'=>'width:100px;']
             ],
-
-            //国家ID
-            [
-                'attribute' => 'cid',
-                'value' => 'country.cinfo',
-                'filter' => Country::find()
-                    ->select(['cinfo','id'])
-                    ->orderBy('id desc')
-                    ->indexBy('id')
-                    ->column(),
-                'options' => ['style'=>'width:95px'],
-            ],
+            
             //分类
             [
                  'attribute' => 'order_type',
