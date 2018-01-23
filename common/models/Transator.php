@@ -21,6 +21,8 @@ use yii\helpers\ArrayHelper;
  */
 class Transator extends \yii\db\ActiveRecord
 {
+    public $historyOrder;
+
     /**
      * @inheritdoc
      */
@@ -122,5 +124,20 @@ class Transator extends \yii\db\ActiveRecord
                  }
             }
         }
+    }
+
+    //办理人 多对多关系
+    public function getRelatedOrder()
+    {
+        $sql = "SELECT o_id FROM  yii2_transator AS b LEFT JOIN yii2_order_to_transactor AS a  ON  a.t_id = b.tid WHERE a.t_id = " . $this->tid;
+        $data = Yii::$app->db->createCommand($sql)->queryAll();
+        if (!empty($data)) {
+            $oid = ArrayHelper::getColumn($data, 'o_id');
+            $oid = implode(',', $oid);
+
+           return $data = Order::find()->where("id in ($oid)")->select('id,order_num,order_date')->all();
+
+        }
+
     }
 }

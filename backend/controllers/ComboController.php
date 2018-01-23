@@ -97,9 +97,9 @@ class ComboController extends BaseController
      * @return mixed
      * @throws
      */
-    public function actionDelete()
+    public function actionDelete($id)
     {
-        $combo = $this->findModel(Yii::$app->request->post('id'));
+        $combo = $this->findModel($id);
         $product_id = $combo->product->id;
         $combo->delete();
 

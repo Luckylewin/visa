@@ -20,12 +20,32 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             'name',
-            'sex',
-            'phone',
+             [
+                     'attribute' => 'sex',
+                     'filter' => \common\models\Type::getSex(),
+                     'value' => function($model) {
+                        if (isset($model->sex)) {
+                            $type = \common\models\Type::getSex();
+                            return isset($type[$model->sex]) ?  $type[$model->sex] : null;
+                        }
+                     },
+                     'options' => ['style'=>'width:100px;']
+             ],
+             [
+                     'attribute' => 'phone',
+                     'options' => ['style'=>'width:200px;']
+             ],
             'address',
             'identify',
-            'remark',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'attribute' => 'remark',
+                'options' => ['style'=>'width:250px;']
+            ],
+            [
+                    'header' => '操作',
+                    'class' => 'yii\grid\ActionColumn',
+                    'options' => ['style'=>'width:100px;']
+            ],
         ],
     ]); ?>
 </div>

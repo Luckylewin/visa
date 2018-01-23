@@ -3,15 +3,12 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
+use yii\web\AssetBundle as AppAsset;
 use yii\widgets\Breadcrumbs;
-/*use yii\web\AssetBundle as AppAsset;*/
 use common\widgets\Alert;
 use backend\models\Menu;
 
-/*AppAsset::register($this);*/
+AppAsset::register($this);
 $allMenus = Menu::getMenu();
 ?>
 <?php $this->beginPage() ?>
@@ -23,7 +20,6 @@ $allMenus = Menu::getMenu();
     <?= Html::csrfMetaTags() ?>
     <title><?= Yii::$app->params['basic']['sitename'].' - '.Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <!--<link href="/statics/themes/newadmin/css/bootstrap.min.css" rel="stylesheet">-->
     <link href="/statics/themes/newadmin/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="/statics/themes/newadmin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="/statics/themes/newadmin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
@@ -57,6 +53,5 @@ $allMenus = Menu::getMenu();
 <?php $this->endBody() ?>
 </body>
 </html>
-<!--<script src="/statics/themes/newadmin/js/bootstrap.min.js?v=3.3.6"></script>-->
 <?php $this->endPage() ?>
 

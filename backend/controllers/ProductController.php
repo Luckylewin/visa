@@ -164,10 +164,10 @@ class ProductController extends BaseController
     }
 
     /**
-     * @param $country_id
+     * @param $product_id
      * @param $type
      */
-    public function actionMyProduct($country_id, $type)
+    public function actionMyProduct($product_id, $type)
     {
         $this->layout = false;
         $response = Yii::$app->response;
@@ -176,7 +176,7 @@ class ProductController extends BaseController
                 ->select('c.*')
                 ->from('yii2_product AS a')
                 ->leftJoin('yii2_combo AS c','c.product_id = a.id')
-                ->where(['country_id'=>$country_id,'combo_type'=>$type])
+                ->where(['product_id'=>$product_id,'combo_type'=>$type])
                 ->orderBy('combo_type ASC')
                 ->all();
 

@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Servicer */
 
-$this->title = 'Create Servicer';
-$this->params['breadcrumbs'][] = ['label' => 'Servicers', 'url' => ['index']];
+$this->title = '添加客服';
+$this->params['breadcrumbs'][] = ['label' => '客服列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="servicer-create">

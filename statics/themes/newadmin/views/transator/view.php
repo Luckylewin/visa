@@ -9,11 +9,12 @@ use yii\widgets\DetailView;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => '办理人列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+
 ?>
 <div class="transator-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a('编辑', ['update', 'id' => $model->tid], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->tid], [
@@ -28,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'tid',
             'name',
              [
                         'attribute' => 'sex',
@@ -41,7 +41,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'address',
             'identify',
             'remark',
+            [
+                    'attribute' => 'historyOrder',
+                    'format' => 'raw',
+                    'value' => function($model) {
+                        $myOrder = $model->getRelatedOrder();
+                        if (!empty($myOrder)) {
+                            $str = "";
+                            foreach ($myOrder as $order) {
+                               $str .= Html::a( $order->order_date . " 订单号" . $order->order_num, \yii\helpers\Url::to(['order/view','id'=>$order->id])) . "<br/>";
+                            }
+                            return $str;
+                        }
+                    },
+                    'label' => '历史订单'
+            ]
         ],
     ]) ?>
-
 </div>

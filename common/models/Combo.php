@@ -133,7 +133,7 @@ class Combo extends ActiveRecord
         $snapShot->combo_classify = $this->combo_classify;
         $snapShot->combo_type = $this->combo_type;
         $snapShot->snap_combo_id = $this->combo_id;
-        $snapShot->combo_country = $this->product->country->cinfo;
+        $snapShot->combo_product = $this->product->name;
         $snapShot->is_valid = 1;
         $snapShot->save();
         return true;

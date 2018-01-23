@@ -14,9 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="product-index">
     <?php  echo  GridView::widget([
             'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
             'tableOptions' => ['class' => 'table table-bordered'],
-            'layout' => '{items}{summary}{pager}',
+            'layout' => '{items}{pager}',
             'pager'=>[
                 //'options'=>['class'=>'hidden']//关闭自带分页
                 'firstPageLabel'=>"第一页",
@@ -25,29 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'lastPageLabel'=>'最后一页',
             ],
             'columns' => [
-                /*[
-                    'class' => 'yii\grid\SerialColumn',
-                    'header' => '序号',
-                    'options' => ['width'=>'50px;']
-                ],*/
-                [
-                    'attribute' => 'country_id',
-                    'value'     => 'country.cinfo',
-                    'filter'    => \common\models\Country::find()
-                        ->select(['cinfo','id'])
-                        ->orderBy('id desc')
-                        ->indexBy('id')
-                        ->column(),
-                    'options'   => ['style'=>'width:250px;text-align:center' ]
-                ],
                 'name',
-                /* [
-                     'attribute' => 'type',
-                     'value' =>  function ($model,$key,$index,$column) {
-                                     return $model->type==1?'男':'女';
-                                 },
-                     'filter' => array('1'=>'正常',2=>'加急',3=>'特急')
-                 ],*/
 
                 [
                     'header' => '操作',
@@ -85,17 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ];
                             return Html::a(Yii::t('backend', 'Delete'), $url, $options);
                         },
-                        /*//发布套餐按钮
-                        'combo' => function ($url, $model, $key) {
-                            $url = \yii\helpers\Url::toRoute(['combo/index', 'id' => $key]);
-                            $options = [
-                                'title' => Yii::t('backend', 'ComboIndex'),
-                                'aria-lable' => Yii::t('yii', 'ComboIndex'),
-                                'data-pjax' => '0',
-                                'class' => 'btn btn-info btn-sm'
-                            ];
-                            return Html::a(Yii::t('backend', 'ComboIndex'), $url, $options);
-                        }*/
+
                     ]
                 ],
             ],

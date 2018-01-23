@@ -74,12 +74,14 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'order_num')->textInput() ?>
 
-                <?= $form->field($model, 'cid')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::find()->orderBy('id desc')->all(), 'id' ,'cinfo'),[
-                    'disabled' => $model->isNewRecord ? false : true
-                ])->label('国家'); ?>
+                <?= $form->field($model, 'pid')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Product::find()->orderBy('id desc')->all(), 'id' ,'name'),[
+                    'disabled' => $model->isNewRecord ? false : true,
+                    'prompt' => '请选择产品',
+                    'prompt_val' => '0',
+                ])->label('产品'); ?>
 
                 <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), [
-                    'prompt' => '请选择',
+                    'prompt' => '请选择分类',
                     'prompt_val' => '0',
                     'disabled' => $model->isNewRecord ? false : true
                 ]) ?>
@@ -374,29 +376,39 @@ $tranlator = new Transator();
         isNewTransactor = false;
     });
 
+    var select = {
+        change:function(){
+            var product_id = $('#order-pid').val();
+            var order_type = $('#order-order_type').val();
+            var url = '<?= \yii\helpers\Url::to(['product/my-product']);?>';
+            var data = {product_id:product_id,type:order_type};
+
+            $.getJSON(url, data, function(back) {
+                var select = $('#order-combo_id');
+                if (back.error === 'success') {
+                    select.empty();
+                    var str = '';
+                    for (var i in back.value) {
+                        if ( typeof (back.value[i].combo_id) !== 'undefined') {
+                            str += ('<option value="' + back.value[i].combo_id + '">' +  back.value[i].combo_name + '</option>');
+                        }
+                    }
+                    select.append(str);
+                }else {
+                    select.empty();
+                    select.append('<option>该分类没有套餐<option>');
+                }
+            });
+        }
+    };
+
     //选择套餐
     $("#order-order_type").change(function() {
-        var country_id = $('#order-cid').val();
-        var order_type = $('#order-order_type').val();
-        var url = '<?= \yii\helpers\Url::to(['product/my-product']);?>';
-        var data = {country_id:country_id,type:order_type};
+       select.change();
+    });
 
-        $.getJSON(url, data, function(back) {
-            var select = $('#order-combo_id');
-            if (back.error === 'success') {
-                select.empty();
-                var str = '';
-                for (var i in back.value) {
-                    if ( typeof (back.value[i].combo_id) !== 'undefined') {
-                        str += ('<option value="' + back.value[i].combo_id + '">' +  back.value[i].combo_name + '</option>');
-                    }
-                }
-                select.append(str);
-            }else {
-                select.empty();
-                select.append('<option>该分类没有套餐<option>');
-            }
-        });
+    $("#order-pid").change(function() {
+        select.change();
     });
 
     //弹窗显示添加

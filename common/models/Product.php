@@ -11,7 +11,6 @@ use Yii;
  * @property string $name
  * @property string $picture
  * @property string $cost
- * @property integer $country_id
  */
 class Product extends \yii\db\ActiveRecord
 {
@@ -32,8 +31,8 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','country_id'], 'required'],
-            [['id', 'country_id'], 'integer'],
+            [['name'], 'required'],
+            [['id'], 'integer'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -46,13 +45,7 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => '产品id',
             'name' => '产品名称',
-            'country_id' => '国家',
         ];
-    }
-
-    public function getCountry()
-    {
-        return $this->hasOne(Country::className(), ['id'=>'country_id']);
     }
 
     public function getCombo()
@@ -68,6 +61,14 @@ class Product extends \yii\db\ActiveRecord
     public static function getJsonData()
     {
         return self::find()->select(['id','name'])->asArray()->limit(100)->all();
+    }
+
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            Combo::deleteAll(['product_id' => $this->id]);
+            return true;
+        }
     }
 
 

@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
              //'id',
+            'combo_product',
             'combo_name',
             'combo_cost',
              [
@@ -36,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $combo_type[$model->combo_type];
                 }
             ],
-            'combo_country',
+
             //'snap_combo_id',
             //'is_valid',
         ],

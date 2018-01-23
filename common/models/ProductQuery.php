@@ -19,7 +19,7 @@ class ProductQuery extends Product
     public function rules()
     {
         return [
-            [['id', 'country_id'], 'integer'],
+            [['id'], 'integer'],
             [['name', 'type', 'order_type', 'country_id'], 'safe'],
         ];
     }
@@ -48,7 +48,7 @@ class ProductQuery extends Product
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => ['pageSize'=>12],
+            'pagination' => ['pageSize'=>20],
             'sort' => [
 //                'defaultOrder' => [
 //                    'id' => SORT_DESC
@@ -77,8 +77,6 @@ class ProductQuery extends Product
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'cost' => $this->cost,
-            'country_id' => $this->country_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

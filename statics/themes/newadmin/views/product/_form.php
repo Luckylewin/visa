@@ -22,8 +22,6 @@ use yii\widgets\ActiveForm;
 
             <?php $form = ActiveForm::begin(); ?>
 
-            <?= $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Country::getDropdownList(), 'id', 'cinfo')); ?>
-
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
             <div class="form-group">

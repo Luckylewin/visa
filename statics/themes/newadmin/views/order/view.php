@@ -40,10 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'order_date',
             'customer_id',
             [
-                    'attribute' => 'cid',
-                    'value' => $model->country->cinfo
-            ],
-            [
                     'attribute' => 'combo_id',
                     'format' => 'raw',
                     'value' => function($model) {

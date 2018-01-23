@@ -17,7 +17,6 @@ use yii\db\ActiveRecord;
  * @property string $order_type
  * @property string $order_date
  * @property integer $customer_id
- * @property string $cid
  * @property integer $combo_id
  * @property integer $custom_servicer_id
  * @property string $single_sum
@@ -64,7 +63,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_num',  'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'back_addressee' ,'back_telphone',  'deliver_order',  'cid', 'total_person', 'single_sum', 'delivercompany'], 'required'],
+            [['order_num',  'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'back_addressee' ,'back_telphone',  'deliver_order','pid', 'total_person', 'single_sum', 'delivercompany'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person'], 'integer'],
             [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
@@ -204,6 +203,7 @@ class Order extends \yii\db\ActiveRecord
         return $this->hasMany(Transator::className(), ['order_id' => 'id']);
     }
 
+    //办理人 多对多关系
     public function getRelatedTransactor()
     {
         $sql = "SELECT * FROM yii2_order_to_transactor AS a LEFT JOIN yii2_transator AS b ON  a.t_id = b.tid WHERE a.o_id = " . $this->id;

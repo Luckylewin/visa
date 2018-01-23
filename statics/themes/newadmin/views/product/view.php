@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use \common\models\Combo;
 use common\models\Type;
 /* @var $this yii\web\View */
 /* @var $model common\models\Product */
@@ -21,37 +20,15 @@ $colors = ['1'=>'label label-success','2'=>'label label-warning','3'=>'label lab
 ?>
 
 
-<div class="product-form col-md-6">
+<div class="product-form col-md-6 col-md-offset-0">
 
     <div class="product-view">
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                [
-                    'attribute' => 'country_id',
-                    'value' => $model->country->cinfo
-                ],
-//                'id',
                 'name',
-                /*[
-                    'label' => Yii::t('backend', 'Combo'),
-                    'format' => 'html',
-                    'value' => function ($model){
-
-                        $str='';
-                        foreach($model->combo as $value){
-                            $text = "<i class='fa fa-coffee'></i> " . $value->combo_name;
-                            $str = $str . Html::a( $text, \yii\helpers\Url::to(['combo/view', 'id' => $value->combo_id]), [
-                                    'class' => 'btn btn-default'
-                                ]) . "&nbsp;";
-                        }
-                        return $str;
-                    }
-                ],*/
             ],
         ]) ?>
-    </div>
-
 
     <table class="table table-hover">
         <caption>套餐列表</caption>
@@ -84,28 +61,22 @@ $colors = ['1'=>'label label-success','2'=>'label label-warning','3'=>'label lab
                     <?= Html::a("修改", \yii\helpers\Url::to(['combo/update', 'id' => $combo->combo_id]), [
                         'class' => 'btn btn-info btn-xs'
                     ]); ?>&nbsp;
-                    <?= Html::a("删除", \yii\helpers\Url::to(['combo/delete', 'id' => $combo->combo_id]), [
-                        'class' => 'btn btn-danger btn-xs'
+                    <?= Html::a("删除", ['combo/delete', 'id' => $combo->combo_id], [
+                        'class' => 'btn btn-danger btn-xs',
+                        'data' => [
+                            'confirm' => '确定要删除该套餐吗?',
+                            'method' => 'post',
+                        ],
                     ]); ?>
                 </td>
             </tr>
         <?php } ?>
         </tbody>
     </table>
-
     <p>
         <?= Html::a(Yii::t('backend', 'Edit'), ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a(Yii::t('backend', 'RelatedCombo'), \yii\helpers\Url::toRoute(['combo/create','id'=>$model->id]), ['class' => 'btn btn-primary']) ?>
-        <!-- Html::a('Delete', ['delete', 'id' => $model->id], [
-             'class' => 'btn btn-danger',
-             'data' => [
-                 'confirm' => 'Are you sure you want to delete this item?',
-                 'method' => 'post',
-             ],
-         ])-->
     </p>
-
-
 </div>
 
 
