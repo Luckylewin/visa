@@ -383,6 +383,11 @@ $tranlator = new Transator();
             var url = '<?= \yii\helpers\Url::to(['product/my-product']);?>';
             var data = {product_id:product_id,type:order_type};
 
+            if (!order_type) {
+                $('#order-order_type').focus();
+                return false;
+            }
+
             $.getJSON(url, data, function(back) {
                 var select = $('#order-combo_id');
                 if (back.error === 'success') {
