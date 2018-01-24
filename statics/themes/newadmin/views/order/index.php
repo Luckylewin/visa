@@ -73,7 +73,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     }
 
                 },
-                'options' => ['style'=>'width:100px;']
+                'options' => ['style'=>'width:90px;']
             ],
 
             //订单分类
@@ -96,7 +96,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     }
 
                 },
-                'options' => ['style'=>'width:100px;']
+                'options' => ['style'=>'width:90px;']
             ],
 
             //送证日
@@ -107,7 +107,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return substr($model->deliver_date,2);
                     }
                 },
-                 'options' => ['style'=>'width:100px;']
+                'options' => ['style'=>'width:90px;']
             ],
 
             //入管日
@@ -118,7 +118,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return substr($model->entry_date, 2);
                     }
                 },
-                'options' => ['style'=>'width:100px;']
+                'options' => ['style'=>'width:90px;']
             ],
             [
                 'attribute' => 'combo_id',
@@ -152,7 +152,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     $servicer = $model->servicer;
                     return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
                 },
-                'options' => ['style'=>'width:100px;']
+                'options' => ['style'=>'width:60px;']
             ],
             //办理人
             [
