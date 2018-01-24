@@ -84,7 +84,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return $classify[$model->order_classify];
                     },
                     'filter' => Type::getComboClassify(),
-                    'options' => ['style'=>'width:100px;']
+                    'options' => ['style'=>'width:54px;']
             ],
 
             //收资料日
@@ -142,7 +142,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     $type = Type::getComboType();
                     return $type[$model->order_type];
                  },
-                'options' => ['style'=>'width:100px;']
+                'options' => ['style'=>'width:54px;']
             ],
             //接待销售
             [
