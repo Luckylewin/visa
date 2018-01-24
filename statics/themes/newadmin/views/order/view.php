@@ -287,7 +287,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
         &nbsp;&nbsp;
 
-        <?php if (strpos(Yii::$app->request->referrer,'create')!==false) { ?>
+        <?php if (preg_match('/(create|update)/',Yii::$app->request->referrer)) { ?>
             <?= Html::a('返回',Url::to(['order/index']), [
                 'class' => 'btn btn-default'
             ])?>
