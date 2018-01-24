@@ -55,7 +55,14 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             //淘宝订单号
             [
                     'attribute' => 'order_num',
-                    'label' => '淘宝订单'
+                    'format' => 'raw',
+                    'label' => '淘宝订单',
+                    'value' => function($model) {
+                        if (strpos($model->order_num,',')) {
+                          return str_replace(',','<br/>', $model->order_num);
+                        }
+                        return $model->order_num;
+                    },
             ],
             //订单日期
             [
