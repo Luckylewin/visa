@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => function($model) {
                            try {
                                 $combo = $model->snapshot;
-                                return Html::a($combo->combo_name, Url::to(['snapshot/view','id' => $combo->id]));
+                                return Html::a($combo->combo_product ."|".Type::getComboType()[$combo->combo_type] . "|" .  $combo->combo_name, Url::to(['snapshot/view','id' => $combo->id]));
                            }catch (\Exception $e) {
                                return '<i class="fa fa-trash"></i>已被删除';
                            }

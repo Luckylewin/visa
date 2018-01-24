@@ -113,7 +113,20 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 },
                 'options' => ['style'=>'width:100px;']
             ],
-
+            [
+                'attribute' => 'combo_id',
+                'format' => 'raw',
+                'label' => '产品名称',
+                'value' => function($model) {
+                    try {
+                        $combo = $model->snapshot;
+                        return Html::a($combo->combo_product, \yii\helpers\Url::to(['snapshot/view','id' => $combo->id]));
+                    }catch (\Exception $e) {
+                        return '<i class="fa fa-trash"></i>已被删除';
+                    }
+                },
+                'options' => ['style'=>'width:120px;']
+            ],
             //分类
             [
                  'attribute' => 'order_type',

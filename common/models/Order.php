@@ -63,7 +63,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_num',  'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'back_addressee' ,'back_telphone',  'deliver_order','pid', 'total_person', 'single_sum', 'delivercompany'], 'required'],
+            [['order_num',  'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id','pid', 'total_person', 'single_sum'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person'], 'integer'],
             [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
