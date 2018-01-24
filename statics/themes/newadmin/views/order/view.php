@@ -286,10 +286,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
         &nbsp;&nbsp;
-        <?= Html::button('返回', [
+
+        <?php if (strpos(Yii::$app->request->referrer,'create')!==false) { ?>
+            <?= Html::a('返回',Url::to(['order/index']), [
+                'class' => 'btn btn-default'
+            ])?>
+
+        <?php }else{?>
+            <?= Html::button('返回', [
                 'onclick' => 'history.go(-1)',
                 'class' => 'btn btn-default'
-        ])?>
+            ])?>
 
+        <?php } ?>
     </p>
 </div>

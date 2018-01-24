@@ -380,14 +380,19 @@ $tranlator = new Transator();
     });
 
     var select = {
-        change:function(){
+        change:function() {
+            var order_classify = $('#order-order_classify').val();
             var product_id = $('#order-pid').val();
             var order_type = $('#order-order_type').val();
             var url = '<?= \yii\helpers\Url::to(['product/my-product']);?>';
-            var data = {product_id:product_id,type:order_type};
+            var data = {product_id:product_id,type:order_type,classify:order_classify};
 
             if (!order_type) {
-                $('#order-order_type').focus();
+                if (!product_id) {
+                    $('#order-pid').focus();
+                }else if(!order_type) {
+                    $('#order-order_type').focus();
+                }
                 return false;
             }
 
@@ -417,6 +422,10 @@ $tranlator = new Transator();
 
     $("#order-pid").change(function() {
         select.change();
+    });
+
+    $("#order-order_classify").change(function() {
+       select.change();
     });
 
     //弹窗显示添加

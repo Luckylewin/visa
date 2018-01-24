@@ -167,16 +167,23 @@ class ProductController extends BaseController
      * @param $product_id
      * @param $type
      */
-    public function actionMyProduct($product_id, $type)
+    public function actionMyProduct($product_id, $type, $classify)
     {
         $this->layout = false;
         $response = Yii::$app->response;
         $response->format = Response::FORMAT_JSON;
+
+        if ($classify) {
+            $where = ['product_id'=>$product_id,'combo_type'=>$type, 'combo_classify'=>$classify];
+        }else {
+            $where = ['product_id'=>$product_id,'combo_type'=>$type];
+        }
+
         $query = (new Query())
                 ->select('c.*')
                 ->from('yii2_product AS a')
                 ->leftJoin('yii2_combo AS c','c.product_id = a.id')
-                ->where(['product_id'=>$product_id,'combo_type'=>$type])
+                ->where($where)
                 ->orderBy('combo_type ASC')
                 ->all();
 
