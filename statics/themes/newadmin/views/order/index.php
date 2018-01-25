@@ -227,6 +227,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
 <p>
     <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
+    <?= Html::a('导出excel', \yii\helpers\Url::to(['excel/index']), ['class' => 'btn btn-info']) ?>
     <?= Html::a("批量删除", "javascript:void(0);", ["class" => "btn btn-warning gridview"]) ?>
 </p>
 
