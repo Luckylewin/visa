@@ -43,6 +43,7 @@ class OrderQuery extends Order
      */
     public function search($params)
     {
+
         $query = Order::find();
 
         // add conditions that should always apply here
@@ -117,9 +118,14 @@ class OrderQuery extends Order
         }
 
         $commandQuery = clone $query;
-        //echo $commandQuery->createCommand()->getRawSql();
+        echo $commandQuery->createCommand()->getRawSql();
 
 
         return $dataProvider;
+    }
+
+    public function exportSearch($params)
+    {
+
     }
 }

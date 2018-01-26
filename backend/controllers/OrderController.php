@@ -25,9 +25,18 @@ class OrderController extends BaseController
         $searchModel = new OrderQuery();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        if ($orderQuery = Yii::$app->request->get('OrderQuery')) {
+            //$orderQuery = array_filter($orderQuery);
+            //$queryParams = base64_encode(json_encode($orderQuery));
+            $queryParams = base64_encode(json_encode(Yii::$app->request->queryParams));
+        } else {
+            $queryParams = '';
+        }
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'queryParams' => $queryParams
         ]);
     }
 

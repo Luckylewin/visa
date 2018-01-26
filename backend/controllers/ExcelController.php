@@ -194,8 +194,18 @@ class ExcelController extends BaseController
             'AI' => 'remark'
         ];
 
-        
+
         $start = 3;
+
+        $queryParams = \Yii::$app->request->get('orderQuery');
+
+        if ($queryParams) {
+            $queryParams = json_decode(base64_decode($queryParams), true);
+            $searchModel = new OrderQuery();
+            $dataProvider = $searchModel->search($queryParams);
+            print_r($dataProvider);exit;
+        }
+
         $data =  OrderQuery::find()->limit(10)->all();
         foreach ($data as $object) {
              foreach ($columnFieldMap as $_column => $_field) {
