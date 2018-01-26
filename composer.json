@@ -18,7 +18,6 @@
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "moonlandsoft/yii2-phpexcel": "~1.1.0",
         "codemix/yii2-excelexport": "^2.5",
         "phpoffice/phpexcel": "^1.8",
         "kartik-v/yii2-widget-datetimepicker": "*"
