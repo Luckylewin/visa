@@ -74,9 +74,9 @@ class ExcelController extends BaseController
         $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
         $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
         $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(8);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(8);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(8);
         $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(35);
         $objPHPExcel->getActiveSheet()->getColumnDimension('AB')->setWidth(15);
         $objPHPExcel->getActiveSheet()->getColumnDimension('AC')->setWidth(35);
@@ -191,6 +191,9 @@ class ExcelController extends BaseController
             'AI' => 'remark'
         ];
 
+
+
+
         $start = 3;
         $data =  OrderQuery::find()->limit(10)->all();
         foreach ($data as $object) {
@@ -214,7 +217,7 @@ class ExcelController extends BaseController
                  //填充数据
                  if (!empty($_field) && !is_array($_field)) {
 
-                     if (strpos($_field, 'date') !== false ) {
+                    if (strpos($_field, 'date') !== false ) {
                          if ($object->$_field !== '1970-01-01') {
                              $object->$_field = date('m月d日', strtotime($object->$_field));
                          } else {
@@ -223,7 +226,10 @@ class ExcelController extends BaseController
                      }
 
                      //添加文字并设置这段文字粗体斜体和文字颜色
-                     $objRichText = $this->setColor($object->$_field);
+                     if ($object->$_field) {
+                         $objRichText = $this->setColor($object->$_field);
+                     }
+
 
                   } elseif ($_column == 'G') {
                      $product = $object->snapshot->combo_product;
@@ -265,7 +271,7 @@ class ExcelController extends BaseController
 
 
         //设置文件名称
-        $file_name = date('Ymd-H:i:s');
+        $file_name = "阳光假日天猫报表" . date('Ymd_His');
 
         header("Pragma: public");
         header("Expires: 0");
