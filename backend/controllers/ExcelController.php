@@ -20,7 +20,8 @@ class ExcelController extends BaseController
         //设置表头
         $headStyle = array(
             'font' => array(
-                'bold' => false,
+                'bold' => true,
+                'name' => '宋体'
             ),
             'alignment' => array(
                 'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
@@ -58,6 +59,8 @@ class ExcelController extends BaseController
 
         foreach ($columns as $lines) {
             foreach ($lines as $column) {
+                //设置自动换行
+                $sheet->getStyle($column)->getAlignment()->setWrapText(true);
                 //设置原谅色
                 $sheet->getStyle($column)->applyFromArray($headStyle);
             }
@@ -70,27 +73,27 @@ class ExcelController extends BaseController
         //设置宽度
         $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(12);
         $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(8);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(8);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(8);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(7);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(7);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(7);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(7);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(7);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(7);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(7);
         $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(35);
         $objPHPExcel->getActiveSheet()->getColumnDimension('AB')->setWidth(15);
         $objPHPExcel->getActiveSheet()->getColumnDimension('AC')->setWidth(35);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AD')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AE')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('AD')->setWidth(8);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('AE')->setWidth(8);
         $objPHPExcel->getActiveSheet()->getColumnDimension('AF')->setWidth(15);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AG')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AH')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('AG')->setWidth(7);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('AH')->setWidth(7);
         $objPHPExcel->getActiveSheet()->getColumnDimension('AI')->setWidth(20);
 
+        //设置边框
         $borderStyle = array(
             'borders' => array(
                 'allborders' => array(
-                    //'style' => PHPExcel_Style_Border::BORDER_THICK,//边框是粗的
                     'style' => \PHPExcel_Style_Border::BORDER_THIN,//细边框
                     'color' => array('argb' => '00000000'),
                 ),
@@ -112,7 +115,7 @@ class ExcelController extends BaseController
             'F2' => '入馆日',
             'G2' => '国家',
             'H2' => '类型',
-            'I2' => '接待销售',
+            'I2' => "接待\n销售",
             'J2' => '办理人',
             'K2' => '套餐类型',
             'L2' => '单项实收',
@@ -133,11 +136,11 @@ class ExcelController extends BaseController
             'AA2' => '收件人',
             'AB2' => '收件电话',
             'AC2' => '收件地址',
-            'AD2' => '出签日期',
-            'AE2' => '发货日期',
+            'AD2' => "出签\n日期",
+            'AE2' => "发货\n日期",
             'AF2' => '寄回客人单号',
-            'AG2' => '支出结算日',
-            'AH2' => '收款结算日',
+            'AG2' => "支出结\n算日",
+            'AH2' => "收款结\n算日",
             'AI2' => '备注'
         ];
 
@@ -155,7 +158,7 @@ class ExcelController extends BaseController
         //填充内容
         $columnFieldMap = [
             'A' => 'customer_id',
-            'B' => 'order_num',
+            'B' => '',
             'C' => 'order_date',
             'D' => 'collect_date',
             'E' => 'deliver_date',
@@ -164,7 +167,7 @@ class ExcelController extends BaseController
             'H' => '',
             'I' => ['servicer','name'],
             'J' => '',
-            'K' => 'order_classify',
+            'K' => '',
             'L' => 'single_sum',
             'M' => 'total_person',
             'N' => 'balance_sum',
@@ -191,9 +194,7 @@ class ExcelController extends BaseController
             'AI' => 'remark'
         ];
 
-
-
-
+        
         $start = 3;
         $data =  OrderQuery::find()->limit(10)->all();
         foreach ($data as $object) {
@@ -218,20 +219,29 @@ class ExcelController extends BaseController
                  if (!empty($_field) && !is_array($_field)) {
 
                     if (strpos($_field, 'date') !== false ) {
-                         if ($object->$_field !== '1970-01-01') {
-                             $object->$_field = date('m月d日', strtotime($object->$_field));
+
+                         if ($object->$_field !== '1970-011-01') {
+                             $object->$_field = date('n月j日', strtotime($object->$_field));
                          } else {
                              $object->$_field = "未设置";
                          }
+
+                         $objPHPExcel->getActiveSheet()
+                            ->getStyleByColumnAndRow($_column, $start)
+                            ->getNumberFormat()->setFormatCode('m/d');
                      }
 
                      //添加文字并设置这段文字粗体斜体和文字颜色
                      if ($object->$_field) {
                          $objRichText = $this->setColor($object->$_field);
                      }
+                  } elseif ($_column == 'B') {
+                     $order = $object->order_num;
+                     $order = str_replace([',','，'],"  ", $order);
+                     $objRichText = $this->setColor($order);
+                     $objPHPExcel->getActiveSheet()->getStyle($_column . $start)->getAlignment()->setWrapText(true);
 
-
-                  } elseif ($_column == 'G') {
+                 } elseif ($_column == 'G') {
                      $product = $object->snapshot->combo_product;
                      $product = $product ? $product : '已删除';
                      $objRichText = $this->setColor($product);
@@ -291,7 +301,7 @@ class ExcelController extends BaseController
     {
         $objRichText = new \PHPExcel_RichText();
         $objPayable = $objRichText->createTextRun( $string);
-        $objPayable->getFont()->setColor( new \PHPExcel_Style_Color( \PHPExcel_Style_Color::COLOR_RED));
+        $objPayable->getFont()->setBold(false)->setName('宋体')->setSize(9)->setColor( new \PHPExcel_Style_Color( \PHPExcel_Style_Color::COLOR_RED));
         $objRichText->createText(' ');
         return $objRichText;
     }
