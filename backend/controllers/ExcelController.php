@@ -202,11 +202,12 @@ class ExcelController extends BaseController
         if ($queryParams) {
             $queryParams = json_decode(base64_decode($queryParams), true);
             $searchModel = new OrderQuery();
-            $dataProvider = $searchModel->search($queryParams);
-            print_r($dataProvider);exit;
+            $data = $searchModel->search($queryParams, $all = true)->getModels();
+        } else {
+            $data = OrderQuery::find()->limit(10)->all();
         }
 
-        $data =  OrderQuery::find()->limit(10)->all();
+
         foreach ($data as $object) {
              foreach ($columnFieldMap as $_column => $_field) {
                  //设置行高
@@ -399,8 +400,6 @@ class ExcelController extends BaseController
                 ),
             ),
         );
-
-
 
         $file->getWorkbook()->getSheet(0)->getStyle("A1")->applyFromArray($headStyle);
         $file->getWorkbook()->getSheet(0)->getStyle("B1")->applyFromArray($headStyle);

@@ -123,9 +123,7 @@ class TransatorController extends BaseController
         }
 
         array_walk($data, function (&$v,$k){
-            $data = array_values($v);
-
-            return $v=$data;
+            return $v = array_values($v);
         });
         $data = json_encode(['result'=>$data]);
 

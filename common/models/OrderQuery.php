@@ -35,23 +35,28 @@ class OrderQuery extends Order
     }
 
     /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
+     * @param $params
+     * @param bool $all
      * @return ActiveDataProvider
+     * @throws \yii\db\Exception
      */
-    public function search($params)
+    public function search($params, $all = false)
     {
-
         $query = Order::find();
 
         // add conditions that should always apply here
+        if ($all) {
+            $condition = [
+                'query' => $query,
+            ];
+        } else {
+            $condition = [
+                'query' => $query,
+                'pagination' => ['pageSize'=>8],
+            ];
+        }
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => ['pageSize'=>8],
-        ]);
+        $dataProvider = new ActiveDataProvider($condition);
 
         if (isset($params['OrderQuery'])) {
             $params['OrderQuery'] = array_filter($params['OrderQuery']);
@@ -68,7 +73,6 @@ class OrderQuery extends Order
                  }
             }
         }
-
 
         $this->load($params);
 
@@ -117,9 +121,8 @@ class OrderQuery extends Order
             $this->transactor_id = $transator_name;
         }
 
-        $commandQuery = clone $query;
-        echo $commandQuery->createCommand()->getRawSql();
-
+        // $commandQuery = clone $query;
+        // echo $commandQuery->createCommand()->getRawSql();
 
         return $dataProvider;
     }

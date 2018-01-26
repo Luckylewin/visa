@@ -81,7 +81,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'attribute' => 'order_classify',
                     'value' => function($model) {
                         $classify = Type::getComboClassify();
-                        return $classify[$model->order_classify];
+                        $classify = isset($classify[$model->order_classify]) ? $classify[$model->order_classify] : '未设置';
+                        return $classify;
                     },
                     'filter' => Type::getComboClassify(),
                     'options' => ['style'=>'width:54px;']

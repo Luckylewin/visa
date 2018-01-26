@@ -14,7 +14,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/select2/select2.min.j
 $this->registerJsFile('/statics/themes/newadmin/js/bootstrap.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
-$this->registerJsFile('/statics/themes/newadmin/js/plugins/suggest/bootstrap-suggest.min.js', ['depends'=>['yii\web\JqueryAsset']]);
+$this->registerJsFile('statics/themes/newadmin/js/plugins/suggest/bootstrap-suggest.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 
 $tranlator = new Transator();
 ?>
@@ -341,7 +341,7 @@ $tranlator = new Transator();
         /*优先从url ajax 请求 json 帮助数据，注意最后一个参数为关键字请求参数*/
         jsonp: 'callback',
         /*如果从 url 获取数据，并且需要跨域，则该参数必须设置*/
-        processData: function (json) { // url 获取数据时，对数据的处理，作为 getData 的回调函数
+        fnProcessData: function (json) { // url 获取数据时，对数据的处理，作为 getData 的回调函数
 
             var i, len, data = {
                 value: []
@@ -351,7 +351,9 @@ $tranlator = new Transator();
                 return false;
             }
 
-            //console.log(json);
+            console.log(json.result[0]);
+
+
             len = json.result.length;
             if (len === 0) {
                 isNewTransactor = false;
@@ -364,12 +366,11 @@ $tranlator = new Transator();
                     "Remark" : json.result[i][2]
                 });
             }
+            console.table(data);
 
             return data;
         }
     }).on('onSetSelectValue', function (e, keyword, data) {
-        //console.log(keyword);
-        //console.log(data);
         $('#transator-name').attr('disabled',true);
         $('#transator-remark').val(data.Remark);
         $('#originRemark').val(data.Remark);

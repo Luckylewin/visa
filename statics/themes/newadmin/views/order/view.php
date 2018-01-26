@@ -26,14 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'order_classify',
                     'value' => function($model) {
                         $classify = Type::getComboClassify();
-                        return $classify[$model->order_classify];
+                        return isset($classify[$model->order_classify]) ? $classify[$model->order_classify] : '未设置';
                     }
             ],
             [
                 'attribute' => 'order_type',
                 'value' => function($model) {
                     $type = Type::getComboType();
-                    return $type[$model->order_classify];
+                    return isset($type[$model->order_type]) ? $type[$model->order_type] : '未设置';
                 }
             ],
             'order_num',
