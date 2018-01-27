@@ -14,7 +14,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/select2/select2.min.j
 $this->registerJsFile('/statics/themes/newadmin/js/bootstrap.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
-$this->registerJsFile('statics/themes/newadmin/js/plugins/suggest/bootstrap-suggest.min.js', ['depends'=>['yii\web\JqueryAsset']]);
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/suggest/bootstrap-suggest.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 
 $tranlator = new Transator();
 ?>

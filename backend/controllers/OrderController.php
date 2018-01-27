@@ -26,13 +26,11 @@ class OrderController extends BaseController
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($orderQuery = Yii::$app->request->get('OrderQuery')) {
-            //$orderQuery = array_filter($orderQuery);
-            //$queryParams = base64_encode(json_encode($orderQuery));
             $queryParams = base64_encode(json_encode(Yii::$app->request->queryParams));
         } else {
             $queryParams = '';
         }
-        
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -62,13 +60,14 @@ class OrderController extends BaseController
         $model = new Order();
         $data = Yii::$app->request->post();
 
-
         if ($model->load($data) && ($order_id = $model->save())) {
             Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id ,$model->isNewRecord);
+            Yii::$app->session->setFlash('success', "创建成功");
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             if ($model->hasErrors()) {
-                print_r($model->getErrors());
+                $error = isset($model->getErrors()[0]) ? $model->getErrors()[0] : '未知错误,请通知开发者';
+                Yii::$app->session->setFlash('error', $error);
             }
             return $this->render('create', [
                 'model' => $model,
@@ -114,9 +113,9 @@ class OrderController extends BaseController
      */
     public function actionDelete($id)
     {
+        $this->findModel($id)->delete();
 
-        $res = $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success', '操作成功');
         return $this->redirect(['index']);
     }
 
@@ -125,11 +124,11 @@ class OrderController extends BaseController
         $response = Yii::$app->response;
         $response->format = Response::FORMAT_JSON;
         $post_ids = implode(',', Yii::$app->request->post('ids'));
-        $order = new Order();
 
+        $order = new Order();
         $order->deleteAll("id in ($post_ids)");
 
-        //Yii::$app->session->setFlash('success', '操作成功');
+        Yii::$app->session->setFlash('success', '操作成功');
         $response->data = ['code'=>'0','msg'=>'success','data'=>''];
         return $response->send();
     }

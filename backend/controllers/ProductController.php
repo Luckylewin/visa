@@ -98,6 +98,7 @@ class ProductController extends BaseController
     {
         $this->findModel($id)->delete();
 
+        Yii::$app->session->setFlash('success', '操作成功');
         return $this->redirect(['index']);
     }
 
@@ -142,21 +143,7 @@ class ProductController extends BaseController
 
     public function actionProduct()
     {
-
-        /*
-         ini_set("max_execution_time", "300");
-           $db = \Yii::$app->db->createCommand();
-           for ($i=1300;$i<=10000;$i++) {
-               Yii::$app->db->createCommand()->insert('yii2_product', [
-                   'name' => '测试' . $i,
-                   'picture' => 'null.jpg',
-                   'country_id' => mt_rand(1,249),
-               ])->execute();
-           }*/
         $this->layout = false;
-       /* $data = '{"message":"2222","value":[{"userName":"淳芸","shortAccount":"chunyun","userId":20001},{"userName":"orion-01","shortAccount":"orion-01","userId":20000},{"userName":"唐宏禹14","shortAccount":"TANGHONGYU","userId":20011},{"userName":"唐宏禹13","shortAccount":"tanghongyu","userId":20011},{"userName":"穆晓晨","shortAccount":"mUXIAOCHEN","userId":20002},{"userName":"张欢引","shortAccount":"zhanghuanyin","userId":20003},{"userName":"吴琼","shortAccount":"wuqiong","userId":20004},{"userName":"吴东鹏","shortAccount":"wudongpeng","userId":20005},{"userName":"黄少铅","shortAccount":"huangshaoqian","userId":20006},{"userName":"胡运燕","shortAccount":"yunyan","userId":20007},{"userName":"刘幸","shortAccount":"liuxing","userId":20008},{"userName":"陈媛媛","shortAccount":"CHENYUANYUAN","userId":20009},{"userName":"李大鹏","shortAccount":"dapeng","userId":20010},{"userName":"唐宏禹","shortAccount":"tanghongyu","userId":20011},{"userName":"旷东林","shortAccount":"kuangdonglin","userId":20010},{"userName":"唐宏禹15","shortAccount":"TANGhongyu","userId":20011},{"userName":"唐宏禹12","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹11","shortAccount":"TangHongYu","userId":20011},{"userName":"旷东林","shortAccount":"kuangdonglin","userId":20010},{"userName":"唐宏禹10","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹9","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹8","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹7","shortAccount":"tanghongyu","userId":20011},{"userName":"旷东林","shortAccount":"kuangdonglin","userId":20010},{"userName":"唐宏禹6","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹5","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹4","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹3","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹2","shortAccount":"tanghongyu","userId":20011},{"userName":"唐宏禹1","shortAccount":"tanghongyu","userId":20011}],"code":200,"redirect":""}';
-        $data = json_decode($data, true);
-        print_r($data);exit;*/
         $response = Yii::$app->response;
         $response->format = Response::FORMAT_JSON;
         $response->data = ['message'=>'success', 'value' => Product::getJsonData()];

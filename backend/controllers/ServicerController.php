@@ -5,29 +5,14 @@ namespace backend\controllers;
 use Yii;
 use common\models\Servicer;
 use yii\data\ActiveDataProvider;
-use backend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+
 
 /**
  * ServicerController implements the CRUD actions for Servicer model.
  */
 class ServicerController extends BaseController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all Servicer models.
@@ -66,6 +51,8 @@ class ServicerController extends BaseController
         $model = new Servicer();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            Yii::$app->session->setFlash('info', '操作成功');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -85,6 +72,8 @@ class ServicerController extends BaseController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            Yii::$app->session->setFlash('info', '操作成功');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -103,6 +92,7 @@ class ServicerController extends BaseController
     {
         $this->findModel($id)->delete();
 
+        Yii::$app->session->setFlash('success', '操作成功');
         return $this->redirect(['index']);
     }
 

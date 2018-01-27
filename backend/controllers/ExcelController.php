@@ -2,7 +2,7 @@
 
 namespace backend\controllers;
 
-
+use Yii;
 use common\models\OrderQuery;
 use common\models\ProductQuery;
 use common\models\Type;
@@ -12,6 +12,27 @@ class ExcelController extends BaseController
     public function actionIndex()
     {
 
+        $queryParams = \Yii::$app->request->get('orderQuery');
+        if ($queryParams) {
+            //查询时的导出
+            $queryParams = json_decode(base64_decode($queryParams), true);
+            $searchModel = new OrderQuery();
+            $data = $searchModel->search($queryParams, $all = true)->getModels();
+        } else {
+            //非查询时的导出
+            $data = OrderQuery::find()->limit(10)->all();
+        }
+
+        if (empty($data)) {
+           Yii::$app->session->setFlash('error', '没有可以导出的数据');
+           return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        return $this->_exportExcel($data);
+    }
+
+    private function _exportExcel($data)
+    {
         //初始化实例
         $objPHPExcel = new \PHPExcel();
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
@@ -53,8 +74,8 @@ class ExcelController extends BaseController
         $sheet = $objPHPExcel->getActiveSheet();
 
         $columns = [
-                    ['A1','B1','C1','D1','E1','F1','G1','H1','I1','J1','K1','L1','M1','N1','O1','P1','Q1','R1','S1','T1','U1','V1','W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1'],
-                    ['A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2','O2','P2','Q2','R2','S2','T2','U2','V2','W2','X2','Y2','Z2','AA2','AB2','AC2','AD2','AE2','AF2','AG2','AH2','AI2']
+            ['A1','B1','C1','D1','E1','F1','G1','H1','I1','J1','K1','L1','M1','N1','O1','P1','Q1','R1','S1','T1','U1','V1','W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1'],
+            ['A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2','O2','P2','Q2','R2','S2','T2','U2','V2','W2','X2','Y2','Z2','AA2','AB2','AC2','AD2','AE2','AF2','AG2','AH2','AI2']
         ];
 
         foreach ($columns as $lines) {
@@ -192,17 +213,7 @@ class ExcelController extends BaseController
             'AI' => 'remark'
         ];
 
-        $queryParams = \Yii::$app->request->get('orderQuery');
 
-        if ($queryParams) {
-            //查询时的导出
-            $queryParams = json_decode(base64_decode($queryParams), true);
-            $searchModel = new OrderQuery();
-            $data = $searchModel->search($queryParams, $all = true)->getModels();
-        } else {
-            //非查询时的导出
-            $data = OrderQuery::find()->limit(10)->all();
-        }
 
         $row = 3;
 
@@ -212,96 +223,96 @@ class ExcelController extends BaseController
         $objPHPExcel->getDefaultStyle()->getFont()->setColor(new \PHPExcel_Style_Color(\PHPExcel_Style_Color::COLOR_RED));
 
         foreach ($data as $object) {
-             foreach ($columnFieldMap as $_column => $_field) {
-                 //设置行高
-                 $sheet->getRowDimension($row)->setRowHeight(23);
+            foreach ($columnFieldMap as $_column => $_field) {
+                //设置行高
+                $sheet->getRowDimension($row)->setRowHeight(23);
 
-                 //设置边框
-                 $sheet->getStyle("A{$row}:AI{$row}")->applyFromArray($borderStyle);
+                //设置边框
+                $sheet->getStyle("A{$row}:AI{$row}")->applyFromArray($borderStyle);
 
-                 //设置水平竖直居中
-                 $sheet->getStyle($_column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-                 $sheet->getStyle($_column . $row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+                //设置水平竖直居中
+                $sheet->getStyle($_column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $sheet->getStyle($_column . $row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
-                 //设置宽度
-                 $width = $sheet->getColumnDimension($_column)->getWidth();
-                 $sheet->getColumnDimension($_column)->setWidth($width * 1.1);
+                //设置宽度
+                $width = $sheet->getColumnDimension($_column)->getWidth();
+                $sheet->getColumnDimension($_column)->setWidth($width * 1.1);
 
-                 //设置自动换行
-                 $sheet->getStyle($_column)->getAlignment()->setWrapText(true);
+                //设置自动换行
+                $sheet->getStyle($_column)->getAlignment()->setWrapText(true);
 
-                 //填充数据
-                 $cellValue = false;
+                //填充数据
+                $cellValue = false;
 
-                 if (!empty($_field) && !is_array($_field)) {
+                if (!empty($_field) && !is_array($_field)) {
 
                     if (strpos($_field, 'date') !== false ) {
 
-                         if ($object->$_field !== '1970-011-01') {
-                             $cellValue = date('n月j日', strtotime($object->$_field));
-                         } else {
-                             $cellValue = "未设置";
-                         }
-                     } else {
+                        if ($object->$_field !== '1970-011-01') {
+                            $cellValue = date('n月j日', strtotime($object->$_field));
+                        } else {
+                            $cellValue = "未设置";
+                        }
+                    } else {
                         $cellValue = !empty($object->$_field) ? $object->$_field : '未设置';
                     }
 
-                  } elseif ($_column == 'B') {
-                     $cellValue = str_replace([',','，'],"  ", $object->order_num);
-                     $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
+                } elseif ($_column == 'B') {
+                    $cellValue = str_replace([',','，'],"  ", $object->order_num);
+                    $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
 
-                 } elseif ($_column == 'G') {
-                     $product = $object->snapshot->combo_product;
-                     $cellValue = $product ? $product : '已删除';
+                } elseif ($_column == 'G') {
+                    $product = $object->snapshot->combo_product;
+                    $cellValue = $product ? $product : '已删除';
 
-                  } elseif ($_column == 'H') {
-                     $type = Type::getComboType();
-                     $cellValue = isset($type[$object->order_type]) ? $type[$object->order_type] : '已删除';
+                } elseif ($_column == 'H') {
+                    $type = Type::getComboType();
+                    $cellValue = isset($type[$object->order_type]) ? $type[$object->order_type] : '已删除';
 
-                  } elseif ($_column == 'I') {
-                     $servicer = $object->servicer->name;
-                     $cellValue = $servicer ? $servicer : '已删除';
+                } elseif ($_column == 'I') {
+                    $servicer = $object->servicer->name;
+                    $cellValue = $servicer ? $servicer : '已删除';
 
-                  } elseif ($_column == 'J') {
-                     $transactors = $object->relatedTransactor;
-                     $str = "";
-                     foreach ($transactors as $transator) {
-                         $str .= $transator['name'] . " ";
-                     }
-                     $cellValue = $str ? $str : '已删除';
+                } elseif ($_column == 'J') {
+                    $transactors = $object->relatedTransactor;
+                    $str = "";
+                    foreach ($transactors as $transator) {
+                        $str .= $transator['name'] . " ";
+                    }
+                    $cellValue = $str ? $str : '已删除';
 
-                     //设置批注
-                     if ($object->remark) {
-                         $commentAuthor = $object->operator->username;
-                         $commentAuthor = !empty($commentAuthor) ? $commentAuthor : "PHPExcel";
-                         $sheet->getComment( $_column . $row)->setAuthor($commentAuthor);     //设置作者
-                         $objCommentRichText = $sheet->getComment($_column . $row )->getText()->createTextRun($commentAuthor . " :");  //添加批注
-                         $objCommentRichText->getFont()->setBold( true);  //将现有批注加粗
-                         $sheet->getComment( $_column . $row)->getText()->createTextRun("\r\n" );      //添加更多批注
-                         $sheet->getComment( $_column . $row)->getText()->createTextRun($object->remark);
-                         $sheet->getComment( $_column . $row)->setWidth('100pt' );      //设置批注显示的宽高 ，在office中有效在wps中无效
-                         $sheet->getComment( $_column . $row)->setHeight('100pt' );
-                         $sheet->getComment( $_column . $row)->setMarginLeft('150pt' );
-                         $sheet->getComment( $_column . $row)->getFillColor()->setRGB('FFFFD8' );      //设置背景色 ，在office中有效在wps中无效
-                     }
+                    //设置批注
+                    if ($object->remark) {
+                        $commentAuthor = $object->operator->username;
+                        $commentAuthor = !empty($commentAuthor) ? $commentAuthor : "PHPExcel";
+                        $sheet->getComment( $_column . $row)->setAuthor($commentAuthor);     //设置作者
+                        $objCommentRichText = $sheet->getComment($_column . $row )->getText()->createTextRun($commentAuthor . " :");  //添加批注
+                        $objCommentRichText->getFont()->setBold( true);  //将现有批注加粗
+                        $sheet->getComment( $_column . $row)->getText()->createTextRun("\r\n" );      //添加更多批注
+                        $sheet->getComment( $_column . $row)->getText()->createTextRun($object->remark);
+                        $sheet->getComment( $_column . $row)->setWidth('100pt' );      //设置批注显示的宽高 ，在office中有效在wps中无效
+                        $sheet->getComment( $_column . $row)->setHeight('100pt' );
+                        $sheet->getComment( $_column . $row)->setMarginLeft('150pt' );
+                        $sheet->getComment( $_column . $row)->getFillColor()->setRGB('FFFFD8' );      //设置背景色 ，在office中有效在wps中无效
+                    }
 
-                 } elseif ($_column == 'K') {
-                         $combo = $object->snapshot->combo_name;
-                         $cellValue = $combo ? $combo : "丢失数据";
+                } elseif ($_column == 'K') {
+                    $combo = $object->snapshot->combo_name;
+                    $cellValue = $combo ? $combo : "丢失数据";
 
-                 } elseif ($_column == 'Q') {
-                         //累加处理
-                         $cellValue = $object->total_person * $object->single_sum +
-                         $object->flushphoto_sum +
-                         $object->carrier_sum +
-                         $object->balance_sum;
-                 }
+                } elseif ($_column == 'Q') {
+                    //累加处理
+                    $cellValue = $object->total_person * $object->single_sum +
+                        $object->flushphoto_sum +
+                        $object->carrier_sum +
+                        $object->balance_sum;
+                }
 
-                 if ($cellValue) {
-                     $sheet->setCellValue($_column . $row, $cellValue);
-                 }
-             }
-             $row++;
+                if ($cellValue) {
+                    $sheet->setCellValue($_column . $row, $cellValue);
+                }
+            }
+            $row++;
         }
 
         //设置文件名称

@@ -40,10 +40,12 @@ class Combo extends ActiveRecord
         return [
             [['combo_name','product_id','combo_cost','combo_type','combo_classify'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['uid','product_id'], 'integer'],
+            [['uid', 'product_id'], 'integer'],
             [['combo_name'], 'string', 'max' => 100],
+            ['combo_cost' ,'match', 'pattern' => '/^[0-9]+\.?[0-9]*/', 'message' => '必须为数字']
         ];
     }
+
 
     /**
      * @inheritdoc

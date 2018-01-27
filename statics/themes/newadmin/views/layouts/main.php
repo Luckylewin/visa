@@ -10,6 +10,8 @@ use backend\models\Menu;
 
 AppAsset::register($this);
 $allMenus = Menu::getMenu();
+
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/toastr/toastr.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -23,11 +25,10 @@ $allMenus = Menu::getMenu();
     <link href="/statics/themes/newadmin/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="/statics/themes/newadmin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="/statics/themes/newadmin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/statics/themes/newadmin/css/plugins/toastr/toastr.min.css" rel="stylesheet">
 
 <body>
 <?php $this->beginBody() ?>
-
-
 <div class="wrapper">
     <div class="panel">
         <div class="panel-body">
@@ -39,12 +40,7 @@ $allMenus = Menu::getMenu();
                         'homeLink' => false
                     ]); ?>
                 </div>
-
                 <?= $content ?>
-                <!--alert 表单-->
-                <div class="col-md-12">
-                    <?= Alert::widget();?>
-                </div>
             </div>
         </div>
     </div>
@@ -54,4 +50,22 @@ $allMenus = Menu::getMenu();
 </body>
 </html>
 <?php $this->endPage() ?>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": true,
+        "progressBar": true,
+        "positionClass": "toast-top-full-width",
+        "showDuration": "400",
+        "hideDuration": "1000",
+        "timeOut": "4000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "slideDown",
+        "hideMethod": "slideUp"
+    }
+</script>
+
+<?= \common\widgets\Toastr::widget();?>
 

@@ -68,6 +68,8 @@ class TransatorController extends BaseController
         $model = new Transator();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            Yii::$app->session->setFlash('success', '操作成功');
             return $this->redirect(['view', 'id' => $model->tid]);
         } else {
             return $this->render('create', [
@@ -144,6 +146,8 @@ class TransatorController extends BaseController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            Yii::$app->session->setFlash('info', '操作成功');
             return $this->redirect(['view', 'id' => $model->tid]);
         } else {
             return $this->render('update', [
@@ -162,6 +166,7 @@ class TransatorController extends BaseController
     {
         $this->findModel($id)->delete();
 
+        Yii::$app->session->setFlash('success', '操作成功');
         return $this->redirect(['index']);
     }
 
