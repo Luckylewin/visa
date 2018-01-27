@@ -159,7 +159,7 @@ class ExcelController extends BaseController
         $columnFieldMap = [
             'A' => 'customer_id',
             'B' => '',
-            'C' => 'order_date',
+            'C' => '',//order_date
             'D' => 'collect_date',
             'E' => 'deliver_date',
             'F' => 'entry_date',
@@ -195,98 +195,92 @@ class ExcelController extends BaseController
         ];
 
 
-        $start = 3;
-
+        $row = 3;
         $queryParams = \Yii::$app->request->get('orderQuery');
 
         if ($queryParams) {
+            //查询时的导出
             $queryParams = json_decode(base64_decode($queryParams), true);
             $searchModel = new OrderQuery();
             $data = $searchModel->search($queryParams, $all = true)->getModels();
         } else {
+            //非查询时的导出
             $data = OrderQuery::find()->limit(10)->all();
         }
 
+        //设置默认字体
+        $objPHPExcel->getDefaultStyle()->getFont()->setName( '宋体');
+        $objPHPExcel->getDefaultStyle()->getFont()->setSize(9);
+        $objPHPExcel->getDefaultStyle()->getFont()->setColor(new \PHPExcel_Style_Color(\PHPExcel_Style_Color::COLOR_RED));
 
         foreach ($data as $object) {
              foreach ($columnFieldMap as $_column => $_field) {
                  //设置行高
-                 $objPHPExcel->getActiveSheet()->getRowDimension($start)->setRowHeight(24);
+                 $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(24);
 
                  //设置边框
-                 $objPHPExcel->getActiveSheet()->getStyle("A{$start}:AI{$start}")->applyFromArray($borderStyle);
+                 $objPHPExcel->getActiveSheet()->getStyle("A{$row}:AI{$row}")->applyFromArray($borderStyle);
 
                  //设置居中
-                 $sheet->getStyle($_column . $start)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-                 $sheet->getStyle($_column . $start)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+                 $sheet->getStyle($_column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                 $sheet->getStyle($_column . $row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
                  //设置宽度
                  $width = $objPHPExcel->getActiveSheet()->getColumnDimension($_column)->getWidth();
                  $objPHPExcel->getActiveSheet()->getColumnDimension($_column)->setWidth($width * 1.1);
 
-
-                 $objRichText = false;
                  //填充数据
+                 $cellValue = false;
+
                  if (!empty($_field) && !is_array($_field)) {
 
                     if (strpos($_field, 'date') !== false ) {
 
                          if ($object->$_field !== '1970-011-01') {
-                             $object->$_field = date('n月j日', strtotime($object->$_field));
+                             $cellValue = date('n月j日', strtotime($object->$_field));
                          } else {
-                             $object->$_field = "未设置";
+                             $cellValue = "未设置";
                          }
-
-                         $objPHPExcel->getActiveSheet()
-                            ->getStyleByColumnAndRow($_column, $start)
-                            ->getNumberFormat()->setFormatCode('m/d');
-                     }
-
-                     //添加文字并设置这段文字粗体斜体和文字颜色
-                     if ($object->$_field) {
-                         $objRichText = $this->setColor($object->$_field);
-                     }
+                     }else{
+                        $cellValue = !empty($object->$_field) ? $object->$_field : '未设置';
+                    }
+                   
                   } elseif ($_column == 'B') {
-                     $order = $object->order_num;
-                     $order = str_replace([',','，'],"  ", $order);
-                     $objRichText = $this->setColor($order);
-                     $objPHPExcel->getActiveSheet()->getStyle($_column . $start)->getAlignment()->setWrapText(true);
+                     $cellValue = str_replace([',','，'],"  ", $object->order_num);
+                     $objPHPExcel->getActiveSheet()->getStyle($_column . $row)->getAlignment()->setWrapText(true);
 
                  } elseif ($_column == 'G') {
                      $product = $object->snapshot->combo_product;
-                     $product = $product ? $product : '已删除';
-                     $objRichText = $this->setColor($product);
+                     $cellValue = $product ? $product : '已删除';
 
                   } elseif ($_column == 'H') {
                      $type = Type::getComboType();
-                     $objRichText = $this->setColor($type[$object->order_type]);
+                     $cellValue = isset($type[$object->order_type]) ? $type[$object->order_type] : '已删除';
 
                   } elseif ($_column == 'I') {
                      $servicer = $object->servicer->name;
-                     $servicer = $servicer ? $servicer : '已删除';
-                     $objRichText = $this->setColor($servicer);
+                     $cellValue = $servicer ? $servicer : '已删除';
 
-                 } elseif ($_column == 'J') {
-                     $transators = $object->relatedTransactor;
+                  } elseif ($_column == 'J') {
+                     $transactors = $object->relatedTransactor;
                      $str = "";
-                     foreach ($transators as $transator) {
+                     foreach ($transactors as $transator) {
                          $str .= $transator['name'] . " ";
                      }
-                     $str = $str ? $str : '已删除';
-                     $objRichText = $this->setColor($str);
+                     $cellValue = $str ? $str : '已删除';
 
                  } elseif ($_column == 'K') {
                      $classify = Type::getComboClassify();
-                     $classify = isset($classify[$object->order_classify]) ? $classify[$object->order_classify] : '未设置';
-                     $objRichText = $this->setColor($classify);
+                     $cellValue = isset($classify[$object->order_classify]) ? $classify[$object->order_classify] : '未设置';
+
                  }
 
-                 if ($objRichText) {
-                     $objPHPExcel->getActiveSheet()->getCell( $_column . $start)->setValue($objRichText);
+                 if ($cellValue) {
+                     $objPHPExcel->getActiveSheet()->setCellValue($_column . $row, $cellValue);
                  }
 
              }
-             $start++;
+             $row++;
         }
 
 
@@ -306,16 +300,7 @@ class ExcelController extends BaseController
         $objWriter->save('php://output');
 
     }
-    
-    
-    private function setColor($string)
-    {
-        $objRichText = new \PHPExcel_RichText();
-        $objPayable = $objRichText->createTextRun( $string);
-        $objPayable->getFont()->setBold(false)->setName('宋体')->setSize(9)->setColor( new \PHPExcel_Style_Color( \PHPExcel_Style_Color::COLOR_RED));
-        $objRichText->createText(' ');
-        return $objRichText;
-    }
+
     
     public function actionIndex2()
     {
