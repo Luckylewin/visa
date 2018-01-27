@@ -14,7 +14,7 @@ class ExcelController extends BaseController
 
         //初始化实例
         $objPHPExcel = new \PHPExcel();
-        $objWriter = new \PHPExcel_Writer_Excel5($objPHPExcel);
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
 
 
         //设置表头
@@ -67,28 +67,28 @@ class ExcelController extends BaseController
         }
 
         //设置行高
-        $objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(25);
-        $objPHPExcel->getActiveSheet()->getRowDimension('2')->setRowHeight(35);
+        $sheet->getRowDimension('1')->setRowHeight(25);
+        $sheet->getRowDimension('2')->setRowHeight(35);
 
         //设置宽度
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(12);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(7);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(7);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(7);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(7);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(7);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(7);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(7);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(35);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AB')->setWidth(15);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AC')->setWidth(35);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AD')->setWidth(8);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AE')->setWidth(8);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AF')->setWidth(15);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AG')->setWidth(7);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AH')->setWidth(7);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('AI')->setWidth(20);
+        $sheet->getColumnDimension('A')->setWidth(12);
+        $sheet->getColumnDimension('B')->setWidth(12);
+        $sheet->getColumnDimension('C')->setWidth(7);
+        $sheet->getColumnDimension('D')->setWidth(7);
+        $sheet->getColumnDimension('E')->setWidth(7);
+        $sheet->getColumnDimension('F')->setWidth(7);
+        $sheet->getColumnDimension('G')->setWidth(7);
+        $sheet->getColumnDimension('H')->setWidth(7);
+        $sheet->getColumnDimension('I')->setWidth(7);
+        $sheet->getColumnDimension('J')->setWidth(35);
+        $sheet->getColumnDimension('AB')->setWidth(15);
+        $sheet->getColumnDimension('AC')->setWidth(35);
+        $sheet->getColumnDimension('AD')->setWidth(8);
+        $sheet->getColumnDimension('AE')->setWidth(8);
+        $sheet->getColumnDimension('AF')->setWidth(15);
+        $sheet->getColumnDimension('AG')->setWidth(7);
+        $sheet->getColumnDimension('AH')->setWidth(7);
+        $sheet->getColumnDimension('AI')->setWidth(20);
 
         //设置边框
         $borderStyle = array(
@@ -145,21 +145,19 @@ class ExcelController extends BaseController
         ];
 
         foreach ($fieldAttribute as $column_x => $field) {
-            $objPHPExcel->getActiveSheet()->setCellValue($column_x,  $field);
+            $sheet->setCellValue($column_x,  $field);
         }
-
 
         $headOne = ['A1:K1', 'L1:Q1', 'R1:Y1', 'AA1:AF1', 'AG1:AH1'];
         foreach ($headOne as $head) {
-            $objPHPExcel->getActiveSheet()->mergeCells($head);
+            $sheet->mergeCells($head);
         }
-
 
         //填充内容
         $columnFieldMap = [
             'A' => 'customer_id',
             'B' => '',
-            'C' => '',//order_date
+            'C' => 'order_date',//order_date
             'D' => 'collect_date',
             'E' => 'deliver_date',
             'F' => 'entry_date',
@@ -194,8 +192,6 @@ class ExcelController extends BaseController
             'AI' => 'remark'
         ];
 
-
-        $row = 3;
         $queryParams = \Yii::$app->request->get('orderQuery');
 
         if ($queryParams) {
@@ -208,7 +204,9 @@ class ExcelController extends BaseController
             $data = OrderQuery::find()->limit(10)->all();
         }
 
-        //设置默认字体
+        $row = 3;
+
+        //设置默认字体 大小 颜色
         $objPHPExcel->getDefaultStyle()->getFont()->setName( '宋体');
         $objPHPExcel->getDefaultStyle()->getFont()->setSize(9);
         $objPHPExcel->getDefaultStyle()->getFont()->setColor(new \PHPExcel_Style_Color(\PHPExcel_Style_Color::COLOR_RED));
@@ -216,18 +214,21 @@ class ExcelController extends BaseController
         foreach ($data as $object) {
              foreach ($columnFieldMap as $_column => $_field) {
                  //设置行高
-                 $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(24);
+                 $sheet->getRowDimension($row)->setRowHeight(23);
 
                  //设置边框
-                 $objPHPExcel->getActiveSheet()->getStyle("A{$row}:AI{$row}")->applyFromArray($borderStyle);
+                 $sheet->getStyle("A{$row}:AI{$row}")->applyFromArray($borderStyle);
 
-                 //设置居中
+                 //设置水平竖直居中
                  $sheet->getStyle($_column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                  $sheet->getStyle($_column . $row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
                  //设置宽度
-                 $width = $objPHPExcel->getActiveSheet()->getColumnDimension($_column)->getWidth();
-                 $objPHPExcel->getActiveSheet()->getColumnDimension($_column)->setWidth($width * 1.1);
+                 $width = $sheet->getColumnDimension($_column)->getWidth();
+                 $sheet->getColumnDimension($_column)->setWidth($width * 1.1);
+
+                 //设置自动换行
+                 $sheet->getStyle($_column)->getAlignment()->setWrapText(true);
 
                  //填充数据
                  $cellValue = false;
@@ -241,13 +242,13 @@ class ExcelController extends BaseController
                          } else {
                              $cellValue = "未设置";
                          }
-                     }else{
+                     } else {
                         $cellValue = !empty($object->$_field) ? $object->$_field : '未设置';
                     }
-                   
+
                   } elseif ($_column == 'B') {
                      $cellValue = str_replace([',','，'],"  ", $object->order_num);
-                     $objPHPExcel->getActiveSheet()->getStyle($_column . $row)->getAlignment()->setWrapText(true);
+                     $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
 
                  } elseif ($_column == 'G') {
                      $product = $object->snapshot->combo_product;
@@ -269,21 +270,39 @@ class ExcelController extends BaseController
                      }
                      $cellValue = $str ? $str : '已删除';
 
-                 } elseif ($_column == 'K') {
-                     $classify = Type::getComboClassify();
-                     $cellValue = isset($classify[$object->order_classify]) ? $classify[$object->order_classify] : '未设置';
+                     //设置批注
+                     if ($object->remark) {
+                         $commentAuthor = $object->operator->username;
+                         $commentAuthor = !empty($commentAuthor) ? $commentAuthor : "PHPExcel";
+                         $sheet->getComment( $_column . $row)->setAuthor($commentAuthor);     //设置作者
+                         $objCommentRichText = $sheet->getComment($_column . $row )->getText()->createTextRun($commentAuthor . " :");  //添加批注
+                         $objCommentRichText->getFont()->setBold( true);  //将现有批注加粗
+                         $sheet->getComment( $_column . $row)->getText()->createTextRun("\r\n" );      //添加更多批注
+                         $sheet->getComment( $_column . $row)->getText()->createTextRun($object->remark);
+                         $sheet->getComment( $_column . $row)->setWidth('100pt' );      //设置批注显示的宽高 ，在office中有效在wps中无效
+                         $sheet->getComment( $_column . $row)->setHeight('100pt' );
+                         $sheet->getComment( $_column . $row)->setMarginLeft('150pt' );
+                         $sheet->getComment( $_column . $row)->getFillColor()->setRGB('FFFFD8' );      //设置背景色 ，在office中有效在wps中无效
+                     }
 
+                 } elseif ($_column == 'K') {
+                         $combo = $object->snapshot->combo_name;
+                         $cellValue = $combo ? $combo : "丢失数据";
+
+                 } elseif ($_column == 'Q') {
+                         //累加处理
+                         $cellValue = $object->total_person * $object->single_sum +
+                         $object->flushphoto_sum +
+                         $object->carrier_sum +
+                         $object->balance_sum;
                  }
 
                  if ($cellValue) {
-                     $objPHPExcel->getActiveSheet()->setCellValue($_column . $row, $cellValue);
+                     $sheet->setCellValue($_column . $row, $cellValue);
                  }
-
              }
              $row++;
         }
-
-
 
         //设置文件名称
         $file_name = "阳光假日天猫报表" . date('Ymd_His');
@@ -293,10 +312,13 @@ class ExcelController extends BaseController
         header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
         header("Content-Type:application/force-download");
         header("Content-Type:application/vnd.ms-execl");
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
         header("Content-Type:application/octet-stream");
         header("Content-Type:application/download");;
-        header('Content-Disposition:attachment;filename='.$file_name.'.xls');
+        header('Content-Disposition:attachment;filename='.$file_name.'.xlsx');
         header("Content-Transfer-Encoding:binary");
+
         $objWriter->save('php://output');
 
     }
