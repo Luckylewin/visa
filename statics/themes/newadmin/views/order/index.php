@@ -50,7 +50,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             //客人ID
             [
                     'attribute' => 'customer_id',
-                    'label' => '客户ID'
+                    'label' => '客户ID',
             ],
             //淘宝订单号
             [
@@ -69,7 +69,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 'attribute' => 'order_date',
                 'value' => function($model) {
                     if ($model->order_date != '1970-01-01') {
-                        return substr($model->order_date, 2);
+                        return str_replace('-','/', substr($model->order_date, 2));
                     }
 
                 },
@@ -93,7 +93,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 'attribute' => 'collect_date',
                 'value' => function($model) {
                     if ($model->collect_date != '1970-01-01') {
-                        return substr($model->collect_date,2);
+                        return str_replace('-','/', substr($model->collect_date, 2));
                     }
 
                 },
@@ -105,7 +105,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 'attribute' => 'deliver_date',
                 'value' => function($model) {
                     if ($model->deliver_date != '1970-01-01') {
-                        return substr($model->deliver_date,2);
+                        return str_replace('-','/', substr($model->deliver_date, 2));
                     }
                 },
                 'options' => ['style'=>'width:90px;']
@@ -116,7 +116,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 'attribute' => 'entry_date',
                 'value' => function($model) {
                     if ($model->entry_date != '1970-01-01') {
-                        return substr($model->entry_date, 2);
+                        return str_replace('-','/', substr($model->entry_date, 2));
                     }
                 },
                 'options' => ['style'=>'width:90px;']
@@ -197,7 +197,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                     'class' => 'yii\grid\ActionColumn',
                     'header' => '操作',
-                    'options' => ['style'=>'width:75px;']
+                    'options' => ['style'=>'width:105px;']
             ],
             // 'id',
             //'pid',
@@ -220,15 +220,13 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             // 'receipt_date',
             // 'pay_date',
             // 'audit_status',
-
-
         ],
     ]); ?>
 </div>
 
 <p>
     <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
-    <?= Html::a('导出excel', \yii\helpers\Url::to(['excel/index','orderQuery' => $queryParams]), ['class' => 'btn btn-info']) ?>
+    <?= Html::a('导出excel', \yii\helpers\Url::to(['excel/index','orderQuery' => $queryParams]), ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
     <?= Html::a("批量删除", "javascript:void(0);", ["class" => "btn btn-warning gridview"]) ?>
 </p>
 
@@ -240,11 +238,13 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             layer.msg("没有选中任何数据");
             return false;
         }
+
         var ids = {ids:keys};
+
         layer.confirm('确定要删除勾选的选项吗', {
             title: '<i class="fa fa-warning" style="color: #953b39"></i> 操作警告',
             btn: ['确定','取消'] //按钮
-        },function(){
+        }, function() {
             var url = '<?= \yii\helpers\Url::to(['order/delete-all']);?>';
 
             $.post(url,ids,function(b){
@@ -258,6 +258,14 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             },'json');
         });
     });
+
+    //选中导出
+    $('#export_link').click(function() {
+            var keys = $("#grid").yiiGridView("getSelectedRows");
+            var _this = $(this);
+            _this.attr('href', _this.attr('href') + '&selected_id=' + keys);
+    });
 </script>
+
 <?php \common\widgets\Jsblock::end(); ?>
 

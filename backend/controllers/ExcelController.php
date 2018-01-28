@@ -12,12 +12,20 @@ class ExcelController extends BaseController
     public function actionIndex()
     {
 
-        $queryParams = \Yii::$app->request->get('orderQuery');
-        if ($queryParams) {
+        $queryParams = Yii::$app->request->get('orderQuery');
+        $selected_id = Yii::$app->request->get('selected_id');
+
+
+        if ($selected_id) {
+            //直接选中的导出
+            $data = OrderQuery::find()->where("id in ($selected_id)")->all();
+
+        } elseif ($queryParams) {
             //查询时的导出
             $queryParams = json_decode(base64_decode($queryParams), true);
             $searchModel = new OrderQuery();
             $data = $searchModel->search($queryParams, $all = true)->getModels();
+
         } else {
             //非查询时的导出
             $data = OrderQuery::find()->limit(10)->all();
@@ -94,23 +102,23 @@ class ExcelController extends BaseController
         //设置宽度
         $sheet->getColumnDimension('A')->setWidth(12);
         $sheet->getColumnDimension('B')->setWidth(12);
-        $sheet->getColumnDimension('C')->setWidth(7);
-        $sheet->getColumnDimension('D')->setWidth(7);
-        $sheet->getColumnDimension('E')->setWidth(7);
-        $sheet->getColumnDimension('F')->setWidth(7);
-        $sheet->getColumnDimension('G')->setWidth(7);
-        $sheet->getColumnDimension('H')->setWidth(7);
-        $sheet->getColumnDimension('I')->setWidth(7);
+        $sheet->getColumnDimension('C')->setWidth(8);
+        $sheet->getColumnDimension('D')->setWidth(8);
+        $sheet->getColumnDimension('E')->setWidth(8);
+        $sheet->getColumnDimension('F')->setWidth(8);
+        $sheet->getColumnDimension('G')->setWidth(12);
+        $sheet->getColumnDimension('H')->setWidth(8);
+        $sheet->getColumnDimension('I')->setWidth(8);
         $sheet->getColumnDimension('K')->setWidth(35);
         $sheet->getColumnDimension('AB')->setWidth(15);
         $sheet->getColumnDimension('AC')->setWidth(8);
         $sheet->getColumnDimension('AD')->setWidth(35);
         $sheet->getColumnDimension('AE')->setWidth(8);
         $sheet->getColumnDimension('AF')->setWidth(15);
-        $sheet->getColumnDimension('AG')->setWidth(7);
-        $sheet->getColumnDimension('AH')->setWidth(7);
-        $sheet->getColumnDimension('AI')->setWidth(7);
-        $sheet->getColumnDimension('AJ')->setWidth(7);
+        $sheet->getColumnDimension('AG')->setWidth(8);
+        $sheet->getColumnDimension('AH')->setWidth(8);
+        $sheet->getColumnDimension('AI')->setWidth(8);
+        $sheet->getColumnDimension('AJ')->setWidth(8);
         $sheet->getColumnDimension('AK')->setWidth(20);
 
         //设置边框
@@ -214,8 +222,8 @@ class ExcelController extends BaseController
             'AF' => 'delivergood_date',
             'AG' => '',//寄回客人单号
             'AH' => 'pay_date',
-            'AI' => '', //店铺收款日
-            'AJ' => 'receipt_date',
+            'AI' => 'receipt_date', //店铺收款日
+            'AJ' => 'company_receipt_date',
             'AK' => 'remark'
         ];
 
@@ -269,6 +277,7 @@ class ExcelController extends BaseController
                 } elseif ($_column == 'B') {
                     $cellValue = str_replace([',','，'],"  ", $object->order_num);
                     $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
+                    $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
                 } elseif ($_column == 'G') {
                     $product = $object->snapshot->combo_product;

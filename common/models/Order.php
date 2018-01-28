@@ -40,6 +40,7 @@ use yii\db\ActiveRecord;
  * @property integer $delivercompany
  * @property string $remark
  * @property string $receipt_date
+ * @property string $company_receipt_date
  * @property string $pay_date
  * @property string $audit_status
  */
@@ -65,7 +66,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id','pid', 'total_person', 'single_sum'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id'], 'safe'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'company_receipt_date'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
             [['back_address', 'remark'], 'string','max' => 300],
             [['delivercompany'], 'string', 'max' => 50],
@@ -118,7 +119,8 @@ class Order extends \yii\db\ActiveRecord
             'delivercompany_id' => '快递公司ID',
             'delivercompany' => '快递公司',
             'remark' => '备注',
-            'receipt_date' => '收款日期',
+            'receipt_date' => '店铺收款日期',
+            'company_receipt_date' => '公司收款日期',
             'pay_date' => '支付日期',
             'cid' => '国家',
             'audit_status' => '审核状态',//1审核中2审核未通过3审核通过

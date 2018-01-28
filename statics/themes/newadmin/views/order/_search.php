@@ -8,6 +8,10 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?php \common\widgets\Cssblock::begin() ?>
+.my-search{cursor:pointer;}
+<?php \common\widgets\Cssblock::end() ?>
+
 <div class="order-search">
 
     <?php $form = ActiveForm::begin([
@@ -15,15 +19,17 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-
-
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">
-                条件搜索
+                <span class="my-search" value="hide">
+                    条件搜索 <i class="fa fa-angle-double-down"></i>
+                            <i class="fa fa-angle-double-up hide"></i>
+                </span>
+
             </h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body search-body hide">
             <div class="col-md-12">
 
                 <div class="col-md-3">
@@ -113,3 +119,20 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 </div>
 
+
+<?php \common\widgets\Jsblock::begin(); ?>
+    $('.my-search').click(function() {
+        var _switch = $(this).attr('value');
+        if (_switch == 'hide') {
+            $('i').removeClass('hide');
+            $('.fa-angle-double-down').addClass('hide');
+            $(this).attr('value', 'show');
+            $('.search-body').removeClass('hide');
+        } else {
+            $('i').addClass('hide');
+            $('.fa-angle-double-down').removeClass('hide');
+            $(this).attr('value', 'hide');
+            $('.search-body').addClass('hide');
+        }
+    });
+<?php \common\widgets\Jsblock::end(); ?>

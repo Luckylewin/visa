@@ -14,17 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('编辑', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('删除', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => '确定要删除该项吗?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -33,5 +22,24 @@ $this->params['breadcrumbs'][] = $this->title;
             'tb_servicer_id',
         ],
     ]) ?>
+
+    <p>
+        <?php if(strpos(Yii::$app->request->referrer, 'order') === false): ?>
+
+            <?= Html::a('编辑', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('删除', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => '确定要删除该项吗?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+
+        <?php else: ?>
+
+            <?= Html::a('返回', Yii::$app->request->referrer, ['class' => 'btn btn-default']) ?>
+
+        <?php endif;?>
+    </p>
 
 </div>

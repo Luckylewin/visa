@@ -197,10 +197,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-             [
-                 'attribute' => 'operator_id',
-                 'value' => $model->operator->username
-             ],
+
             'back_addressee',
             'back_telphone',
             [
@@ -246,6 +243,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'company_receipt_date',
+                'value' => function($model) {
+                    if ($model->receipt_date != '0000-00-00') {
+                        return $model->receipt_date;
+                    }
+                    return '-';
+                }
+            ],
+            [
                 'attribute' => 'pay_date',
                 'value' => function($model) {
                     if ($model->pay_date != '0000-00-00') {
@@ -272,7 +278,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
                     return date('Y-m-d H:i:s', $model->updated_at);
                     }
-            ]
+            ],
+            [
+                'attribute' => 'operator_id',
+                'value' => $model->operator->username
+            ],
+
         ],
     ]) ?>
 
@@ -287,7 +298,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
         &nbsp;&nbsp;
 
-        <?php if (preg_match('/(create|update)/',Yii::$app->request->referrer)) { ?>
+        <?php if (preg_match('/(create|update|view)/',Yii::$app->request->referrer)) { ?>
             <?= Html::a('返回',Url::to(['order/index']), [
                 'class' => 'btn btn-default'
             ])?>

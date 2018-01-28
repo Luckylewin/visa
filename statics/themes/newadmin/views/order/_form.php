@@ -202,6 +202,13 @@ $tranlator = new Transator();
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
+                <?= $form->field($model, 'company_receipt_date')->textInput([
+                    'class' => 'form-control layer-date',
+                    'placeholder' => '请选择日期',
+                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                    'style' => 'display:block!important;max-width:350px!important'
+                ]) ?>
+
             </div>
         </div>
     </div>
@@ -209,6 +216,9 @@ $tranlator = new Transator();
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '创建' : '更新', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+
+        <?= Html::a('返回', Yii::$app->request->referrer, ['class' => 'btn btn-default']) ?>
+
     </div>
 
     <?php ActiveForm::end(); ?>
