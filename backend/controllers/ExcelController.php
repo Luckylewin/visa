@@ -2,10 +2,14 @@
 
 namespace backend\controllers;
 
+
+use common\models\Order;
 use Yii;
 use common\models\OrderQuery;
 use common\models\ProductQuery;
 use common\models\Type;
+use common\models\UploadForm;
+use yii\web\UploadedFile;
 
 class ExcelController extends BaseController
 {
@@ -38,6 +42,92 @@ class ExcelController extends BaseController
 
         return $this->_exportExcel($data);
     }
+
+
+    public function actionImport()
+    {
+        $model = new UploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $uploadFile = UploadedFile::getInstance($model,'file');
+            $this->_importExcel($uploadFile->tempName);
+        }
+
+        return $this->render('import', [
+            'model' => $model
+        ]);
+    }
+
+    private function _importExcel($excelFilename)
+    {
+        $reader = \PHPExcel_IOFactory::createReader('Excel2007'); // 读取 excel 文档
+        $PHPExcel = $reader->load($excelFilename); // 文档名称
+        $sheet = $PHPExcel->getSheet(0); // 读取第一个工作表(编号从 0 开始)
+        $highestRow = $sheet->getHighestRow(); // 取得总行数
+
+        $indexToColumn =  [ 1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z',27=>'AA',28=>'AB',29=>'AC',30=>'AD',31=>'AE',32=>'AF',33=>'AG',34=>'AH',35=>'AI',36=>'AJ',37=>'AK'];
+
+        $columnToField = [
+            'A' => 'customer_id',
+            'B' => 'order_num',
+            'C' => 'order_date',//order_date
+            'D' => 'collect_date',
+            'E' => 'deliver_date',
+            'F' => 'entry_date',
+            'G' => 'combo_product',
+            'H' => 'combo_type',
+            'I' => 'servicer',
+            'J' => 'operator_id',//操作人员
+            'K' => 'transator_id',//办理人名称
+            'L' => 'combo_classify',//套餐类型
+            'M' => 'single_sum',
+            'N' => 'total_person',
+            'O' => 'balance_sum',
+            'P' => 'flushphoto_sum',
+            'Q' => 'carrier_sum',//快递
+            'R' => '',//合计
+            'S' => '',//手续费
+            'T' => '',//实收
+            'U' => '',//单项实付合计
+            'V' => 'total_person',//数量
+            'W' => 'balance_sum',//补差
+            'X' => 'flushphoto_sum',//照片
+            'Y' => 'carrier_sum',//快递
+            'Z' => '',//实付合计
+            'AA' => '',//利润
+            'AB' => 'back_addressee',
+            'AC' => 'back_telphone',
+            'AD' => 'back_address',
+            'AE' => 'putsign_date',
+            'AF' => 'delivergood_date',
+            'AG' => '',//寄回客人单号
+            'AH' => 'pay_date',
+            'AI' => 'receipt_date', //店铺收款日
+            'AJ' => 'company_receipt_date',
+            'AK' => 'remark'
+        ];
+
+        $order = new Order();
+
+        foreach ($sheet->getRowIterator() as $row) {  //逐行处理
+
+            if ($row->getRowIndex() > 2 && $row->getRowIndex() < $highestRow) {  //确定从哪一行开始读取
+                $column = 1;
+                foreach ($row->getCellIterator() as $cell) { //逐列读取
+                    $field = $columnToField[$indexToColumn[$column]];
+                    if ($field) {
+                        $data = $cell->getValue(); //获取cell中数据
+                        //echo $order->getAttributeLabel($field)," : ", $data, "   ";
+
+                        $column++;
+                    }
+                }
+            }
+           //echo '<hr/>';
+        }
+
+    }
+
 
     private function _exportExcel($data)
     {

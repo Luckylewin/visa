@@ -55,7 +55,7 @@ class LoginForm extends Model
         if ($this->validate())
         {
             $model = $this->getUser();
-            $isLogin = Yii::$app->user->login($model, $this->rememberMe ? 86400 * 1 : 0);
+            $isLogin = Yii::$app->user->login($model, $this->rememberMe ? 86400 * 0.7 : 0);
             //登录成功,记录登录时间和IP
             if($isLogin) {
                 $model->last_login_time = time();
