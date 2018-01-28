@@ -227,6 +227,11 @@ class ExcelController extends BaseController
         $objPHPExcel->getDefaultStyle()->getFont()->setColor(new \PHPExcel_Style_Color(\PHPExcel_Style_Color::COLOR_RED));
 
         foreach ($data as $object) {
+
+            //数据准备
+            $charge = $object->snapshot->combo_charge;
+            $cost = $object->snapshot->combo_cost;
+
             foreach ($columnFieldMap as $_column => $_field) {
                 //设置行高
                 $sheet->getRowDimension($row)->setRowHeight(23);
@@ -321,7 +326,7 @@ class ExcelController extends BaseController
 
                 } elseif ($_column == 'S') {
                     //手续费率
-                    $cellValue = $object->snapshot->combo_charge;
+                    $cellValue = $charge;
 
                 } elseif ($_column == 'T') {
                     //乘以手续费率
@@ -330,11 +335,11 @@ class ExcelController extends BaseController
                         $object->carrier_sum +
                         $object->balance_sum;
 
-                    $cellValue = $income * $object->snapshot->combo_charge;
+                    $cellValue = $income * ( $charge > 0 ? $charge : 1);;
 
                 }   elseif ($_column == 'Z') { //支出合计
                     //累加处理
-                    $cellValue = $object->total_person * $object->snapshot->combo_cost +
+                    $cellValue = $object->total_person * $cost +
                         $object->flushphoto_sum +
                         $object->carrier_sum +
                         $object->balance_sum;
@@ -344,9 +349,9 @@ class ExcelController extends BaseController
                     $income = ($object->total_person * $object->single_sum +
                         $object->flushphoto_sum +
                         $object->carrier_sum +
-                        $object->balance_sum) * $object->snapshot->combo_charge;
+                        $object->balance_sum) * ( $charge > 0 ? $charge : 1);
 
-                    $cost = $object->total_person * $object->snapshot->combo_cost +
+                    $cost = $object->total_person * $cost +
                         $object->flushphoto_sum +
                         $object->carrier_sum +
                         $object->balance_sum;
