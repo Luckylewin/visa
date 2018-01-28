@@ -3,7 +3,11 @@
 namespace backend\controllers;
 
 
+use backend\models\Admin;
 use common\models\Order;
+use common\models\Servicer;
+use common\models\Snapshot;
+use common\models\Transator;
 use Yii;
 use common\models\OrderQuery;
 use common\models\ProductQuery;
@@ -79,16 +83,16 @@ class ExcelController extends BaseController
             'I' => 'servicer',
             'J' => 'operator_id',//操作人员
             'K' => 'transator_id',//办理人名称
-            'L' => 'combo_classify',//套餐类型
+            'L' => 'combo_name',//套餐类型
             'M' => 'single_sum',
             'N' => 'total_person',
             'O' => 'balance_sum',
             'P' => 'flushphoto_sum',
             'Q' => 'carrier_sum',//快递
             'R' => '',//合计
-            'S' => '',//手续费
+            'S' => 'combo_charge',//手续费
             'T' => '',//实收
-            'U' => '',//单项实付合计
+            'U' => 'combo_cost',//单项实付合计
             'V' => 'total_person',//数量
             'W' => 'balance_sum',//补差
             'X' => 'flushphoto_sum',//照片
@@ -111,19 +115,87 @@ class ExcelController extends BaseController
 
         foreach ($sheet->getRowIterator() as $row) {  //逐行处理
 
+            //创建order对象
+            $order = new Order();
+            $snapshot = new Snapshot();
+            $servicer = new Servicer();
+            $transactorOrder = [];
+
             if ($row->getRowIndex() > 2 && $row->getRowIndex() < $highestRow) {  //确定从哪一行开始读取
                 $column = 1;
                 foreach ($row->getCellIterator() as $cell) { //逐列读取
+                    $index = $indexToColumn[$column];
                     $field = $columnToField[$indexToColumn[$column]];
+
                     if ($field) {
                         $data = $cell->getValue(); //获取cell中数据
                         //echo $order->getAttributeLabel($field)," : ", $data, "   ";
+                        echo $field," : ", $data, "   ";
 
-                        $column++;
+                        switch ($index)
+                        {
+                            case 'H':
+                                $types = Type::getComboType();
+                                $type = array_search($data, $types);
+                                $snapshot->$field = $type;
+                                $order->order_type = $type;
+                                break;
+                           case 'I':
+                                $servicer->name = $data;
+                                break;
+                            case 'J':
+                                //查找操作用户
+                                $uid = Admin::find()->where(['username' => $data])->select('id');
+                                $order->$field = $uid;
+                                break;
+                            case 'K':
+                                //查找办理人
+                                $transactors = explode(' ',trim($data));
+                                if (!empty($transactors)) {
+                                    foreach ($transactors as $transactor) {
+                                        $_transactor = Transator::find()->where(['name' => $transactor])->select('tid')->all();
+                                        if ($_transactor) {
+                                            $transactorOrder[] = $_transactor->tid;
+                                        }
+
+                                    }
+                                }
+                                break;
+                            case 'L':
+                            case 'S':
+                            case 'G':
+                            case 'U':
+                                $snapshot->$field = $data;
+                                break;
+                            case 'C':
+                            case 'D':
+                            case 'E':
+                            case 'F':
+                            case 'AE':
+                            case 'AF':
+                            case 'AH':
+                            case 'AI':
+                            case 'AJ':
+                                $data = date('Y-m-d', strtotime(str_replace(['月', '日'],['/', ''], $data)));
+                                $order->$field = $data;
+                            break;
+
+                            default:
+                                $order->$field = $data;
+                            break;
+                        }
                     }
+                    $column++;
                 }
+                //echo "<hr/>";
+                //print_r($snapshot);
+                //echo "<hr/>";
+                //print_r($servicer);
+                //echo "<hr/>";
+                //print_r($order);
+
             }
-           //echo '<hr/>';
+            echo '<hr/>';
         }
 
     }
