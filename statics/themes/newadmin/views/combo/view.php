@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'combo_name',
             'combo_cost',
+            'combo_charge',
             'created_at',
             [
                 'attribute' => 'updated_at',

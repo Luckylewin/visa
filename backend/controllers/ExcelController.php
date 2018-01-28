@@ -232,7 +232,7 @@ class ExcelController extends BaseController
                 $sheet->getRowDimension($row)->setRowHeight(23);
 
                 //设置边框
-                $sheet->getStyle("A{$row}:AI{$row}")->applyFromArray($borderStyle);
+                $sheet->getStyle("A{$row}:AK{$row}")->applyFromArray($borderStyle);
 
                 //设置水平竖直居中
                 $sheet->getStyle($_column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -252,7 +252,7 @@ class ExcelController extends BaseController
 
                     if (strpos($_field, 'date') !== false ) {
 
-                        if ($object->$_field !== '1970-011-01') {
+                        if ($object->$_field !== '1970-01-01') {
                             $cellValue = date('n月j日', strtotime($object->$_field));
                         } else {
                             $cellValue = "未设置";
@@ -321,7 +321,7 @@ class ExcelController extends BaseController
 
                 } elseif ($_column == 'S') {
                     //手续费率
-                    $cellValue = 0.965;
+                    $cellValue = $object->snapshot->combo_charge;
 
                 } elseif ($_column == 'T') {
                     //乘以手续费率
@@ -330,7 +330,7 @@ class ExcelController extends BaseController
                         $object->carrier_sum +
                         $object->balance_sum;
 
-                    $cellValue = $income * 0.965;
+                    $cellValue = $income * $object->snapshot->combo_charge;
 
                 }   elseif ($_column == 'Z') { //支出合计
                     //累加处理
@@ -344,7 +344,7 @@ class ExcelController extends BaseController
                     $income = ($object->total_person * $object->single_sum +
                         $object->flushphoto_sum +
                         $object->carrier_sum +
-                        $object->balance_sum) * 0.965;
+                        $object->balance_sum) * $object->snapshot->combo_charge;
 
                     $cost = $object->total_person * $object->snapshot->combo_cost +
                         $object->flushphoto_sum +

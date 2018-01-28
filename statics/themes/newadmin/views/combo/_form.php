@@ -30,6 +30,8 @@ use \common\models\Type;
 
                 <?= $form->field($model, 'combo_cost')->textInput() ?>
 
+                <?= $form->field($model, 'combo_charge')->textInput() ?>
+
                 <?php if($model->isNewRecord) echo $form->field($model, 'product_id')->hiddenInput(['value'=>$productModel->id])->label(false) ?>
 
                 <div class="form-group">

@@ -14,6 +14,7 @@ use Yii;
  * @property string $combo_type
  * @property string $combo_product
  * @property integer $snap_combo_id
+ * @property integer $combo_charge
  * @property string $is_valid
  */
 class Snapshot extends \yii\db\ActiveRecord
@@ -32,7 +33,7 @@ class Snapshot extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['combo_name', 'combo_cost', 'combo_classify', 'combo_type', 'snap_combo_id','combo_product'], 'required'],
+            [['combo_name', 'combo_cost', 'combo_classify', 'combo_type', 'snap_combo_id','combo_product','combo_charge'], 'required'],
             [['snap_combo_id', 'is_valid'], 'integer'],
             [['combo_cost'], 'number'],
             [['combo_name'], 'string', 'max' => 255],
@@ -49,6 +50,7 @@ class Snapshot extends \yii\db\ActiveRecord
             'id' => 'ID',
             'combo_name' => '套餐名称',
             'combo_cost' => '支出成本',
+            'combo_charge' => '手续费',
             'combo_classify' => '订单分类',
             'combo_product' => '产品名称',
             'combo_type' => '类型',

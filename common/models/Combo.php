@@ -19,6 +19,7 @@ use Yii;
  * @property string $combo_cost
  * @property string $combo_type
  * @property string $combo_classify
+ * @property string $combo_charge
  * @property integer $uid
  */
 class Combo extends ActiveRecord
@@ -38,7 +39,7 @@ class Combo extends ActiveRecord
     public function rules()
     {
         return [
-            [['combo_name','product_id','combo_cost','combo_type','combo_classify'], 'required'],
+            [['combo_name','product_id','combo_cost','combo_type','combo_classify', 'combo_charge'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['uid', 'product_id'], 'integer'],
             [['combo_name'], 'string', 'max' => 100],
@@ -62,7 +63,8 @@ class Combo extends ActiveRecord
             'uid' => '用户id',
             'product_id' => '产品id',
             'combo_cost' => '支出成本',
-            'combo_classify' => '订单分类'
+            'combo_classify' => '订单分类',
+            'combo_charge' => '手续费'
         ];
     }
 
@@ -136,6 +138,7 @@ class Combo extends ActiveRecord
         $snapShot->combo_type = $this->combo_type;
         $snapShot->snap_combo_id = $this->combo_id;
         $snapShot->combo_product = $this->product->name;
+        $snapShot->combo_charge = $this->combo_charge;
         $snapShot->is_valid = 1;
         $snapShot->save();
         return true;
