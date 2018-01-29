@@ -119,7 +119,8 @@ class ExcelController extends BaseController
             $order = new Order();
             $snapshot = new Snapshot();
             $servicer = new Servicer();
-            $transactorOrder = [];
+            $existTransactor = [];
+            $notExistTransactorName = [];
 
             if ($row->getRowIndex() > 2 && $row->getRowIndex() < $highestRow) {  //确定从哪一行开始读取
                 $column = 1;
@@ -141,12 +142,17 @@ class ExcelController extends BaseController
                                 $order->order_type = $type;
                                 break;
                            case 'I':
+                                //客服
                                 $servicer->name = $data;
                                 break;
                             case 'J':
                                 //查找操作用户
-                                $uid = Admin::find()->where(['username' => $data])->select('id');
-                                $order->$field = $uid;
+                                var_dump($data);
+                                $uid = Admin::find()->where(['username' => $data])->select('id')->all();
+                                var_dump($uid);echo "1111111111111111111111111111111111111111111111111";
+                                if ($uid) {
+                                    $order->$field = $uid->id;
+                                }
                                 break;
                             case 'K':
                                 //查找办理人
@@ -155,7 +161,9 @@ class ExcelController extends BaseController
                                     foreach ($transactors as $transactor) {
                                         $_transactor = Transator::find()->where(['name' => $transactor])->select('tid')->all();
                                         if ($_transactor) {
-                                            $transactorOrder[] = $_transactor->tid;
+                                            $existTransactor[] = $_transactor->tid;
+                                        } else {
+                                            $notExistTransactorName[] = $transactor;
                                         }
 
                                     }
@@ -187,12 +195,15 @@ class ExcelController extends BaseController
                     }
                     $column++;
                 }
-                //echo "<hr/>";
-                //print_r($snapshot);
-                //echo "<hr/>";
-                //print_r($servicer);
-                //echo "<hr/>";
-                //print_r($order);
+                echo "<hr/>";
+                var_dump($existTransactor);
+                var_dump($notExistTransactorName);
+                echo "<hr/>";
+                print_r($snapshot);
+                echo "<hr/>";
+                print_r($servicer);
+                echo "<hr/>";
+                print_r($order);
 
             }
             echo '<hr/>';
