@@ -536,9 +536,9 @@ class ExcelController extends BaseController
                 }   elseif ($_column == 'AA') { //支出合计
                     //累加处理
                     $cellValue = $object->total_person * $cost +
-                        $object->flushphoto_sum +
-                        $object->carrier_sum +
-                        $object->balance_sum;
+                        $object->output_flushphoto_sum +
+                        $object->output_carrier_sum +
+                        $object->output_balance_sum;
 
                 }elseif ($_column == 'AB') {
                     //收入减支出
