@@ -548,14 +548,15 @@ class ExcelController extends BaseController
                         $object->balance_sum) * ( $charge > 0 ? $charge : 1);
 
                     $cost = $object->total_person * $cost +
-                        $object->flushphoto_sum +
-                        $object->carrier_sum +
-                        $object->balance_sum;
+                        $object->output_flushphoto_sum +
+                        $object->output_carrier_sum +
+                        $object->output_balance_sum;
 
                     $cellValue = $income - $cost;
                 }
 
                 if ($cellValue) {
+
                     $sheet->setCellValue($_column . $row, $cellValue);
                 }
             }
