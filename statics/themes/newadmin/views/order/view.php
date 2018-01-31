@@ -117,8 +117,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'output_balance_sum',
                 'value' => function($model) {
-                    if ($model->balance_sum != '0.000') {
-                        return $model->balance_sum . "元";
+                    if ($model->output_balance_sum != '0.000') {
+                        return $model->output_balance_sum . "元";
                     }
                     return "-";
                 }
@@ -149,8 +149,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'output_flushphoto_sum',
                 'value' => function($model) {
-                    if ($model->flushphoto_sum != '0.00') {
-                        return $model->flushphoto_sum . "元";
+                    if ($model->output_flushphoto_sum != '0.00') {
+                        return $model->output_flushphoto_sum . "元";
                     }
                     return "-";
                 }
@@ -179,8 +179,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'output_carrier_sum',
                 'value' => function($model) {
-                    if ($model->carrier_sum != '0.00') {
-                        return $model->carrier_sum . "元";
+                    if ($model->output_carrier_sum != '0.00') {
+                        return $model->output_carrier_sum . "元";
                     }
                     return "-";
                 }
