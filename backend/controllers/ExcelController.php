@@ -224,7 +224,6 @@ class ExcelController extends BaseController
         $objPHPExcel = new \PHPExcel();
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
 
-
         //设置表头
         $headStyle = array(
             'font' => array(
@@ -382,10 +381,10 @@ class ExcelController extends BaseController
             'L' => '',//套餐类型
             'M' => '',//套餐名称
             'N' => 'single_sum',
-            'O' => 'total_person',
-            'P' => 'balance_sum',
-            'Q' => 'flushphoto_sum',
-            'R' => 'carrier_sum',//快递
+            'O' => '',
+            'P' => 'balance_sum',//补差收入
+            'Q' => 'flushphoto_sum',//冲洗照片补差收入
+            'R' => 'carrier_sum',//快递补差收入
             'S' => '',//合计
             'T' => '',//手续费
             'U' => '',//实收
@@ -414,6 +413,16 @@ class ExcelController extends BaseController
         $objPHPExcel->getDefaultStyle()->getFont()->setName( '宋体');
         $objPHPExcel->getDefaultStyle()->getFont()->setSize(9);
         $objPHPExcel->getDefaultStyle()->getFont()->setColor(new \PHPExcel_Style_Color(\PHPExcel_Style_Color::COLOR_RED));
+
+        //统计
+        $total_person_sum = 0;
+        $balance_sum = 0;
+        $flushphoto_sum = 0;
+        $carrier_sum = 0;
+
+        $output_balance_sum = 0;
+        $output_flushphoto_sum = 0;
+        $output_carrier_sum = 0;
 
         foreach ($data as $object) {
 
@@ -513,7 +522,12 @@ class ExcelController extends BaseController
                     $combo = $object->snapshot->combo_name;
                     $cellValue = $combo ? $combo : "丢失数据";
 
-                }elseif ($_column == 'S') { //收入合计
+                } elseif ($_column == 'O') {
+
+                    $cellValue = $object->total_person;
+                    $total_person_sum += $cellValue;
+
+                } elseif ($_column == 'S') { //收入合计
                     //累加处理
                     $cellValue = $object->total_person * $object->single_sum +
                         $object->flushphoto_sum +
@@ -533,7 +547,7 @@ class ExcelController extends BaseController
 
                     $cellValue = $income * ( $charge > 0 ? $charge : 1);;
 
-                }   elseif ($_column == 'AA') { //支出合计
+                } elseif ($_column == 'AA') { //支出合计
                     //累加处理
                     $cellValue = $object->total_person * $cost +
                         $object->output_flushphoto_sum +
@@ -541,6 +555,7 @@ class ExcelController extends BaseController
                         $object->output_balance_sum;
 
                 }elseif ($_column == 'AB') {
+
                     //收入减支出
                     $income = ($object->total_person * $object->single_sum +
                         $object->flushphoto_sum +
@@ -556,12 +571,22 @@ class ExcelController extends BaseController
                 }
 
                 if ($cellValue) {
-
+                    if (!is_array($_field) && isset($$_field)) {
+                        $$_field += $cellValue;
+                    }
                     $sheet->setCellValue($_column . $row, $cellValue);
                 }
             }
             $row++;
         }
+
+        $caculate = ['O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB'];
+
+        //填充统计数据
+        foreach ($caculate as $col) {
+            $sheet->setCellValue($col . $row, $this->getSumString($col,3,$row-1));
+        }
+
 
         //设置文件名称
         $file_name = !empty($file_name)? $file_name : "阳光假日天猫报表" . date('Ymd_His');
@@ -582,6 +607,16 @@ class ExcelController extends BaseController
 
     }
 
+    private function getSumString($col,$start,$end)
+    {
+        $str = '';
+        for ($i=$start; $i<=$end; $i++) {
+            $str .= ($col . $i . ':' );
+        }
+        $str = trim($str, ':');
+        $str = "=SUM(" . $str . ")";
+        return $str;
+    }
     
     public function actionIndex2()
     {
