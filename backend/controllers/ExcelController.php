@@ -23,7 +23,6 @@ class ExcelController extends BaseController
         $queryParams = Yii::$app->request->get('orderQuery');
         $selected_id = Yii::$app->request->get('selected_id');
 
-
         if ($selected_id) {
             //直接选中的导出
             $data = OrderQuery::find()->where("id in ($selected_id)")->all();
@@ -44,7 +43,14 @@ class ExcelController extends BaseController
            return $this->redirect(Yii::$app->request->referrer);
         }
 
-        return $this->_exportExcel($data);
+        $file_name = "阳光假日天猫报表_" . date('Y/m/d');
+        if (isset($queryParams['OrderQuery']['order_classify']) && !empty($queryParams['OrderQuery']['order_classify'])) {
+            $classify = Type::getComboClassify();
+            $file_name = isset($classify[$queryParams['OrderQuery']['order_classify']]) ? $classify[$queryParams['OrderQuery']['order_classify']] : '天猫阳光假日';
+            $file_name .= "订单报表". date('-Y/m/d');
+        }
+
+        return $this->_exportExcel($data, $file_name);
     }
 
 
@@ -212,7 +218,7 @@ class ExcelController extends BaseController
     }
 
 
-    private function _exportExcel($data)
+    private function _exportExcel($data, $file_name)
     {
         //初始化实例
         $objPHPExcel = new \PHPExcel();
@@ -255,8 +261,8 @@ class ExcelController extends BaseController
         $sheet = $objPHPExcel->getActiveSheet();
 
         $columns = [
-            ['A1','B1','C1','D1','E1','F1','G1','H1','I1','J1','K1','L1','M1','N1','O1','P1','Q1','R1','S1','T1','U1','V1','W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1','AJ1','AK1'],
-            ['A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2','O2','P2','Q2','R2','S2','T2','U2','V2','W2','X2','Y2','Z2','AA2','AB2','AC2','AD2','AE2','AF2','AG2','AH2','AI2','AJ2','AK2']
+            ['A1','B1','C1','D1','E1','F1','G1','H1','I1','J1','K1','L1','M1','N1','O1','P1','Q1','R1','S1','T1','U1','V1','W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1','AJ1','AK1','AL1'],
+            ['A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2','O2','P2','Q2','R2','S2','T2','U2','V2','W2','X2','Y2','Z2','AA2','AB2','AC2','AD2','AE2','AF2','AG2','AH2','AI2','AJ2','AK2','AL2']
         ];
 
         foreach ($columns as $lines) {
@@ -279,20 +285,20 @@ class ExcelController extends BaseController
         $sheet->getColumnDimension('D')->setWidth(8);
         $sheet->getColumnDimension('E')->setWidth(8);
         $sheet->getColumnDimension('F')->setWidth(8);
-        $sheet->getColumnDimension('G')->setWidth(12);
+        $sheet->getColumnDimension('G')->setWidth(16);
         $sheet->getColumnDimension('H')->setWidth(8);
         $sheet->getColumnDimension('I')->setWidth(8);
         $sheet->getColumnDimension('K')->setWidth(35);
-        $sheet->getColumnDimension('AB')->setWidth(15);
-        $sheet->getColumnDimension('AC')->setWidth(8);
-        $sheet->getColumnDimension('AD')->setWidth(35);
-        $sheet->getColumnDimension('AE')->setWidth(8);
-        $sheet->getColumnDimension('AF')->setWidth(15);
-        $sheet->getColumnDimension('AG')->setWidth(8);
+        $sheet->getColumnDimension('AC')->setWidth(15);
+        $sheet->getColumnDimension('AD')->setWidth(8);
+        $sheet->getColumnDimension('AE')->setWidth(35);
+        $sheet->getColumnDimension('AF')->setWidth(8);
+        $sheet->getColumnDimension('AG')->setWidth(15);
         $sheet->getColumnDimension('AH')->setWidth(8);
         $sheet->getColumnDimension('AI')->setWidth(8);
         $sheet->getColumnDimension('AJ')->setWidth(8);
-        $sheet->getColumnDimension('AK')->setWidth(20);
+        $sheet->getColumnDimension('AK')->setWidth(8);
+        $sheet->getColumnDimension('AL')->setWidth(20);
 
         //设置边框
         $borderStyle = array(
@@ -307,54 +313,55 @@ class ExcelController extends BaseController
 
         $fieldAttribute = [
             'A1' => '订单详情',
-            'M1' => '收入',
-            'U1' => '支出',
-            'AD1' => '发货',
-            'AH1' => '结算',
+            'N1' => '收入',
+            'V1' => '支出',
+            'AC1' => '发货',
+            'AI1' => '结算',
             'A2' => '客人ID',
             'B2' => '淘宝订单号',
             'C2' => '订单日期',
             'D2' => '收资料日',
             'E2' => '寄珠海日期',
             'F2' => '入馆日',
-            'G2' => '国家',
+            'G2' => '名称',
             'H2' => '类型',
             'I2' => "接待\n销售",
             'J2' => "操作\n人员",
             'K2' => '办理人',
             'L2' => '套餐类型',
-            'M2' => '单项实收',
-            'N2' => '数量',
-            'O2' => '补差',
-            'P2' => '照片',
-            'Q2' => '快递',
-            'R2' => '合计',
-            'S2' => '手续费',
-            'T2' => '实收',
-            'U2' => '单项实付',
-            'V2' => '数量',
-            'W2' => '补差',
-            'X2' => '照片',
-            'Y2' => '快递',
-            'Z2' => '实付合计',
-            'AA2' => '利润',
-            'AB2' => '收件人',
-            'AC2' => '收件电话',
-            'AD2' => '收件地址',
-            'AE2' => "出签\n日期",
-            'AF2' => "发货\n日期",
-            'AG2' => '寄回客人单号',
-            'AH2' => "支付日期",
-            'AI2' => "店铺收款日",
-            'AJ2' => "公司收款日",
-            'AK2' => '备注'
+            'M2' => '套餐名称',
+            'N2' => '单项实收',
+            'O2' => '数量',
+            'P2' => '补差',
+            'Q2' => '照片',
+            'R2' => '快递',
+            'S2' => '合计',
+            'T2' => '手续费',
+            'U2' => '实收',
+            'V2' => '单项实付',
+            'W2' => '数量',
+            'X2' => '补差',
+            'Y2' => '照片',
+            'Z2' => '快递',
+            'AA2' => '实付合计',
+            'AB2' => '利润',
+            'AC2' => '收件人',
+            'AD2' => '收件电话',
+            'AE2' => '收件地址',
+            'AF2' => "出签\n日期",
+            'AG2' => "发货\n日期",
+            'AH2' => '寄回客人单号',
+            'AI2' => "支付日期",
+            'AJ2' => "店铺收款日",
+            'AK2' => "公司收款日",
+            'AL2' => '备注'
         ];
 
         foreach ($fieldAttribute as $column_x => $field) {
             $sheet->setCellValue($column_x,  $field);
         }
 
-        $headOne = ['A1:L1', 'M1:R1', 'U1:Z1', 'AB1:AG1', 'AH1:AJ1'];
+        $headOne = ['A1:M1', 'N1:U1', 'V1:AA1', 'AC1:AH1', 'AI1:AL1'];
         foreach ($headOne as $head) {
             $sheet->mergeCells($head);
         }
@@ -373,31 +380,32 @@ class ExcelController extends BaseController
             'J' => '',//操作人员
             'K' => '',//办理人名称
             'L' => '',//套餐类型
-            'M' => 'single_sum',
-            'N' => 'total_person',
-            'O' => 'balance_sum',
-            'P' => 'flushphoto_sum',
-            'Q' => 'carrier_sum',//快递
-            'R' => '',//合计
-            'S' => '',//手续费
-            'T' => '',//实收
-            'U' => '',//单项实付合计
-            'V' => 'total_person',//数量
-            'W' => 'balance_sum',//补差
-            'X' => 'flushphoto_sum',//照片
-            'Y' => 'carrier_sum',//快递
-            'Z' => '',//实付合计
-            'AA' => '',//利润
-            'AB' => 'back_addressee',
-            'AC' => 'back_telphone',
-            'AD' => 'back_address',
-            'AE' => 'putsign_date',
-            'AF' => 'delivergood_date',
-            'AG' => '',//寄回客人单号
-            'AH' => 'pay_date',
-            'AI' => 'receipt_date', //店铺收款日
-            'AJ' => 'company_receipt_date',
-            'AK' => 'remark'
+            'M' => '',//套餐名称
+            'N' => 'single_sum',
+            'O' => 'total_person',
+            'P' => 'balance_sum',
+            'Q' => 'flushphoto_sum',
+            'R' => 'carrier_sum',//快递
+            'S' => '',//合计
+            'T' => '',//手续费
+            'U' => '',//实收
+            'V' => '',//单项实付合计
+            'W' => 'total_person',//数量
+            'X' => 'output_balance_sum',//补差
+            'Y' => 'output_flushphoto_sum',//照片
+            'Z' => 'output_carrier_sum',//快递
+            'AA' => '',//实付合计
+            'AB' => '',//利润
+            'AC' => 'back_addressee',
+            'AD' => 'back_telphone',
+            'AE' => 'back_address',
+            'AF' => 'putsign_date',
+            'AG' => 'delivergood_date',
+            'AH' => 'deliver_order',//寄回客人单号
+            'AI' => 'pay_date',
+            'AJ' => 'receipt_date', //店铺收款日
+            'AK' => 'company_receipt_date',
+            'AL' => 'remark'
         ];
 
         $row = 3;
@@ -418,7 +426,7 @@ class ExcelController extends BaseController
                 $sheet->getRowDimension($row)->setRowHeight(23);
 
                 //设置边框
-                $sheet->getStyle("A{$row}:AK{$row}")->applyFromArray($borderStyle);
+                $sheet->getStyle("A{$row}:AL{$row}")->applyFromArray($borderStyle);
 
                 //设置水平竖直居中
                 $sheet->getStyle($_column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -468,7 +476,7 @@ class ExcelController extends BaseController
                     $operator = $object->operator->username;
                     $cellValue = $operator ? $operator : '已删除';
 
-                } elseif ($_column == 'U') {
+                } elseif ($_column == 'V') {
                     $cost = $object->snapshot->combo_cost;
                     $cellValue = $cost ? $cost : '数据丢失';
 
@@ -496,21 +504,27 @@ class ExcelController extends BaseController
                     }
 
                 } elseif ($_column == 'L') {
+
+                    $classify = Type::getComboClassify();
+                    $cellValue = $classify[$object->snapshot->combo_classify];
+
+                } elseif ($_column == 'M') {
+
                     $combo = $object->snapshot->combo_name;
                     $cellValue = $combo ? $combo : "丢失数据";
 
-                } elseif ($_column == 'R') { //收入合计
+                }elseif ($_column == 'S') { //收入合计
                     //累加处理
                     $cellValue = $object->total_person * $object->single_sum +
                         $object->flushphoto_sum +
                         $object->carrier_sum +
                         $object->balance_sum;
 
-                } elseif ($_column == 'S') {
+                } elseif ($_column == 'T') {
                     //手续费率
                     $cellValue = $charge;
 
-                } elseif ($_column == 'T') {
+                } elseif ($_column == 'U') {
                     //乘以手续费率
                     $income = $object->total_person * $object->single_sum +
                         $object->flushphoto_sum +
@@ -519,14 +533,14 @@ class ExcelController extends BaseController
 
                     $cellValue = $income * ( $charge > 0 ? $charge : 1);;
 
-                }   elseif ($_column == 'Z') { //支出合计
+                }   elseif ($_column == 'AA') { //支出合计
                     //累加处理
                     $cellValue = $object->total_person * $cost +
                         $object->flushphoto_sum +
                         $object->carrier_sum +
                         $object->balance_sum;
 
-                }elseif ($_column == 'AA') {
+                }elseif ($_column == 'AB') {
                     //收入减支出
                     $income = ($object->total_person * $object->single_sum +
                         $object->flushphoto_sum +
@@ -549,7 +563,7 @@ class ExcelController extends BaseController
         }
 
         //设置文件名称
-        $file_name = "阳光假日天猫报表" . date('Ymd_His');
+        $file_name = !empty($file_name)? $file_name : "阳光假日天猫报表" . date('Ymd_His');
 
         header("Pragma: public");
         header("Expires: 0");

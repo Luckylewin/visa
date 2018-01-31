@@ -124,11 +124,22 @@ $tranlator = new Transator();
 
                 <div style="margin-top: 540px;"></div>
 
-                <?= $form->field($model, 'balance_sum')->textInput(['maxlength' => true]) ?>
+                <div class="col-md-6">
+                    <?= $form->field($model, 'balance_sum')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'flushphoto_sum')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'flushphoto_sum')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'carrier_sum')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'carrier_sum')->textInput(['maxlength' => true]) ?>
+                </div>
+
+                <div class="col-md-6">
+                    <?= $form->field($model, 'output_balance_sum')->textInput(['maxlength' => true]) ?>
+
+                    <?= $form->field($model, 'output_flushphoto_sum')->textInput(['maxlength' => true]) ?>
+
+                    <?= $form->field($model, 'output_carrier_sum')->textInput(['maxlength' => true]) ?>
+                </div>
+
 
             </div>
 
@@ -185,7 +196,8 @@ $tranlator = new Transator();
             <div class="col-md-3">
 
                 <?= $form->field($model, 'audit_status')->dropDownList(\common\models\Type::getStatus(), [
-                    'style' => 'max-width:350px;'
+                    'style' => 'max-width:350px;',
+                    'readonly' => true
                 ]) ?>
 
                 <?= $form->field($model, 'pay_date')->textInput([

@@ -101,11 +101,14 @@ class Order extends \yii\db\ActiveRecord
             'single_sum' => '单项实收金额',
             'total_person' => '人数',
             'balance_order' => '补差订单号',
-            'balance_sum' => '补差订单金额',
+            'balance_sum' => '补差收入金额',
+            'output_balance_sum' => '补差支出金额',
             'flushphoto_order' => '代冲洗照片订单号',
-            'flushphoto_sum' => '代冲洗照片订单金额',
+            'flushphoto_sum' => '代洗照片收入金额',
+            'output_flushphoto_sum' => '代冲洗照片支出金额',
             'carrier_order' => '快递费补差订单号',
-            'carrier_sum' => '快递费补差订单金额',
+            'carrier_sum' => '快递补差收入金额',
+            'output_carrier_sum' => '快递费补差支出金额',
             'collect_date' => '收资料日',
             'deliver_date' => '送证日',
             'entry_date' => '入馆日',
@@ -175,6 +178,25 @@ class Order extends \yii\db\ActiveRecord
                }
            }
 
+           //判断日期 决定审核状态
+           if ($this->audit_status != 5) {
+               if ($this->collect_date != '0000-00-00') {
+                   $this->audit_status = 1;
+               }
+
+               if ($this->deliver_date != '0000-00-00') {
+                   $this->audit_status = 2;
+               }
+
+               if ($this->entry_date != '0000-00-00') {
+                   $this->audit_status = 3;
+               }
+
+               if ($this->putsign_date != '0000-00-00') {
+                   $this->audit_status = 4;
+               }
+           }
+           
            return true;
        }
        return false;
