@@ -146,28 +146,32 @@ $tranlator = new Transator();
             <div class="col-md-3">
 
                 <?= $form->field($model, 'collect_date')->textInput([
-                    'class' => 'form-control layer-date',
+                    'class' => 'form-control layer-date date-status',
+                    'status' => '1',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
                 <?= $form->field($model, 'deliver_date')->textInput([
-                    'class' => 'form-control layer-date',
+                    'class' => 'form-control layer-date date-status',
+                    'status' => '2',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
                 <?= $form->field($model, 'entry_date')->textInput([
-                    'class' => 'form-control layer-date',
+                    'class' => 'form-control layer-date date-status',
+                    'status' => '3',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
                 <?= $form->field($model, 'putsign_date')->textInput([
-                    'class' => 'form-control layer-date',
+                    'class' => 'form-control layer-date date-status',
+                    'status' => '4',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
@@ -541,6 +545,41 @@ $tranlator = new Transator();
         // e 的话就是一个对象 然后需要什么就 “e.参数” 形式 进行获取
         // console.log(e);
     });
+
+    function change()
+    {
+        var statusSelector = $('#order-audit_status');
+        var curStatus = statusSelector.find("option:selected").val();
+        var date_status = $('.date-status');
+        var newOne = 1;
+
+        for (var i=0; i < date_status.length; i++) {
+            var val = date_status.eq(i).val();
+            var nowInput = date_status.eq(i).attr('status');
+
+            if (val !== '') {
+                if (nowInput > curStatus) {
+                    console.log(nowInput,curStatus);
+                    newOne = nowInput;
+                }else{
+                    newOne = curStatus;
+                }
+            }
+        }
+        if (newOne !== curStatus) {
+            statusSelector.find("option").attr("selected",false);
+            statusSelector.find("option[value='" + newOne +"']").attr("selected",true);
+        }
+
+    }
+
+    $('.date-status').blur(function() {
+        setTimeout(function(){
+           change();
+        },100);
+    });
+
 </script>
+
 
 <?php \common\widgets\Jsblock::end()?>
