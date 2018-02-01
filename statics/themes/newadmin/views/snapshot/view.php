@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $combo_type[$model->combo_type];
                 }
             ],
-
+            'combo_charge'
             //'snap_combo_id',
             //'is_valid',
         ],
