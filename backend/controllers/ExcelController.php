@@ -465,7 +465,7 @@ class ExcelController extends BaseController
                     }
 
                 } elseif ($_column == 'B') {
-                    $cellValue = str_replace([',','，'],"  ", $object->order_num);
+                    $cellValue = "  " . str_replace([',','，'],"  ", $object->order_num);
                     $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
                     $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
@@ -580,13 +580,30 @@ class ExcelController extends BaseController
             $row++;
         }
 
-        $caculate = ['O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB'];
+        $sheet->getRowDimension($row)->setRowHeight(23);
 
-        //填充统计数据
-        foreach ($caculate as $col) {
-            $sheet->setCellValue($col . $row, $this->getSumString($col,3,$row-1));
+        //填充统计数据颜色
+        $hoverColumn = ['O'=>'ffff00','S'=>'ff0000','U'=>'ff0000','W'=>'ff0000','P'=>'','Q'=>'','R'=>'','V'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>'','AB'=>''];
+        foreach ($hoverColumn as $column => $colorCode) {
+            //居中
+            $sheet->getStyle( $column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY);
+            $sheet->getStyle(  $column . $row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            //设置字体
+            $sheet->getStyle( $column . $row)->getFont()->setSize(11);
+            $sheet->getStyle( $column . $row)->getFont()->setBold(true);
+            $sheet->getStyle( $column . $row)->getFont()->getColor()->setARGB(\PHPExcel_Style_Color::COLOR_BLACK);
+            //设置颜色
+            if ($colorCode) {
+                $sheet->getStyle( $column . $row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+                $sheet->getStyle($column . $row)->getFill()->getStartColor()->setRGB($colorCode);
+            }
         }
 
+        //填充统计数据
+        $calculate = ['O','P','Q','R','S','U','V','W','X','Y','Z','AA','AB'];
+        foreach ($calculate as $col) {
+            $sheet->setCellValue($col . $row, $this->getSumString($col,3,$row-1));
+        }
 
         //设置文件名称
         $file_name = !empty($file_name)? $file_name : "阳光假日天猫报表" . date('Ymd_His');
@@ -605,6 +622,44 @@ class ExcelController extends BaseController
 
         $objWriter->save('php://output');
 
+    }
+
+    private function generateColor($colorCode)
+    {
+        //设置表头
+        $headStyle = array(
+            'font' => array(
+                'bold' => true,
+                'name' => '宋体'
+            ),
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PHPExcel_Style_Alignment::VERTICAL_CENTER
+            ),
+            'borders' => array(
+                'top' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                ),
+                'left' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                ),
+                'right' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                ),
+                'bottom' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                ),
+            ),
+            'fill' => array(
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                'startcolor' => array(
+                    'rgb' => $colorCode,
+                ),
+
+            ),
+        );
+
+        return $headStyle;
     }
 
     private function getSumString($col,$start,$end)
