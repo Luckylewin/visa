@@ -75,7 +75,7 @@ class Order extends \yii\db\ActiveRecord
             [['balance_order', 'flushphoto_order', 'carrier_order', 'deliver_order'], 'string', 'max' => 64],
             [['back_telphone'], 'string', 'max' => 36],
             [['balance_sum','flushphoto_sum','carrier_sum','output_balance_sum','output_flushphoto_sum','output_carrier_sum'], 'default', 'value' => '0.00'],
-            [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => '1970-01-01'],
+            [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => ''],
             [['single_sum'],'default','value' => '0.00'],
             [['total_person'],'default','value' => '1'],
 
