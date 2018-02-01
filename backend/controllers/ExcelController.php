@@ -43,11 +43,11 @@ class ExcelController extends BaseController
            return $this->redirect(Yii::$app->request->referrer);
         }
 
-        $file_name = "阳光假日天猫报表_" . date('Y/m/d');
+        $file_name = "订单" . date('Y_m_d');
         if (isset($queryParams['OrderQuery']['order_classify']) && !empty($queryParams['OrderQuery']['order_classify'])) {
             $classify = Type::getComboClassify();
-            $file_name = isset($classify[$queryParams['OrderQuery']['order_classify']]) ? $classify[$queryParams['OrderQuery']['order_classify']] : '天猫阳光假日';
-            $file_name .= "订单报表". date('-Y/m/d');
+            $file_name = isset($classify[$queryParams['OrderQuery']['order_classify']]) ? $classify[$queryParams['OrderQuery']['order_classify']]  : '';
+            $file_name .= "订单" . date('Y_m_d');
         }
 
         return $this->_exportExcel($data, $file_name);
@@ -465,7 +465,7 @@ class ExcelController extends BaseController
                     }
 
                 } elseif ($_column == 'B') {
-                    $cellValue = "  " . str_replace([',','，'],"  ", $object->order_num);
+                    $cellValue = "'" . str_replace([',','，'],"  ", $object->order_num);
                     $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
                     $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
@@ -606,7 +606,7 @@ class ExcelController extends BaseController
         }
 
         //设置文件名称
-        $file_name = !empty($file_name)? $file_name : "阳光假日天猫报表" . date('Ymd_His');
+        $file_name = !empty($file_name)? $file_name : "阳光假日报表" . date('Ymd_His');
 
         header("Pragma: public");
         header("Expires: 0");

@@ -190,7 +190,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                'attribute' => 'collect_date',
                'value' => function($model) {
-                   if ($model->collect_date != '0000-00-00') {
+                   if ($model->collect_date ) {
                         return $model->collect_date;
                    }
                    return '-';
@@ -200,7 +200,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'deliver_date',
                 'value' => function($model) {
-                    if ($model->deliver_date != '0000-00-00') {
+                    if ($model->deliver_date ) {
                         return $model->deliver_date;
                     }
                     return '-';
@@ -210,7 +210,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'entry_date',
                 'value' => function($model) {
-                    if ($model->entry_date != '0000-00-00') {
+                    if ($model->entry_date ) {
                         return $model->entry_date;
                     }
                     return '-';
@@ -220,7 +220,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'putsign_date',
                 'value' => function($model) {
-                    if ($model->putsign_date != '0000-00-00') {
+                    if ($model->putsign_date ) {
                         return $model->putsign_date;
                     }
                     return '-';
@@ -244,7 +244,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'delivergood_date',
                 'value' => function($model) {
-                    if ($model->delivergood_date != '0000-00-00') {
+                    if ($model->delivergood_date ) {
                         return $model->delivergood_date;
                     }
                     return '-';
@@ -266,7 +266,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'receipt_date',
                 'value' => function($model) {
-                    if ($model->receipt_date != '0000-00-00') {
+                    if ($model->receipt_date ) {
                         return $model->receipt_date;
                     }
                     return '-';
@@ -275,7 +275,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'company_receipt_date',
                 'value' => function($model) {
-                    if ($model->receipt_date != '0000-00-00') {
+                    if ($model->receipt_date ) {
                         return $model->receipt_date;
                     }
                     return '-';
@@ -284,7 +284,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'pay_date',
                 'value' => function($model) {
-                    if ($model->pay_date != '0000-00-00') {
+                    if ($model->pay_date ) {
                         return $model->pay_date;
                     }
                     return '-';

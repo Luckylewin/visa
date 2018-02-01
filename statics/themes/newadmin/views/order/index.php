@@ -68,7 +68,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                 'attribute' => 'order_date',
                 'value' => function($model) {
-                    if ($model->order_date != '1970-01-01') {
+                    if ($model->order_date ) {
                         return str_replace('-','/', substr($model->order_date, 2));
                     }
 
@@ -92,7 +92,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                 'attribute' => 'collect_date',
                 'value' => function($model) {
-                    if ($model->collect_date != '1970-01-01') {
+                    if ($model->collect_date ) {
                         return str_replace('-','/', substr($model->collect_date, 2));
                     }
 
@@ -104,7 +104,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                 'attribute' => 'deliver_date',
                 'value' => function($model) {
-                    if ($model->deliver_date != '1970-01-01') {
+                    if ($model->deliver_date) {
                         return str_replace('-','/', substr($model->deliver_date, 2));
                     }
                 },
@@ -115,7 +115,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                 'attribute' => 'entry_date',
                 'value' => function($model) {
-                    if ($model->entry_date != '1970-01-01') {
+                    if ($model->entry_date ) {
                         return str_replace('-','/', substr($model->entry_date, 2));
                     }
                 },
