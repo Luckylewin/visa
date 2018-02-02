@@ -14,7 +14,7 @@ class Type
 
     public static function getStatus()
     {
-        return ['1'=>'已收到','2'=>'已审核','3'=>'已送签','4'=>'已通过', '5' => '已拒签'];
+        return ['1'=>'未审核','2'=>'已收到','3'=>'已审核','4'=>'已送签','5'=>'已通过', '6' => '已拒签'];
     }
 
     public static function getSex()

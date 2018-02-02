@@ -178,22 +178,25 @@ class Order extends \yii\db\ActiveRecord
                }
            }
 
+           $status = ['collect_date'=>'2','deliver_date'=>'3','entry_date'=>'4','putsign_date'=>'5'];
+
            //判断日期 决定审核状态
-           if ($this->audit_status != 5) {
-               if ($this->collect_date != '0000-00-00') {
+           if ($this->audit_status != 6) {
+               $temp = [];
+               $emptyField = [];
+               foreach ($status as $date_field => $statusValue) {
+                   if ($this->$date_field) {
+                       $temp[] = $date_field;
+                       $this->audit_status = $statusValue;
+                   } else {
+                       $emptyField[] = $statusValue;
+                   }
+               }
+
+               if (!empty($emptyField)) {
+                   $this->audit_status = $emptyField[0] - 1;
+               } else if (empty($temp)) {
                    $this->audit_status = 1;
-               }
-
-               if ($this->deliver_date != '0000-00-00') {
-                   $this->audit_status = 2;
-               }
-
-               if ($this->entry_date != '0000-00-00') {
-                   $this->audit_status = 3;
-               }
-
-               if ($this->putsign_date != '0000-00-00') {
-                   $this->audit_status = 4;
                }
            }
            

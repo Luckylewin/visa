@@ -125,19 +125,19 @@ $tranlator = new Transator();
                 <div style="margin-top: 540px;"></div>
 
                 <div class="col-md-6">
-                    <?= $form->field($model, 'balance_sum')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'balance_sum')->textInput(['maxlength' => true,'placeholder'=>'￥']) ?>
 
-                    <?= $form->field($model, 'flushphoto_sum')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'flushphoto_sum')->textInput(['maxlength' => true,'placeholder'=>'￥']) ?>
 
-                    <?= $form->field($model, 'carrier_sum')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'carrier_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥']) ?>
                 </div>
 
                 <div class="col-md-6">
-                    <?= $form->field($model, 'output_balance_sum')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'output_balance_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥']) ?>
 
-                    <?= $form->field($model, 'output_flushphoto_sum')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'output_flushphoto_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥']) ?>
 
-                    <?= $form->field($model, 'output_carrier_sum')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'output_carrier_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥']) ?>
                 </div>
 
 
@@ -147,7 +147,7 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'collect_date')->textInput([
                     'class' => 'form-control layer-date date-status',
-                    'status' => '1',
+                    'status' => '2',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
@@ -155,7 +155,7 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'deliver_date')->textInput([
                     'class' => 'form-control layer-date date-status',
-                    'status' => '2',
+                    'status' => '3',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
@@ -163,7 +163,7 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'entry_date')->textInput([
                     'class' => 'form-control layer-date date-status',
-                    'status' => '3',
+                    'status' => '4',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
@@ -171,7 +171,7 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'putsign_date')->textInput([
                     'class' => 'form-control layer-date date-status',
-                    'status' => '4',
+                    'status' => '5',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
@@ -552,31 +552,40 @@ $tranlator = new Transator();
         var curStatus = statusSelector.find("option:selected").val();
         var date_status = $('.date-status');
         var newOne = 1;
+        var emptyData = [];
 
         for (var i=0; i < date_status.length; i++) {
             var val = date_status.eq(i).val();
             var nowInput = date_status.eq(i).attr('status');
 
-            if (val !== '') {
+            if (val) {
                 if (nowInput > curStatus) {
-                    console.log(nowInput,curStatus);
                     newOne = nowInput;
                 }else{
                     newOne = curStatus;
                 }
+            } else {
+                emptyData.push(nowInput);
             }
         }
-        if (newOne !== curStatus) {
-            statusSelector.find("option").attr("selected",false);
-            statusSelector.find("option[value='" + newOne +"']").attr("selected",true);
+            console.log(emptyData);
+
+
+        if (emptyData.length >= 1) {
+            newOne = emptyData[0] - 1;
+        }else {
+            newOne = 5;
         }
+
+        statusSelector.find("option").attr("selected",false);
+        statusSelector.find("option[value='" + newOne +"']").prop("selected",true);
 
     }
 
     $('.date-status').blur(function() {
         setTimeout(function(){
            change();
-        },100);
+        },300);
     });
 
 </script>

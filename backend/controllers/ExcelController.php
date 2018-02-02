@@ -293,7 +293,7 @@ class ExcelController extends BaseController
         $sheet->getColumnDimension('AE')->setWidth(35);
         $sheet->getColumnDimension('AF')->setWidth(8);
         $sheet->getColumnDimension('AG')->setWidth(15);
-        $sheet->getColumnDimension('AH')->setWidth(8);
+        $sheet->getColumnDimension('AH')->setWidth(16);
         $sheet->getColumnDimension('AI')->setWidth(8);
         $sheet->getColumnDimension('AJ')->setWidth(8);
         $sheet->getColumnDimension('AK')->setWidth(8);
@@ -400,7 +400,7 @@ class ExcelController extends BaseController
             'AE' => 'back_address',
             'AF' => 'putsign_date',
             'AG' => 'delivergood_date',
-            'AH' => 'deliver_order',//寄回客人单号
+            'AH' => '',//寄回客人单号
             'AI' => 'pay_date',
             'AJ' => 'receipt_date', //店铺收款日
             'AK' => 'company_receipt_date',
@@ -431,6 +431,10 @@ class ExcelController extends BaseController
             $cost = $object->snapshot->combo_cost;
 
             foreach ($columnFieldMap as $_column => $_field) {
+
+                //自动换行
+                $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
+
                 //设置行高
                 $sheet->getRowDimension($row)->setRowHeight(23);
 
@@ -568,6 +572,10 @@ class ExcelController extends BaseController
                         $object->output_balance_sum;
 
                     $cellValue = $income - $cost;
+
+                }elseif ($_column == 'AH') {
+                    $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                    $cellValue =  $object->deliver_order;
                 }
 
                 if ($cellValue) {
