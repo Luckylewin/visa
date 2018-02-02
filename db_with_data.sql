@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-02-01 16:35:22
+Date: 2018-02-02 19:53:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -377,7 +377,7 @@ CREATE TABLE `yii2_order` (
   `transactor_name` varchar(50) NOT NULL COMMENT '办理人名称',
   `single_sum` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '单项实收金额',
   `total_person` smallint(5) NOT NULL DEFAULT '0' COMMENT '人数',
-  `balance_order` varchar(64) NOT NULL DEFAULT '0.00' COMMENT '补差订单号',
+  `balance_order` varchar(64) NOT NULL DEFAULT '' COMMENT '补差订单号',
   `balance_sum` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '收入补差订单金额',
   `output_balance_sum` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '支出补差订单金额',
   `flushphoto_order` varchar(64) NOT NULL COMMENT '代冲洗照片订单号',
@@ -407,16 +407,18 @@ CREATE TABLE `yii2_order` (
   `updated_at` int(10) NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`),
   KEY `order_deliverycompany_id` (`delivercompany`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yii2_order
 -- ----------------------------
-INSERT INTO `yii2_order` VALUES ('33', '67639', '72774443785866441,79696628915866441', '1', '1', '2017-10-13', '禾小小宸', '37', '1', '', '298.00', '2', '', '80.00', '0.00', '', '10.00', '0.00', '', '23.00', '0.00', '2017-10-14', '2017-10-15', '2017-10-19', '2017-10-17', '1', '云南省  昆明市  盘龙区  金辰街道穿金路省生物制药有限公司生活区（农贸市场旁）  650051  徐鼎黄', '徐鼎黄', '13888258830', '2017-10-20', '789073211191     龚拒签', '顺丰', '龚韵佳拒签重办', '2017-11-03', '2018-01-28', '2017-11-08', '4', '0', '1516772799', '1517474077');
+INSERT INTO `yii2_order` VALUES ('33', '67639', '72774443785866441,79696628915866441', '1', '1', '2017-10-13', '禾小小宸', '37', '1', '', '298.00', '2', '', '80.00', '0.00', '', '10.00', '0.00', '', '23.00', '0.00', '', '', '', '', '1', '云南省  昆明市  盘龙区  金辰街道穿金路省生物制药有限公司生活区（农贸市场旁）  650051  徐鼎黄', '徐鼎黄', '13888258830', '2017-10-20', '789073211191     龚拒签', '顺丰', '龚韵佳拒签重办', '2017-11-03', '2018-01-28', '2017-11-08', '4', '0', '1516772799', '1517474479');
 INSERT INTO `yii2_order` VALUES ('34', '67638', '67730009495894210,68168547439894210', '1', '1', '2017-10-13', 'irenehuihui1986', '34', '1', '', '330.00', '1', '', '30.00', '0.00', '', '0.00', '0.00', '', '23.00', '0.00', '2017-10-15', '2017-10-17', '2017-10-18', '2017-10-23', '1', '北京市  朝阳区  十八里店镇朝阳区十八里店老君堂甲3号 捷强花园 305号', '张泓', '13581845657', '2017-10-24', '789090909369', '顺丰', '', '2017-11-03', '2018-01-28', '2017-11-08', '3', '0', '1516773188', '1516775723');
 INSERT INTO `yii2_order` VALUES ('35', '67639', '74037582482664874', '1', '2', '2017-10-14', 'hr张蕊', '45', '1', '', '398.00', '8', '', '0.00', '0.00', '', '0.00', '0.00', '', '0.00', '0.00', '2017-10-15', '2017-10-15', '2017-10-16', '2017-10-17', '1', '福建省长汀县梅林三路51号', '廖晨羽', '18558906659', '2017-10-18', '789061594313', '顺丰', '王凯拒签', '2017-11-03', '2018-01-28', '2017-11-08', '3', '0', '1516773538', '1517023883');
 INSERT INTO `yii2_order` VALUES ('36', '67637', '73464844660638393', '1', '3', '2017-10-13', 'oulsm2', '33', '2', '', '555.00', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '0.00', '0.00', '2017-10-18', '2017-10-18', '2017-10-18', '2017-10-18', '1', '回邮：819338141@qq.com', '', '', '2017-10-18', '', '', '', '1970-01-01', '2018-01-28', '2018-01-28', '1', '0', '1516773767', '1517130032');
 INSERT INTO `yii2_order` VALUES ('38', '67639', '106823370063592878', '1', '1', '2018-01-26', 'sanjiaomao8823', '39', '1', '', '268.00', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '23.00', '0.00', '2017-10-18', '2017-10-18', '2017-10-18', '2018-02-01', '1', '', '', '', '2017-10-18', '', '', '', '2018-01-28', '2018-01-28', '2018-01-28', '4', '0', '1516962840', '1517474063');
+INSERT INTO `yii2_order` VALUES ('39', '67639', '73089638370141849 ,78075683946141849', '1', '1', '2017-10-14', 'johnsonviney', '38', '1', '', '248.00', '1', '', '30.00', '0.00', '', '0.00', '0.00', '', '0.00', '0.00', '2017-10-17', '2017-10-17', '2017-10-18', '2017-10-23', '1', '辽宁省凤城市步行街欧亚名店   到付', '卢麒宇', '13998883092', '2017-10-24', '789090909387', '顺丰', '', '2017-11-03', '2017-11-03', '2017-11-08', '4', '0', '1517552629', '1517552629');
+INSERT INTO `yii2_order` VALUES ('40', '67641', '68102770075026532', '1', '1', '2017-10-14', 'tanwenting0609', '71', '1', '', '1440.00', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '23.00', '23.00', '2017-10-16', '2017-10-16', '2017-10-16', '2017-10-16', '1', '上海  上海市  杨浦区  殷行街道杨浦区开鲁四村12号203室  200083     021-65065634', '王飞凤', '13761930763', '2017-10-23', '789085654810', '', '', '', '', '', '5', '0', '1517552812', '1517558788');
 
 -- ----------------------------
 -- Table structure for yii2_order_product
@@ -471,6 +473,8 @@ INSERT INTO `yii2_order_to_transactor` VALUES ('36', '90');
 INSERT INTO `yii2_order_to_transactor` VALUES ('36', '91');
 INSERT INTO `yii2_order_to_transactor` VALUES ('37', '92');
 INSERT INTO `yii2_order_to_transactor` VALUES ('38', '93');
+INSERT INTO `yii2_order_to_transactor` VALUES ('39', '94');
+INSERT INTO `yii2_order_to_transactor` VALUES ('40', '95');
 
 -- ----------------------------
 -- Table structure for yii2_product
@@ -541,13 +545,16 @@ CREATE TABLE `yii2_session` (
 INSERT INTO `yii2_session` VALUES ('16n00iq1r714gcfv811eu9dvc7', '1517204936', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('19eooa0hba3fvndj2pihmm9ls0', '1517396489', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('76c3kftln1ub95bkl2dikurfa6', '1517137910', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
+INSERT INTO `yii2_session` VALUES ('7akh8ej305r0mcpu37d86f1v93', '1517560599', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('914mlg6vppcf2v8mcl3jgbmim1', '1517395876', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('ae3gfmqbbuvl1kj1gth44q0e36', '1517051107', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('d5ie5nh04ujfnhsn8893jliu31', '1517473778', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
+INSERT INTO `yii2_session` VALUES ('fq49cjlhf5bjddvr3u7698uku4', '1517480812', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('ih181rn302u8v07lu7jgmj1lp4', '1516971419', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('iloa71bn3er25udnf7evtrhrb4', '1517475517', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('jfmng616aaov570bdb9n5g3de2', '1517125178', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('rgau2vof4oba47mdut35gb5ll6', '1517474185', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
+INSERT INTO `yii2_session` VALUES ('uia57phmm4k4fda06k83rbiu23', '1517560929', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('vi09ec9bmlhqnh1ehieq3vgb75', '1517040015', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 
 -- ----------------------------
@@ -675,7 +682,7 @@ CREATE TABLE `yii2_transator` (
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`tid`),
   KEY `nameindex` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_transator
@@ -698,6 +705,8 @@ INSERT INTO `yii2_transator` VALUES ('89', '郑嘉炜', '1', '', '', '', '0', '1
 INSERT INTO `yii2_transator` VALUES ('90', '许晓玲', '1', '', '', '', '0', '1516860026', '0', '');
 INSERT INTO `yii2_transator` VALUES ('91', '刘仁', '1', '', '', '', '0', '1516860036', '0', '');
 INSERT INTO `yii2_transator` VALUES ('93', '龙骏骅', '1', '', '', '', '0', '1517049039', '0', '父亲：\n母亲：\n入境口岸');
+INSERT INTO `yii2_transator` VALUES ('94', '卢麒宇', '1', '', '', '', '0', '1517638878', '0', '');
+INSERT INTO `yii2_transator` VALUES ('95', '谈文婷', '1', '', '', '', '0', '1517639193', '0', '');
 
 -- ----------------------------
 -- Table structure for yii2_user

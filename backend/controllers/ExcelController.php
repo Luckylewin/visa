@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 
+use app\models\OrderToTransactor;
 use backend\models\Admin;
 use common\models\Order;
 use common\models\Servicer;
@@ -75,7 +76,7 @@ class ExcelController extends BaseController
         $sheet = $PHPExcel->getSheet(0); // 读取第一个工作表(编号从 0 开始)
         $highestRow = $sheet->getHighestRow(); // 取得总行数
 
-        $indexToColumn =  [ 1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z',27=>'AA',28=>'AB',29=>'AC',30=>'AD',31=>'AE',32=>'AF',33=>'AG',34=>'AH',35=>'AI',36=>'AJ',37=>'AK'];
+        $indexToColumn =  [ 1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z',27=>'AA',28=>'AB',29=>'AC',30=>'AD',31=>'AE',32=>'AF',33=>'AG',34=>'AH',35=>'AI',36=>'AJ',37=>'AK','38'=>'AL'];
 
         $columnToField = [
             'A' => 'customer_id',
@@ -89,35 +90,36 @@ class ExcelController extends BaseController
             'I' => 'servicer',
             'J' => 'operator_id',//操作人员
             'K' => 'transator_id',//办理人名称
-            'L' => 'combo_name',//套餐类型
-            'M' => 'single_sum',
-            'N' => 'total_person',
-            'O' => 'balance_sum',
-            'P' => 'flushphoto_sum',
-            'Q' => 'carrier_sum',//快递
-            'R' => '',//合计
-            'S' => 'combo_charge',//手续费
-            'T' => '',//实收
-            'U' => 'combo_cost',//单项实付合计
-            'V' => 'total_person',//数量
-            'W' => 'balance_sum',//补差
-            'X' => 'flushphoto_sum',//照片
-            'Y' => 'carrier_sum',//快递
-            'Z' => '',//实付合计
-            'AA' => '',//利润
-            'AB' => 'back_addressee',
-            'AC' => 'back_telphone',
-            'AD' => 'back_address',
-            'AE' => 'putsign_date',
-            'AF' => 'delivergood_date',
-            'AG' => '',//寄回客人单号
-            'AH' => 'pay_date',
-            'AI' => 'receipt_date', //店铺收款日
-            'AJ' => 'company_receipt_date',
-            'AK' => 'remark'
+            'L' => 'combo_classify',//套餐类型
+            'M' => 'combo_name',
+            'N' => 'single_sum',
+            'O' => 'total_person',
+            'P' => 'balance_sum',
+            'Q' => 'flushphoto_sum',
+            'R' => 'carrier_sum',//快递
+            'S' => '',//合计
+            'T' => 'combo_charge',//手续费
+            'U' => '',//实收
+            'V' => 'combo_cost',//单项实付合计
+            'W' => 'total_person',//数量
+            'X' => 'output_balance_sum',//补差
+            'Y' => 'output_flushphoto_sum',//照片
+            'Z' => 'output_carrier_sum',//快递
+            'AA' => '',//实付合计
+            'AB' => '',//利润
+            'AC' => 'back_addressee',
+            'AD' => 'back_telphone',
+            'AE' => 'back_address',
+            'AF' => 'putsign_date',
+            'AG' => 'delivergood_date',
+            'AH' => '',//寄回客人单号
+            'AI' => 'pay_date',
+            'AJ' => 'receipt_date', //店铺收款日
+            'AK' => 'company_receipt_date',
+            'AL' => 'remark'
         ];
 
-        $order = new Order();
+        $importTotal = 0;
 
         foreach ($sheet->getRowIterator() as $row) {  //逐行处理
 
@@ -137,35 +139,41 @@ class ExcelController extends BaseController
                     if ($field) {
                         $data = $cell->getValue(); //获取cell中数据
                         //echo $order->getAttributeLabel($field)," : ", $data, "   ";
-                        echo $field," : ", $data, "   ";
+                       // echo $field," : ", $data, "   ";
 
-                        switch ($index)
+                        switch ($field)
                         {
-                            case 'H':
+                            case 'order_num':
+                                //判断订单号是否存在
+                                $order->order_num = trim($data,  "'");
+                                break;
+
+                            case 'combo_type':
                                 $types = Type::getComboType();
                                 $type = array_search($data, $types);
-                                $snapshot->$field = $type;
-                                $order->order_type = $type;
+                                $snapshot->$field = (string)$type;
+                                $order->order_type = (string)$type;
                                 break;
-                           case 'I':
-                                //客服
-                                $servicer->name = $data;
+
+                           case 'servicer':
+                                //查找系统 有没有此客服
+                                 $servicer->name = $data;
                                 break;
-                            case 'J':
+
+                            case 'operator_id':
                                 //查找操作用户
-                                var_dump($data);
-                                $uid = Admin::find()->where(['username' => $data])->select('id')->all();
-                                var_dump($uid);echo "1111111111111111111111111111111111111111111111111";
+                                $uid = Admin::findOne(['username' => $data]);
                                 if ($uid) {
                                     $order->$field = $uid->id;
                                 }
                                 break;
-                            case 'K':
+
+                            case 'transator_id':
                                 //查找办理人
                                 $transactors = explode(' ',trim($data));
                                 if (!empty($transactors)) {
                                     foreach ($transactors as $transactor) {
-                                        $_transactor = Transator::find()->where(['name' => $transactor])->select('tid')->all();
+                                        $_transactor = Transator::findOne(['name' => $transactor]);
                                         if ($_transactor) {
                                             $existTransactor[] = $_transactor->tid;
                                         } else {
@@ -175,45 +183,100 @@ class ExcelController extends BaseController
                                     }
                                 }
                                 break;
-                            case 'L':
-                            case 'S':
-                            case 'G':
-                            case 'U':
-                                $snapshot->$field = $data;
+
+                            case 'combo_classify':
+                                $classify = Type::getComboClassify();
+                                $type = array_search($data, $classify);
+                                $snapshot->$field = (string)$type;
+                                $snapshot->snap_combo_id = '0';
+                                $order->order_classify = (string)$type;
                                 break;
-                            case 'C':
-                            case 'D':
-                            case 'E':
-                            case 'F':
-                            case 'AE':
-                            case 'AF':
-                            case 'AH':
-                            case 'AI':
-                            case 'AJ':
+
+                            case 'combo_name':
+                            case 'combo_product':
+                            case 'combo_charge':
+                            case 'combo_cost':
+                                $snapshot->$field = (string)$data;
+                                break;
+
+                            case 'order_date':
+                            case 'collect_date':
+                            case 'deliver_date':
+                            case 'entry_date':
+                            case 'putsign_date':
+                            case 'delivergood_date':
+                            case 'pay_date':
+                            case 'receipt_date':
+                            case 'company_receipt_date':
                                 $data = date('Y-m-d', strtotime(str_replace(['月', '日'],['/', ''], $data)));
                                 $order->$field = $data;
-                            break;
-
+                                break;
+                            case 'remark':
+                                $order->remark = $data;
+                                break;
                             default:
                                 $order->$field = $data;
-                            break;
+                                break;
                         }
                     }
                     $column++;
                 }
-                echo "<hr/>";
+
+                //对象已经收集数据完毕
+                //判断订单是否不存在 办理人是否存在
+                $isExistOrder = Order::findOne(['order_num' => $order->order_num]);
+                $servicerData = Servicer::findOne(['name'=>$servicer->name]);
+
+                if (is_null($isExistOrder) && !is_null($servicerData)) {
+                    //保存快照
+                    $snapshot->save();
+
+                    //新增订单
+                    $order->transactor_id = "0";
+                    $order->combo_id = $snapshot->id;
+                    $order->back_addressee = empty($order->back_addressee)? "-" : $order->back_addressee;
+                    $order->custom_servicer_id = $servicerData->id;
+                    $order->output_balance_sum = empty($order->output_balance_sum) ? '0.00' : $order->output_balance_sum;
+
+                    $result = $order->save();
+
+                    //处理不存在的办理人
+                    if (!empty($notExistTransactorName)) {
+                        foreach ($notExistTransactorName as $newTrName) {
+                            $newTransactor = new Transator();
+                            $newTransactor->name = $newTrName;
+                            $newTransactor->remark = "导入标志";
+                            $newTransactor->save(false);
+                            $isExistOrder[] = $newTransactor->tid;
+                        }
+                    }
+
+                    //处理所有办理人的 订单-办理人关系
+                    foreach ($existTransactor as $existTrId) {
+                        $orderToTran = (new OrderToTransactor());
+                        $orderToTran->t_id = $existTrId;
+                        $orderToTran->o_id = $order->id;
+                        $orderToTran->save();
+                    }
+
+                    $importTotal++;
+                }
+
+               /* echo "<hr/>";
                 var_dump($existTransactor);
                 var_dump($notExistTransactorName);
                 echo "<hr/>";
-                print_r($snapshot);
+                //print_r($snapshot); ok
                 echo "<hr/>";
-                print_r($servicer);
+                //print_r($servicer); ok 保存之前检查name
                 echo "<hr/>";
-                print_r($order);
+                //print_r($order);*/
 
             }
-            echo '<hr/>';
+           // echo '<hr/>';
         }
+        
+        \Yii::$app->session->setFlash('success', "本次成功导入{$importTotal}条订单数据");
 
     }
 
@@ -635,44 +698,13 @@ class ExcelController extends BaseController
 
     }
 
-    private function generateColor($colorCode)
-    {
-        //设置表头
-        $headStyle = array(
-            'font' => array(
-                'bold' => true,
-                'name' => '宋体'
-            ),
-            'alignment' => array(
-                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => \PHPExcel_Style_Alignment::VERTICAL_CENTER
-            ),
-            'borders' => array(
-                'top' => array(
-                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                ),
-                'left' => array(
-                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                ),
-                'right' => array(
-                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                ),
-                'bottom' => array(
-                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                ),
-            ),
-            'fill' => array(
-                'type' => \PHPExcel_Style_Fill::FILL_SOLID,
-                'startcolor' => array(
-                    'rgb' => $colorCode,
-                ),
-
-            ),
-        );
-
-        return $headStyle;
-    }
-
+    /**
+     * 统计表头字符串
+     * @param $col
+     * @param $start
+     * @param $end
+     * @return string
+     */
     private function getSumString($col,$start,$end)
     {
         $str = '';
@@ -683,7 +715,8 @@ class ExcelController extends BaseController
         $str = "=SUM(" . $str . ")";
         return $str;
     }
-    
+
+
     public function actionIndex2()
     {
        $cellStyle = [
