@@ -23,10 +23,13 @@ use yii\db\ActiveRecord;
  * @property integer $total_person
  * @property string $balance_order
  * @property string $balance_sum
+ * @property string $output_balance_sum
  * @property string $flushphoto_order
  * @property string $flushphoto_sum
+ * @property string $output_flushphoto_sum
  * @property string $carrier_order
  * @property string $carrier_sum
+ * @property string $output_carrier_sum
  * @property string $collect_date
  * @property string $deliver_date
  * @property string $entry_date
@@ -64,7 +67,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id','pid', 'total_person', 'single_sum'], 'required'],
+            [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person', 'single_sum'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person'], 'integer'],
             [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'company_receipt_date'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum','output_balance_sum', 'output_flushphoto_sum', 'output_carrier_sum'], 'number'],
@@ -78,7 +81,7 @@ class Order extends \yii\db\ActiveRecord
             [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => ''],
             [['single_sum'],'default','value' => '0.00'],
             [['total_person'],'default','value' => '1'],
-
+            [['back_telphone','back_address','remark'],'default','value' => '']
         ];
     }
 
