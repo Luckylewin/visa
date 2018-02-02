@@ -574,8 +574,8 @@ class ExcelController extends BaseController
                     $cellValue = $income - $cost;
 
                 }elseif ($_column == 'AH') {
-                    $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-                    $cellValue =  $object->deliver_order;
+                   // $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                    $cellValue = "'" . $object->deliver_order;
                 }
 
                 if ($cellValue) {
