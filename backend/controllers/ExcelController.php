@@ -459,13 +459,13 @@ class ExcelController extends BaseController
 
                     if (strpos($_field, 'date') !== false ) {
 
-                        if ($object->$_field !== '1970-01-01') {
+                        if ($object->$_field) {
                             $cellValue = date('n月j日', strtotime($object->$_field));
                         } else {
-                            $cellValue = "未设置";
+                            $cellValue = "";
                         }
                     } else {
-                        $cellValue = !empty($object->$_field) ? $object->$_field : '未设置';
+                        $cellValue = !empty($object->$_field) ? $object->$_field : '';
                     }
 
                 } elseif ($_column == 'B') {
