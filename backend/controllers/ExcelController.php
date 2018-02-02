@@ -575,7 +575,10 @@ class ExcelController extends BaseController
 
                 }elseif ($_column == 'AH') {
                    // $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-                    $cellValue = "'" . $object->deliver_order;
+                    if ($object->deliver_order) {
+                        $cellValue = "'" . $object->deliver_order;
+                    }
+
                 }
 
                 if ($cellValue) {
