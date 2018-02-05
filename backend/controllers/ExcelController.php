@@ -417,7 +417,7 @@ class ExcelController extends BaseController
             'AH2' => '支付日期',
             'AI2' => "店铺收款日",
             'AJ2' => "公司收款日",
-            'AK2' => "收款帐号",
+            'AK2' => "收款帐户",
             'AL2' => '备注'
         ];
 
