@@ -2,14 +2,13 @@
 
 namespace backend\controllers;
 
-
+use Yii;
 use app\models\OrderToTransactor;
 use backend\models\Admin;
 use common\models\Order;
 use common\models\Servicer;
 use common\models\Snapshot;
 use common\models\Transator;
-use Yii;
 use common\models\OrderQuery;
 use common\models\ProductQuery;
 use common\models\Type;
@@ -83,39 +82,40 @@ class ExcelController extends BaseController
             'B' => 'order_num',
             'C' => 'order_date',//order_date
             'D' => 'collect_date',
-            'E' => 'deliver_date',
-            'F' => 'entry_date',
-            'G' => 'combo_product',
-            'H' => 'combo_type',
-            'I' => 'servicer',
-            'J' => 'operator_id',//操作人员
-            'K' => 'transator_id',//办理人名称
-            'L' => 'combo_classify',//套餐类型
-            'M' => 'combo_name',
-            'N' => 'single_sum',
-            'O' => 'total_person',
-            'P' => 'balance_sum',
-            'Q' => 'flushphoto_sum',
-            'R' => 'carrier_sum',//快递
-            'S' => '',//合计
-            'T' => 'combo_charge',//手续费
-            'U' => '',//实收
-            'V' => 'combo_cost',//单项实付合计
-            'W' => 'total_person',//数量
-            'X' => 'output_balance_sum',//补差
-            'Y' => 'output_flushphoto_sum',//照片
-            'Z' => 'output_carrier_sum',//快递
-            'AA' => '',//实付合计
-            'AB' => '',//利润
-            'AC' => 'back_addressee',
-            'AD' => 'back_telphone',
-            'AE' => 'back_address',
-            'AF' => 'putsign_date',
-            'AG' => 'delivergood_date',
-            'AH' => '',//寄回客人单号
-            'AI' => 'pay_date',
-            'AJ' => 'receipt_date', //店铺收款日
-            'AK' => 'company_receipt_date',
+            /*'E' => 'deliver_date',*/
+            'E' => 'entry_date',
+            'F' => 'combo_product',
+            'G' => 'combo_type',
+            'H' => 'servicer',
+            'I' => 'operator_id',//操作人员
+            'J' => 'transator_id',//办理人名称
+            'K' => 'combo_classify',//套餐类型
+            'L' => 'combo_name',
+            'M' => 'single_sum',
+            'N' => 'total_person',
+            'O' => 'balance_sum',
+            'P' => 'flushphoto_sum',
+            'Q' => 'carrier_sum',//快递
+            'R' => '',//合计
+            'S' => 'combo_charge',//手续费
+            'T' => '',//实收
+            'U' => 'combo_cost',//单项实付合计
+            'V' => 'total_person',//数量
+            'W' => 'output_balance_sum',//补差
+            'X' => 'output_flushphoto_sum',//照片
+            'Y' => 'output_carrier_sum',//快递
+            'Z' => '',//实付合计
+            'AA' => '',//利润
+            'AB' => 'back_addressee',
+            'AC' => 'back_telphone',
+            'AD' => 'back_address',
+            'AE' => 'putsign_date',
+            'AF' => 'delivergood_date',
+            'AG' => '',//寄回客人单号
+            'AH' => 'pay_date',
+            'AI' => 'receipt_date',
+            'AJ' => 'company_receipt_date', //店铺收款日
+            'AK' => 'pay_account',
             'AL' => 'remark'
         ];
 
@@ -130,10 +130,15 @@ class ExcelController extends BaseController
             $existTransactor = [];
             $notExistTransactorName = [];
 
-            if ($row->getRowIndex() > 2 && $row->getRowIndex() < $highestRow) {  //确定从哪一行开始读取
+            if ($row->getRowIndex() > 2 ) {  //确定从哪一行开始读取
+
                 $column = 1;
                 foreach ($row->getCellIterator() as $cell) { //逐列读取
-                    $index = $indexToColumn[$column];
+
+                    if (!isset($indexToColumn[$column])) {
+                        continue;
+                    }
+
                     $field = $columnToField[$indexToColumn[$column]];
 
                     if ($field) {
@@ -208,8 +213,10 @@ class ExcelController extends BaseController
                             case 'pay_date':
                             case 'receipt_date':
                             case 'company_receipt_date':
-                                $data = date('Y-m-d', strtotime(str_replace(['月', '日'],['/', ''], $data)));
-                                $order->$field = $data;
+                                if ($data) {
+                                    $data = date('Y-m-d', strtotime(str_replace(['月', '日'],['/', ''], $data)));
+                                    $order->$field = $data;
+                                }
                                 break;
                             case 'remark':
                                 $order->remark = $data;
@@ -228,6 +235,7 @@ class ExcelController extends BaseController
                 $servicerData = Servicer::findOne(['name'=>$servicer->name]);
 
                 if (is_null($isExistOrder) && !is_null($servicerData)) {
+
                     //保存快照
                     $snapshot->save();
 
@@ -245,7 +253,7 @@ class ExcelController extends BaseController
                         foreach ($notExistTransactorName as $newTrName) {
                             $newTransactor = new Transator();
                             $newTransactor->name = $newTrName;
-                            $newTransactor->remark = "导入标志";
+                            /*$newTransactor->remark = "";*/
                             $newTransactor->save(false);
                             $isExistOrder[] = $newTransactor->tid;
                         }
@@ -273,10 +281,16 @@ class ExcelController extends BaseController
                 //print_r($order);*/
 
             }
+
            // echo '<hr/>';
         }
 
-        \Yii::$app->session->setFlash('success', "本次成功导入{$importTotal}条订单数据");
+        if ($importTotal > 0) {
+            \Yii::$app->session->setFlash('success', "本次成功导入{$importTotal}条订单数据");
+        } else {
+            \Yii::$app->session->setFlash('error', "没有符合条件的订单");
+        }
+
 
     }
 

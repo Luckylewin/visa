@@ -82,7 +82,7 @@ class Order extends \yii\db\ActiveRecord
             [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => ''],
             [['single_sum'],'default','value' => '0.00'],
             [['total_person'],'default','value' => '1'],
-            [['back_telphone','back_address','remark'],'default','value' => '']
+            [['back_telphone','back_address','remark','pay_account'],'default','value' => '']
         ];
     }
 
