@@ -204,8 +204,6 @@ $tranlator = new Transator();
                     'readonly' => true
                 ]) ?>
 
-                <?= $form->field($model, 'pay_account')->textInput(); ?>
-
                 <?= $form->field($model, 'pay_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
@@ -226,6 +224,8 @@ $tranlator = new Transator();
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
+
+                <?= $form->field($model, 'pay_account')->textInput(); ?>
 
             </div>
         </div>

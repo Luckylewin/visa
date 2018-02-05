@@ -36,7 +36,7 @@ class ExcelController extends BaseController
 
         } else {
             //非查询时的导出
-            $data = OrderQuery::find()->limit(10)->all();
+            $data = OrderQuery::find()->all();
         }
 
         if (empty($data)) {
@@ -341,25 +341,26 @@ class ExcelController extends BaseController
         $sheet->getRowDimension('2')->setRowHeight(35);
 
         //设置宽度
-        $sheet->getColumnDimension('A')->setWidth(12);
-        $sheet->getColumnDimension('B')->setWidth(12);
+        $sheet->getColumnDimension('A')->setWidth(22);
+        $sheet->getColumnDimension('B')->setWidth(22);
         $sheet->getColumnDimension('C')->setWidth(8);
         $sheet->getColumnDimension('D')->setWidth(8);
         $sheet->getColumnDimension('E')->setWidth(8);
-        $sheet->getColumnDimension('F')->setWidth(16);
+        $sheet->getColumnDimension('F')->setWidth(20);
         $sheet->getColumnDimension('G')->setWidth(8);
         $sheet->getColumnDimension('H')->setWidth(8);
         $sheet->getColumnDimension('J')->setWidth(35);
+        $sheet->getColumnDimension('L')->setWidth(10);
         $sheet->getColumnDimension('AB')->setWidth(15);
-        $sheet->getColumnDimension('AC')->setWidth(8);
-        $sheet->getColumnDimension('AD')->setWidth(35);
-        $sheet->getColumnDimension('AE')->setWidth(8);
+        $sheet->getColumnDimension('AC')->setWidth(15);
+        $sheet->getColumnDimension('AD')->setWidth(45);
+        $sheet->getColumnDimension('AE')->setWidth(16);
         $sheet->getColumnDimension('AF')->setWidth(15);
         $sheet->getColumnDimension('AG')->setWidth(16);
-        $sheet->getColumnDimension('AH')->setWidth(8);
-        $sheet->getColumnDimension('AI')->setWidth(8);
-        $sheet->getColumnDimension('AJ')->setWidth(8);
-        $sheet->getColumnDimension('AK')->setWidth(8);
+        $sheet->getColumnDimension('AH')->setWidth(16);
+        $sheet->getColumnDimension('AI')->setWidth(16);
+        $sheet->getColumnDimension('AJ')->setWidth(16);
+        $sheet->getColumnDimension('AK')->setWidth(16);
         $sheet->getColumnDimension('AL')->setWidth(20);
 
         //设置边框
@@ -413,10 +414,10 @@ class ExcelController extends BaseController
             'AE2' => "出签\n日期",
             'AF2' => "发货\n日期",
             'AG2' => '寄回客人单号',
-            'AH2' => '支付帐号',
-            'AI2' => "支付日期",
-            'AJ2' => "店铺收款日",
-            'AK2' => "公司收款日",
+            'AH2' => '支付日期',
+            'AI2' => "店铺收款日",
+            'AJ2' => "公司收款日",
+            'AK2' => "收款帐号",
             'AL2' => '备注'
         ];
 
@@ -465,10 +466,10 @@ class ExcelController extends BaseController
             'AE' => 'putsign_date',
             'AF' => 'delivergood_date',
             'AG' => '',//寄回客人单号
-            'AH' => 'pay_account',//
-            'AI' => 'pay_date',
-            'AJ' => 'receipt_date', //店铺收款日
-            'AK' => 'company_receipt_date',
+            'AH' => 'pay_date',//
+            'AI' => 'receipt_date',
+            'AJ' => 'company_receipt_date', //店铺收款日
+            'AK' => 'pay_account',
             'AL' => 'remark'
         ];
 
@@ -512,7 +513,7 @@ class ExcelController extends BaseController
 
                 //设置宽度
                 $width = $sheet->getColumnDimension($_column)->getWidth();
-                $sheet->getColumnDimension($_column)->setWidth($width * 1.1);
+               // $sheet->getColumnDimension($_column)->setWidth($width);
 
                 //设置自动换行
                 $sheet->getStyle($_column)->getAlignment()->setWrapText(true);
