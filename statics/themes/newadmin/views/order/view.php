@@ -281,6 +281,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     return '-';
                 }
             ],
+
+            'pay_account',
+
             [
                 'attribute' => 'pay_date',
                 'value' => function($model) {

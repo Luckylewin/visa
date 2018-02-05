@@ -44,6 +44,7 @@ use yii\db\ActiveRecord;
  * @property string $remark
  * @property string $receipt_date
  * @property string $company_receipt_date
+ * @property string $pay_account
  * @property string $pay_date
  * @property string $audit_status
  */
@@ -69,7 +70,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person', 'single_sum'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'company_receipt_date'], 'safe'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'company_receipt_date', 'pay_account'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum','output_balance_sum', 'output_flushphoto_sum', 'output_carrier_sum'], 'number'],
             [['back_address', 'remark'], 'string','max' => 300],
             [['delivercompany'], 'string', 'max' => 50],
@@ -127,6 +128,7 @@ class Order extends \yii\db\ActiveRecord
             'remark' => '备注',
             'receipt_date' => '店铺收款日期',
             'company_receipt_date' => '公司收款日期',
+            'pay_account' => '支付帐号',
             'pay_date' => '支付日期',
             'cid' => '国家',
             'audit_status' => '审核状态',//1审核中2审核未通过3审核通过

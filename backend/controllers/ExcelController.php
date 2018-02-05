@@ -275,7 +275,7 @@ class ExcelController extends BaseController
             }
            // echo '<hr/>';
         }
-        
+
         \Yii::$app->session->setFlash('success', "本次成功导入{$importTotal}条订单数据");
 
     }
@@ -346,17 +346,17 @@ class ExcelController extends BaseController
         $sheet->getColumnDimension('C')->setWidth(8);
         $sheet->getColumnDimension('D')->setWidth(8);
         $sheet->getColumnDimension('E')->setWidth(8);
-        $sheet->getColumnDimension('F')->setWidth(8);
-        $sheet->getColumnDimension('G')->setWidth(16);
+        $sheet->getColumnDimension('F')->setWidth(16);
+        $sheet->getColumnDimension('G')->setWidth(8);
         $sheet->getColumnDimension('H')->setWidth(8);
-        $sheet->getColumnDimension('I')->setWidth(8);
-        $sheet->getColumnDimension('K')->setWidth(35);
-        $sheet->getColumnDimension('AC')->setWidth(15);
-        $sheet->getColumnDimension('AD')->setWidth(8);
-        $sheet->getColumnDimension('AE')->setWidth(35);
-        $sheet->getColumnDimension('AF')->setWidth(8);
-        $sheet->getColumnDimension('AG')->setWidth(15);
-        $sheet->getColumnDimension('AH')->setWidth(16);
+        $sheet->getColumnDimension('J')->setWidth(35);
+        $sheet->getColumnDimension('AB')->setWidth(15);
+        $sheet->getColumnDimension('AC')->setWidth(8);
+        $sheet->getColumnDimension('AD')->setWidth(35);
+        $sheet->getColumnDimension('AE')->setWidth(8);
+        $sheet->getColumnDimension('AF')->setWidth(15);
+        $sheet->getColumnDimension('AG')->setWidth(16);
+        $sheet->getColumnDimension('AH')->setWidth(8);
         $sheet->getColumnDimension('AI')->setWidth(8);
         $sheet->getColumnDimension('AJ')->setWidth(8);
         $sheet->getColumnDimension('AK')->setWidth(8);
@@ -383,36 +383,37 @@ class ExcelController extends BaseController
             'B2' => '淘宝订单号',
             'C2' => '订单日期',
             'D2' => '收资料日',
-            'E2' => '寄珠海日期',
-            'F2' => '入馆日',
-            'G2' => '名称',
-            'H2' => '类型',
-            'I2' => "接待\n销售",
-            'J2' => "操作\n人员",
-            'K2' => '办理人',
-            'L2' => '套餐类型',
-            'M2' => '套餐名称',
-            'N2' => '单项实收',
-            'O2' => '数量',
-            'P2' => '补差',
-            'Q2' => '照片',
-            'R2' => '快递',
-            'S2' => '合计',
-            'T2' => '手续费',
-            'U2' => '实收',
-            'V2' => '单项实付',
-            'W2' => '数量',
-            'X2' => '补差',
-            'Y2' => '照片',
-            'Z2' => '快递',
-            'AA2' => '实付合计',
-            'AB2' => '利润',
-            'AC2' => '收件人',
-            'AD2' => '收件电话',
-            'AE2' => '收件地址',
-            'AF2' => "出签\n日期",
-            'AG2' => "发货\n日期",
-            'AH2' => '寄回客人单号',
+            /*'E2' => '寄珠海日期',*/
+            'E2' => '入馆日',
+            'F2' => '名称',
+            'G2' => '类型',
+            'H2' => "接待\n销售",
+            'I2' => "操作\n人员",
+            'J2' => '办理人',
+            'K2' => '套餐类型',
+            'L2' => '套餐名称',
+            'M2' => '单项实收',
+            'N2' => '数量',
+            'O2' => '补差',
+            'P2' => '照片',
+            'Q2' => '快递',
+            'R2' => '合计',
+            'S2' => '手续费',
+            'T2' => '实收',
+            'U2' => '单项实付',
+            'V2' => '数量',
+            'W2' => '补差',
+            'X2' => '照片',
+            'Y2' => '快递',
+            'Z2' => '实付合计',
+            'AA2' => '利润',
+            'AB2' => '收件人',
+            'AC2' => '收件电话',
+            'AD2' => '收件地址',
+            'AE2' => "出签\n日期",
+            'AF2' => "发货\n日期",
+            'AG2' => '寄回客人单号',
+            'AH2' => '支付帐号',
             'AI2' => "支付日期",
             'AJ2' => "店铺收款日",
             'AK2' => "公司收款日",
@@ -423,7 +424,7 @@ class ExcelController extends BaseController
             $sheet->setCellValue($column_x,  $field);
         }
 
-        $headOne = ['A1:M1', 'N1:U1', 'V1:AA1', 'AC1:AH1', 'AI1:AL1'];
+        $headOne = ['A1:L1', 'M1:T1', 'U1:Z1', 'AB1:AG1', 'AH1:AL1'];
         foreach ($headOne as $head) {
             $sheet->mergeCells($head);
         }
@@ -434,36 +435,37 @@ class ExcelController extends BaseController
             'B' => '',
             'C' => 'order_date',//order_date
             'D' => 'collect_date',
-            'E' => 'deliver_date',
-            'F' => 'entry_date',
-            'G' => ['snapshot','combo_product'],
-            'H' => '',
-            'I' => ['servicer','name'],
-            'J' => '',//操作人员
-            'K' => '',//办理人名称
-            'L' => '',//套餐类型
-            'M' => '',//套餐名称
-            'N' => 'single_sum',
-            'O' => '',
-            'P' => 'balance_sum',//补差收入
-            'Q' => 'flushphoto_sum',//冲洗照片补差收入
-            'R' => 'carrier_sum',//快递补差收入
-            'S' => '',//合计
-            'T' => '',//手续费
-            'U' => '',//实收
-            'V' => '',//单项实付合计
-            'W' => 'total_person',//数量
-            'X' => 'output_balance_sum',//补差
-            'Y' => 'output_flushphoto_sum',//照片
-            'Z' => 'output_carrier_sum',//快递
-            'AA' => '',//实付合计
-            'AB' => '',//利润
-            'AC' => 'back_addressee',
-            'AD' => 'back_telphone',
-            'AE' => 'back_address',
-            'AF' => 'putsign_date',
-            'AG' => 'delivergood_date',
-            'AH' => '',//寄回客人单号
+//            'E' => 'deliver_date',
+            'E' => 'entry_date',
+            'F' => ['snapshot','combo_product'],
+            'G' => '',
+            'H' => ['servicer','name'],
+            'I' => '',//操作人员
+            'J' => '',//办理人名称
+            'K' => '',//套餐类型
+            'L' => '',//套餐名称
+            'M' => 'single_sum',
+            'N' => '',
+            'O' => 'balance_sum',//补差收入
+            'P' => 'flushphoto_sum',//冲洗照片补差收入
+            'Q' => 'carrier_sum',//快递补差收入
+            'R' => '',//合计
+            'S' => '',//手续费
+            'T' => '',//实收
+            'U' => '',//单项实付合计
+            'V' => 'total_person',//数量
+            'W' => 'output_balance_sum',//补差
+            'X' => 'output_flushphoto_sum',//照片
+            'Y' => 'output_carrier_sum',//快递
+            'ZZ' => '',//实付合计
+            'AA' => '',//利润
+            'AB' => 'back_addressee',
+            'AC' => 'back_telphone',
+            'AD' => 'back_address',
+            'AE' => 'putsign_date',
+            'AF' => 'delivergood_date',
+            'AG' => '',//寄回客人单号
+            'AH' => 'pay_account',//
             'AI' => 'pay_date',
             'AJ' => 'receipt_date', //店铺收款日
             'AK' => 'company_receipt_date',
@@ -536,27 +538,27 @@ class ExcelController extends BaseController
                     $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
                     $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
-                } elseif ($_column == 'G') {
+                } elseif ($_column == 'F') {
                     $product = $object->snapshot->combo_product;
                     $cellValue = $product ? $product : '已删除';
 
-                } elseif ($_column == 'H') {
+                } elseif ($_column == 'G') {
                     $type = Type::getComboType();
                     $cellValue = isset($type[$object->order_type]) ? $type[$object->order_type] : '已删除';
 
-                } elseif ($_column == 'I') {
+                } elseif ($_column == 'H') {
                     $servicer = $object->servicer->name;
                     $cellValue = $servicer ? $servicer : '已删除';
 
-                } elseif ($_column == 'J') {
+                } elseif ($_column == 'I') {
                     $operator = $object->operator->username;
                     $cellValue = $operator ? $operator : '已删除';
 
-                } elseif ($_column == 'V') {
+                } elseif ($_column == 'U') {
                     $cost = $object->snapshot->combo_cost;
                     $cellValue = $cost ? $cost : '数据丢失';
 
-                } elseif ($_column == 'K') {
+                } elseif ($_column == 'J') {
                     $transactors = $object->relatedTransactor;
                     $str = "";
                     foreach ($transactors as $transator) {
@@ -579,33 +581,33 @@ class ExcelController extends BaseController
                         $sheet->getComment( $_column . $row)->getFillColor()->setRGB('FFFFD8' );      //设置背景色 ，在office中有效在wps中无效
                     }
 
-                } elseif ($_column == 'L') {
+                } elseif ($_column == 'K') {
 
                     $classify = Type::getComboClassify();
                     $cellValue = $classify[$object->snapshot->combo_classify];
 
-                } elseif ($_column == 'M') {
+                } elseif ($_column == 'L') {
 
                     $combo = $object->snapshot->combo_name;
                     $cellValue = $combo ? $combo : "丢失数据";
 
-                } elseif ($_column == 'O') {
+                } elseif ($_column == 'N') {
 
                     $cellValue = $object->total_person;
                     $total_person_sum += $cellValue;
 
-                } elseif ($_column == 'S') { //收入合计
+                } elseif ($_column == 'R') { //收入合计
                     //累加处理
                     $cellValue = $object->total_person * $object->single_sum +
                         $object->flushphoto_sum +
                         $object->carrier_sum +
                         $object->balance_sum;
 
-                } elseif ($_column == 'T') {
+                } elseif ($_column == 'S') {
                     //手续费率
                     $cellValue = $charge;
 
-                } elseif ($_column == 'U') {
+                } elseif ($_column == 'T') {
                     //乘以手续费率
                     $income = $object->total_person * $object->single_sum +
                         $object->flushphoto_sum +
@@ -614,14 +616,14 @@ class ExcelController extends BaseController
 
                     $cellValue = $income * ( $charge > 0 ? $charge : 1);;
 
-                } elseif ($_column == 'AA') { //支出合计
+                } elseif ($_column == 'Z') { //支出合计
                     //累加处理
                     $cellValue = $object->total_person * $cost +
                         $object->output_flushphoto_sum +
                         $object->output_carrier_sum +
                         $object->output_balance_sum;
 
-                }elseif ($_column == 'AB') {
+                }elseif ($_column == 'AA') {
 
                     //收入减支出
                     $income = ($object->total_person * $object->single_sum +
@@ -636,7 +638,7 @@ class ExcelController extends BaseController
 
                     $cellValue = $income - $cost;
 
-                }elseif ($_column == 'AH') {
+                }elseif ($_column == 'AG') {
                    // $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
                     if ($object->deliver_order) {
                         $cellValue = "'" . $object->deliver_order;
@@ -656,8 +658,11 @@ class ExcelController extends BaseController
 
         $sheet->getRowDimension($row)->setRowHeight(23);
 
+
+        //设置边框
+        $sheet->getStyle("A{$row}:AL{$row}")->applyFromArray($borderStyle);
         //填充统计数据颜色
-        $hoverColumn = ['O'=>'ffff00','S'=>'ff0000','U'=>'ff0000','W'=>'ff0000','P'=>'','Q'=>'','R'=>'','V'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>'','AB'=>''];
+        $hoverColumn = ['N'=>'ffff00','R'=>'ff0000','T'=>'ff0000','V'=>'ff0000','O'=>'','P'=>'','Q'=>'','U'=>'','W'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>''];
         foreach ($hoverColumn as $column => $colorCode) {
             //居中
             $sheet->getStyle( $column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY);
@@ -674,7 +679,7 @@ class ExcelController extends BaseController
         }
 
         //填充统计数据
-        $calculate = ['O','P','Q','R','S','U','V','W','X','Y','Z','AA','AB'];
+        $calculate = ['N','O','P','Q','R','T','U','V','W','X','Y','Z','AA'];
         foreach ($calculate as $col) {
             $sheet->setCellValue($col . $row, $this->getSumString($col,3,$row-1));
         }

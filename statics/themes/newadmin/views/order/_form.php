@@ -204,6 +204,8 @@ $tranlator = new Transator();
                     'readonly' => true
                 ]) ?>
 
+                <?= $form->field($model, 'pay_account')->textInput(); ?>
+
                 <?= $form->field($model, 'pay_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
@@ -299,7 +301,7 @@ $tranlator = new Transator();
             //保存添加人名字
             if (i) {
                 this[i].push(name);
-            }else{
+            } else {
                 this[i].push(id);
             }
         }
