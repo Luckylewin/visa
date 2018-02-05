@@ -128,7 +128,7 @@ class Order extends \yii\db\ActiveRecord
             'remark' => '备注',
             'receipt_date' => '店铺收款日期',
             'company_receipt_date' => '公司收款日期',
-            'pay_account' => '收款帐号',
+            'pay_account' => '收款帐户',
             'pay_date' => '支付日期',
             'cid' => '国家',
             'audit_status' => '审核状态',//1审核中2审核未通过3审核通过
