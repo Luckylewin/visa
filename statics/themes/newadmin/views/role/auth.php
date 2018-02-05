@@ -21,9 +21,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         foreach($treeArr as $tree) {
             echo '<tr>';
-            echo '<td><label><input type="checkbox" name="rules[]" value="'.$tree['url'].'" '.(in_array($tree['url'], $authRules) ? 'checked' : '').'> '.$tree['name'].'</label></td>
-                <td></td>
-            </tr>';
+            echo '<td>
+                    <label>
+                        <input type="checkbox" name="rules[]" value="'.$tree['url'].'" '.(in_array($tree['url'], $authRules) ? 'checked' : '').'> '.$tree['name'].'
+                    </label>
+                  </td>
+                  <td></td>
+                  </tr>';
+
             if(empty($tree['_child'])) continue;
             foreach($tree['_child'] as $childs) {
                 if($childs['pid'] != $tree['id']) continue;

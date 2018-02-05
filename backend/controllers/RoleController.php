@@ -15,7 +15,8 @@ class RoleController extends BaseController
     public $type = Item::TYPE_ROLE;
 
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $searchModel = new AuthItemSearch();
         $searchModel->type = $this->type;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -26,7 +27,8 @@ class RoleController extends BaseController
         ]);
     }
 
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new AuthItem(null);
         $model->type = $this->type;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -38,7 +40,8 @@ class RoleController extends BaseController
         }
     }
 
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = $this->findModel($id);
         if($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -48,13 +51,15 @@ class RoleController extends BaseController
         ]);
     }
 
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         $model = $this->findModel($id);
         Yii::$app->authManager->remove($model->item);
         return $this->redirect(['index']);
     }
 
-    public function actionAuth($id) {
+    public function actionAuth($id)
+    {
         $authManager = Yii::$app->authManager;
         if(Yii::$app->request->isPost) {
             $rules = Yii::$app->request->post('rules', []);
@@ -93,7 +98,14 @@ class RoleController extends BaseController
         ]);
     }
 
-    protected function findModel($id) {
+    public function actionExportSetting($id)
+    {
+
+        return $this->render('export_setting');
+    }
+
+    protected function findModel($id)
+    {
         $authManager = Yii::$app->authManager;
         $item = $this->type === Item::TYPE_ROLE ? $authManager->getRole($id) : $authManager->getPermission($id);
         if($item) return new AuthItem($item);

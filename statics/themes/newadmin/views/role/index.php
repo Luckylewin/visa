@@ -6,7 +6,11 @@ use yii\widgets\Pjax;
 $this->title = '角色管理';
 $this->params['breadcrumbs'][] = '管理员设置';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerCssFile('/statics/themes/newadmin/css/font-awesome.css');
 ?>
+
+
 <div class="role-index">
 
     <?=$this->render('_tab_menu');?>
@@ -45,7 +49,18 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'common\grid\ActionColumn',
                 'header' => Yii::t('backend', 'Operate'),
-                'template' => '{update} {auth} {delete}',
+                'template' => '{update} {auth} {export-setting} {delete}',
+                'buttons' => [
+                        'export-setting' => function($url, $model, $key) {
+                            $options = [
+                                'title' => Yii::t('yii', 'View'),
+                                'aria-label' => Yii::t('yii', 'View'),
+                                'data-pjax' => '0',
+                                'class' => 'btn btn-info btn-xs'
+                            ];
+                            return Html::a('<span class="fa fa-file-excel-o"> 导出设定</span>', $url, $options);
+                        }
+                ]
             ],
         ],
     ]); ?>
