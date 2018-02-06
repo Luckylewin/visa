@@ -563,7 +563,7 @@ $tranlator = new Transator();
             if (val) {
                 if (nowInput > curStatus) {
                     newOne = nowInput;
-                }else{
+                } else {
                     newOne = curStatus;
                 }
             } else {
@@ -574,7 +574,7 @@ $tranlator = new Transator();
 
 
         if (emptyData.length >= 1) {
-            newOne = emptyData[0] - 1;
+
         }else {
             newOne = 5;
         }

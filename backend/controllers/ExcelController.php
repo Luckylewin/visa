@@ -472,7 +472,7 @@ class ExcelController extends BaseController
             'W' => 'output_balance_sum',//补差
             'X' => 'output_flushphoto_sum',//照片
             'Y' => 'output_carrier_sum',//快递
-            'ZZ' => '',//实付合计
+            'Z' => '',//实付合计
             'AA' => '',//利润
             'AB' => 'back_addressee',
             'AC' => 'back_telphone',
@@ -496,13 +496,6 @@ class ExcelController extends BaseController
 
         //统计
         $total_person_sum = 0;
-        $balance_sum = 0;
-        $flushphoto_sum = 0;
-        $carrier_sum = 0;
-
-        $output_balance_sum = 0;
-        $output_flushphoto_sum = 0;
-        $output_carrier_sum = 0;
 
         foreach ($data as $object) {
 

@@ -28,13 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="form-group">
             <?= Html::submitButton('导入', ['class' => 'btn btn-primary']) ?>
 
-            <?= Html::a('返回', Yii::$app->request->referrer, ['class' => 'btn btn-default']) ?>
+            <?= Html::a('返回', ['order/index'], ['class' => 'btn btn-default']) ?>
 
         </div>
 
         <?php \yii\widgets\ActiveForm::end() ?>
-
-
     </div>
 </div>
 

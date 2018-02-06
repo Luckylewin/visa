@@ -166,14 +166,13 @@ class Order extends \yii\db\ActiveRecord
            //记录操作用户
            $this->operator_id = Yii::$app->getUser()->id;
 
-
            if ($this->isNewRecord) {
                //记录快照
                $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
                if (!is_null($snapShot)) {
                    $this->combo_id = $snapShot->id;
                }
-           }else {
+           } else {
                $snapShot = Snapshot::findOne(['id' => (int)($this->combo_id), 'is_valid' => '1']);
                if (!$snapShot) {
                    $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
@@ -188,19 +187,14 @@ class Order extends \yii\db\ActiveRecord
            //判断日期 决定审核状态
            if ($this->audit_status != 6) {
                $temp = [];
-               $emptyField = [];
                foreach ($status as $date_field => $statusValue) {
                    if ($this->$date_field) {
                        $temp[] = $date_field;
                        $this->audit_status = $statusValue;
-                   } else {
-                       $emptyField[] = $statusValue;
                    }
                }
 
-               if (!empty($emptyField)) {
-                   $this->audit_status = $emptyField[0] - 1;
-               } else if (empty($temp)) {
+               if (empty($temp)) {
                    $this->audit_status = 1;
                }
            }
