@@ -43,4 +43,12 @@ class ExportSetting extends \yii\db\ActiveRecord
             'showfinance' => '是否展示财务信息',
         ];
     }
+
+    public static function getShowSetting()
+    {
+        $role = Yii::$app->authManager;
+        $role = $role->getRolesByUser(Yii::$app->user->id);
+        $isShow = self::findOne(['rolename' => current($role)->name]);
+        return $isShow = !is_null($isShow) && $isShow->showfinance != 0 ? true : false;
+    }
 }

@@ -20,7 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
              //'id',
             'combo_product',
             'combo_name',
-            'combo_cost',
+            [
+                    'attribute' => 'combo_cost',
+                    'value' => function($model) use ($isShow){
+                        if ($isShow) {
+                            return $model->combo_cost;
+                        }
+                        return '-';
+                    }
+            ],
             [
                      'attribute' => 'combo_classify',
                      'value' => function($model) {

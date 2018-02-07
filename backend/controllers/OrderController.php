@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\ExportSetting;
 use Yii;
 use common\models\Order;
 use common\models\OrderQuery;
@@ -42,11 +43,15 @@ class OrderController extends BaseController
      * Displays a single Order model.
      * @param string $id
      * @return mixed
+     * @throws
      */
     public function actionView($id)
     {
+        $isShow = ExportSetting::getShowSetting();
+
         return $this->render('view', [
-            'model' => $this->findModel($id)
+            'model' => $this->findModel($id),
+            'showCost' => $isShow
         ]);
     }
 

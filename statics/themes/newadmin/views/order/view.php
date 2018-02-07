@@ -54,9 +54,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                     'attribute' => 'combo_id',
                     'format' =>'raw',
-                    'value' => function($model) {
+                    'value' => function($model) use ($showCost) {
                         try {
-                            return $model->snapshot->combo_cost . "元";
+                            return $showCost? $model->snapshot->combo_cost . "元" : "-";
                         }catch (\Exception $e) {
                             return '<i class="fa fa-trash"></i>已被删除';
                         }

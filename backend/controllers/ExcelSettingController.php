@@ -2,8 +2,8 @@
 
 namespace backend\controllers;
 
-use common\models\ExportSetting;
 use Yii;
+use common\models\ExportSetting;
 
 class ExcelSettingController extends BaseController
 {

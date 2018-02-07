@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\ExportSetting;
 use Yii;
 use common\models\Snapshot;
 use yii\data\ActiveDataProvider;
@@ -48,11 +49,17 @@ class SnapshotController extends BaseController
      * Displays a single Snapshot model.
      * @param integer $id
      * @return mixed
+     * @throws
      */
     public function actionView($id)
     {
+
+        //查询权限
+        $isShow = ExportSetting::getShowSetting();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'isShow' => $isShow
         ]);
     }
 
