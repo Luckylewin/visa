@@ -290,7 +290,7 @@ class ExcelController extends BaseController
                         if (isset($newTransactor)) {
                             //var_dump($newTransactor->getErrors());
                         }
-                        exit;
+                        
                     }
                     $importTotal++;
                 }
