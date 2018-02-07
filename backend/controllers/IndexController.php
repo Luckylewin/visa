@@ -10,12 +10,17 @@ class IndexController extends BaseController
     public function actionFrame()
     {
         $this->layout = false;
-        return $this->render('frame');
+        $authManager = Yii::$app->authManager;
+        $role = $authManager->getRolesByUser(Yii::$app->user->id);
+
+        return $this->render('frame', [
+            'username' => Yii::$app->user->identity->username,
+            'rolename' => current($role)->name
+        ]);
     }
 
     public function actionIndex()
     {
-
         return $this->render('index');
     }
 

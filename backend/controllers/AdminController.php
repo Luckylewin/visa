@@ -97,7 +97,8 @@ class AdminController extends BaseController
         return $this->redirect(['index']);
     }
 
-    public function actionAuth($id) {
+    public function actionAuth($id)
+    {
         $authManager = Yii::$app->authManager;
         $adminModel = $this->findModel($id);
         if(Yii::$app->request->isPost) {

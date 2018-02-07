@@ -51,8 +51,8 @@ $allMenus = Menu::getMenu();
 <!--                        <span><img alt="image" class="img-circle" src="/statics/themes/newadmin/img/profile_small.jpg" /></span>-->
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Admin</strong></span>
-                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                               <span class="block m-t-xs"><strong class="font-bold"><?= $username ?></strong></span>
+                                <span class="text-muted text-xs block"><?= "管理员"; ?><b class="caret"></b></span>
                                 </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">

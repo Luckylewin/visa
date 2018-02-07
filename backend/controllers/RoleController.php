@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\models\ExportSetting;
 use Yii;
 use yii\rbac\Item;
 use backend\models\Menu;
@@ -8,6 +9,7 @@ use common\libs\Tree;
 use backend\models\AuthRule;
 use backend\models\AuthItem;
 use backend\models\search\AuthItemSearch;
+use yii\web\NotFoundHttpException;
 
 
 class RoleController extends BaseController
@@ -61,11 +63,13 @@ class RoleController extends BaseController
     public function actionAuth($id)
     {
         $authManager = Yii::$app->authManager;
+
         if(Yii::$app->request->isPost) {
             $rules = Yii::$app->request->post('rules', []);
             if(!$role = $authManager->getRole($id)) {
                 Yii::$app->session->setFlash('error', '角色不存在');
             }
+
             //删除角色所有child
             $authManager->removeChildren($role);
             foreach ($rules as $rule) {
@@ -80,17 +84,18 @@ class RoleController extends BaseController
                 $itemModel->ruleName = $rule;
                 $itemModel->save();
                 //auth_item_child表
-                if(!$authManager->hasChild($role, $itemModel)) {
+                if (!$authManager->hasChild($role, $itemModel)) {
                     $authManager->addChild($role, $itemModel);
                 }
             }
             Yii::$app->session->setFlash('success', '操作成功');
         }
+
         $arr = Menu::find()->asArray()->all();
         $treeObj = new Tree($arr);
         $authRules = $authManager->getChildren($id);
         $authRules = array_keys($authRules); //var_dump($authRules); exit();
-        //var_dump($treeObj->getTreeArray()); exit();
+
         return $this->render('auth', [
             'treeArr' => $treeObj->getTreeArray(),
             'authRules' => $authRules,
@@ -100,8 +105,16 @@ class RoleController extends BaseController
 
     public function actionExportSetting($id)
     {
+        $model = $this->findModel($id);
+        $settingModel = ExportSetting::findOne(['rolename' => $id]);
+        if (is_null($settingModel)) {
+            $settingModel = new ExportSetting();
+        }
 
-        return $this->render('export_setting');
+        return $this->render('export_setting', [
+            'model' => $model,
+            'settingModel' => $settingModel
+        ]);
     }
 
     protected function findModel($id)

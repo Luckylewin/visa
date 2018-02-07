@@ -32,6 +32,11 @@ class Type
         return ['1'=>'网店','2'=>'直客','3'=>'同业'];
     }
 
+    public static function getExportSetting()
+    {
+        return ['0'=>'不显示','1'=>'显示'];
+    }
+
     public static function getGroup($combos)
     {
         $rowspan = ['1'=>['status'=>true,'rowspan'=>0],'2'=>['status'=>true,'rowspan'=>0], '3'=>['status'=>true,'rowspan'=>0] ];

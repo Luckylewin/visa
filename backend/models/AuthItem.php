@@ -3,24 +3,23 @@ namespace backend\models;
 
 use Yii;
 use yii\base\Model;
-//use yii\behaviors\TimestampBehavior;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\rbac\Item;
 
-class AuthItem extends Model {
-
+class AuthItem extends Model
+{
     public $name;
     public $type;
     public $description;
     public $ruleName;
-    //public $created_at;
-    //public $updated_at;
     public $data;
-
+    public $export_setting;
+    public $showfinance;
     private $_item;
 
-    public function __construct($item = null) {
+    public function __construct($item = null)
+    {
         $this->_item = $item;
         if($item !== null) {
             $this->name = $item->name;
@@ -90,5 +89,7 @@ class AuthItem extends Model {
     public function getItem() {
         return $this->_item;
     }
+
+
 
 }

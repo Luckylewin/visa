@@ -26,7 +26,7 @@ class AccessControl extends \yii\filters\AccessControl {
         $actionId = $action->getUniqueId();
         foreach ($this->rules as $i => $rule) {
             if(in_array($action->id, $rule->actions)) break;
-            if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
+           /* if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
                 $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
                     'actions' => [$action->id],
                     'allow' => true,
@@ -41,7 +41,14 @@ class AccessControl extends \yii\filters\AccessControl {
                     'actions' => [$action->id],
                     'allow' => true,
                 ]));
-            }
+            }*/
+
+           if (!Yii::$app->user->isGuest) {
+               $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
+                   'actions' => [$action->id],
+                   'allow' => true,
+               ]));
+           }
         }
         //----------
         $request = Yii::$app->getRequest();
