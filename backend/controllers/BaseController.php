@@ -18,15 +18,15 @@ class BaseController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                //'except' => ['logout'], except是除了以外
+                'except' => ['error','login'], //except是除了以外
                 'rules' => [
                     //行为过滤器
-                    [
+                   /* [
                         //表示无条件通过
-                        'actions' => ['login'],
+                        'actions' => ['login','error'],
                         'allow' => true,
                         'roles' => ['?','@'],
-                    ],
+                    ],*/
                     [
                         //表示只允许认证过的用户执行 其roles用@表示 游客用?表示
                         'actions' => ['logout'],

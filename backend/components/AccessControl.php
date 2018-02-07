@@ -18,15 +18,19 @@ class AccessControl extends \yii\filters\AccessControl {
      * You may override this method to do last-minute preparation for the action.
      * @param Action $action the action to be executed.
      * @return boolean whether the action should continue to be executed.
+     * @throws
      */
     public function beforeAction($action)
     {
         $user = $this->user;
         //-----菜单权限检查-----
         $actionId = $action->getUniqueId();
+
         foreach ($this->rules as $i => $rule) {
-            if(in_array($action->id, $rule->actions)) break;
-           /* if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
+
+           if(in_array($action->id, $rule->actions)) break;
+
+           /*if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
                 $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
                     'actions' => [$action->id],
                     'allow' => true,
@@ -43,7 +47,7 @@ class AccessControl extends \yii\filters\AccessControl {
                 ]));
             }*/
 
-           if (!Yii::$app->user->isGuest) {
+         if (!Yii::$app->user->isGuest) {
                $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
                    'actions' => [$action->id],
                    'allow' => true,
