@@ -59,6 +59,17 @@ class Toastr extends \yii\bootstrap\Widget
                 foreach ($data as $i => $message) {
                     $function = $this->alertTypes[$type];
                     $view = $this->getView();
+                    if ($msgStr = json_decode($message,true)) {
+                        $str = '<b>Excel导入错误信息:</b><br/>';
+                        $num = 0;
+                        foreach ($msgStr as $msg) {
+                            if ($num < 20) {
+                                $str .= "第{$msg['row']}行  {$msg['msg']}<br/>";
+                            }
+                            $num++;
+                        }
+                        $message = $str;
+                    }
                     echo $js = "toastr.{$function}('{$message}');";
                     $view->registerJs($js);
                 }

@@ -123,6 +123,7 @@ class ExcelController extends BaseController
         ];
 
         $importTotal = 0;
+        $errorMsg = [];
 
         foreach ($sheet->getRowIterator() as $row) {  //逐行处理
 
@@ -278,7 +279,6 @@ class ExcelController extends BaseController
                         foreach ($notExistTransactorName as $newTrName) {
                             $newTransactor = new Transator();
                             $newTransactor->name = $newTrName;
-                            /*$newTransactor->remark = "";*/
                             $transactorResult = $newTransactor->save(false);
                             $isExistOrder[] = $newTransactor->tid;
                         }
@@ -293,10 +293,21 @@ class ExcelController extends BaseController
                     }
 
                     if (!$orderResult || !$snapshotResult || (isset($transactorResult) && !$transactorResult)) {
-                        //var_dump($snapshot->getErrors());
-                        //var_dump($order->getErrors());
-                        if (isset($newTransactor)) {
-                            //var_dump($newTransactor->getErrors());
+
+                        $snapshotError = array_values($snapshot->getFirstErrors());
+                        $orderError = array_values($order->getFirstErrors());
+
+                        if (!empty($snapshotError)) {
+                            $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg'=>$snapshotError[0]];
+
+                        } else if (!empty($orderError)) {
+
+                            $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg'=>$orderError[0]];
+                        } else if (isset($newTransactor)) {
+                            $newTransactorError = $newTransactor->getFirstErrors();
+                            if (!empty($newTransactorError)) {
+                                $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg' => $newTransactorError[0]];
+                            }
                         }
                         throw new \Exception('导入保存发生错误');
                     }
@@ -306,15 +317,17 @@ class ExcelController extends BaseController
                 } catch (\Exception $e) {
                     $transaction->rollBack();
                 }
-
             }
-
         }
 
         if ($importTotal > 0) {
             \Yii::$app->session->setFlash('success', "本次成功导入{$importTotal}条订单数据");
-        } else {
-            \Yii::$app->session->setFlash('error', "没有符合条件的订单");
+        } else{
+            \Yii::$app->session->setFlash('warning', "没有符合条件的订单");
+        }
+
+        if (!empty($errorMsg)) {
+            \Yii::$app->session->setFlash('error', json_encode($errorMsg));
         }
 
 
@@ -426,7 +439,6 @@ class ExcelController extends BaseController
                 ),
             ),
         );
-
 
         $fieldAttribute = [
             'A1' => '订单详情',
@@ -560,14 +572,13 @@ class ExcelController extends BaseController
 
                 //设置宽度
                 $width = $sheet->getColumnDimension($_column)->getWidth();
-               // $sheet->getColumnDimension($_column)->setWidth($width);
+                //$sheet->getColumnDimension($_column)->setWidth($width);
 
                 //设置自动换行
                 $sheet->getStyle($_column)->getAlignment()->setWrapText(true);
 
                 //填充数据
                 $cellValue = false;
-
 
                 switch ($_field)
                 {
@@ -781,98 +792,6 @@ class ExcelController extends BaseController
     }
 
 
-    public function actionIndex2()
-    {
-       $cellStyle = [
-           'font' => [
-               'bold' => false,
-               'color' => ['rgb' => 'FF0000'],
-               'size' => 9,
-               'name' => '宋体'
-           ],
-           'alignment' => [
-               'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-           ],
-           'borders' => [
-               'top' => [
-                   'style' => \PHPExcel_Style_Border::BORDER_THIN,
-               ],
-           ],
-       ];
 
-        /*设置单元格颜色*/
-       $file = \Yii::createObject([
-            'class' => 'codemix\excelexport\ExcelFile',
-            'sheets' => [
-                'Users' => [
-                    'class' => 'codemix\excelexport\ActiveExcelSheet',
-                    'query' => ProductQuery::find()->limit(10),
-                    'callbacks' => [
-                        // $cell is a PHPExcel_Cell object
-                        'A' => function ($cell, $row, $column) use ($cellStyle) {
-                            $cell->getStyle()->applyFromArray($cellStyle);
-                        },
-                        'B' => function ($cell, $row, $column)  use ($cellStyle)  {
-                            $cell->getStyle()->applyFromArray($cellStyle);
-                        },
-                        'C' => function ($cell, $row, $column)  use ($cellStyle)  {
-                            $cell->getStyle()->applyFromArray($cellStyle);
-                        },
-                        'D' => function ($cell, $row, $column)  use ($cellStyle)  {
-                            $cell->getStyle()->applyFromArray($cellStyle);
-                        },
-                        'E' => function ($cell, $row, $column)  use ($cellStyle)  {
-                            $cell->getStyle()->applyFromArray($cellStyle);
-                        },
-                    ],
-                ],
-            ],
-        ]);
-
-        $headColumn = ['A1:K1', 'L1:Q1', 'R1:Y1', 'AA1:AF1', 'AG1:AH1'];
-        foreach ($headColumn as $head) {
-           // $file->getWorkbook()->getSheet(0)->mergeCells($head);
-        }
-
-       //设置表头颜色
-        $headStyle = array(
-
-            'font' => array(
-                'bold' => true,
-            ),
-            'alignment' => array(
-                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-            ),
-            'borders' => array(
-                    'top' => array(
-                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                    ),
-                    'left' => array(
-                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                    ),
-                    'right' => array(
-                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                    ),
-                    'bottom' => array(
-                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                    ),
-            ),
-            'fill' => array(
-                'type' => \PHPExcel_Style_Fill::FILL_SOLID,
-                'startcolor' => array(
-                    'argb' => '92d050',
-                ),
-            ),
-        );
-
-        $file->getWorkbook()->getSheet(0)->getStyle("A1")->applyFromArray($headStyle);
-        $file->getWorkbook()->getSheet(0)->getStyle("B1")->applyFromArray($headStyle);
-
-       // $file->getWorkbook()->getSheet(0)->getStyle("L1")->applyFromArray($headStyle);
-
-
-        $file->send(date('YMDHIs').'.xlsx');
-        return $this->render('index');
-    }
 
 }
