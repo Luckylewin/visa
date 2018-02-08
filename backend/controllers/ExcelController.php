@@ -679,7 +679,7 @@ class ExcelController extends BaseController
         //设置边框
         $sheet->getStyle("A{$row}:AH{$row}")->applyFromArray($borderStyle);
         //填充统计数据颜色
-        $hoverColumn = ['O'=>'ffff00','S'=>'ff0000','U'=>'ff0000','W'=>'ff0000','P'=>'','Q'=>'','R'=>'','V'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>'','AB'=>''];
+        $hoverColumn = ['O'=>'ffff00','S'=>'ff0000','U'=>'ff0000','W'=>'ff0000','P'=>'','Q'=>'','R'=>'','T'=>'','V'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>'','AB'=>''];
         foreach ($hoverColumn as $column => $colorCode) {
             //居中
             $sheet->getStyle( $column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY);
