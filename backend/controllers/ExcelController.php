@@ -99,11 +99,11 @@ class ExcelController extends BaseController
             'E' => 'deliver_date',
             'F' => 'entry_date',
             'G' => 'combo_product',
-            'H' => 'combo_type',
+            'H' => 'combo_classify',
             'I' => 'servicer',
             'J' => 'operator_id',//操作人员
             'K' => 'transator_id',//办理人名称
-            'L' => 'combo_classify',//套餐类型
+            'L' => 'combo_type',//套餐类型
             'M' => 'combo_name',
             'N' => 'single_sum',
             'O' => 'total_person',
@@ -159,7 +159,6 @@ class ExcelController extends BaseController
                         $data = $cell->getValue(); //获取cell中数据
                         //echo $order->getAttributeLabel($field)," : ", $data, "   ";
                        // echo $field," : ", $data, "   ";
-
                         switch ($field)
                         {
                             case 'order_num':
@@ -205,8 +204,9 @@ class ExcelController extends BaseController
 
                             case 'combo_classify':
                                 $classify = Type::getComboClassify();
+
                                 $type = array_search($data, $classify);
-                                $snapshot->$field = (string)$type;
+                                $snapshot->combo_classify = (string)$type;
                                 $snapshot->snap_combo_id = '0';
                                 $order->order_classify = (string)$type;
                                 break;
@@ -238,8 +238,13 @@ class ExcelController extends BaseController
                             case 'remark':
                                 $order->remark = $data;
                                 break;
+
                             default:
-                                $order->$field = $data;
+                                if (strpos($field, 'sum') !== false) {
+                                    $order->$field = (float)$data;
+                                } else {
+                                    $order->$field = $data;
+                                }
                                 break;
                         }
                     }
@@ -252,14 +257,22 @@ class ExcelController extends BaseController
                 $isExistOrder = Order::findOne(['order_num' => $order->order_num]);
                 $servicerData = Servicer::findOne(['name'=>$servicer->name]);
 
-
-
                 if (!is_null($isExistOrder) || is_null($servicerData)) {
                       continue;
                 }
 
-                $transaction = Yii::$app->db->beginTransaction();
+                // echo "<hr/>";
+                // var_dump($existTransactor);
+                // var_dump($notExistTransactorName);
+                // echo "<hr/>";
 
+                // print_r($snapshot);
+                // echo "<hr/>";
+                // print_r($servicer); ok 保存之前检查name
+                // echo "<hr/>";
+                // print_r($order);
+
+                $transaction = Yii::$app->db->beginTransaction();
                 try {
                     //新增快照
                     $snapshotResult = $snapshot->save();
@@ -292,8 +305,8 @@ class ExcelController extends BaseController
                     }
 
                     if (!$orderResult || !$snapshotResult || (isset($transactorResult) && !$transactorResult)) {
-                        // var_dump($snapshot->getErrors());
-                        // var_dump($order->getErrors());
+                        //var_dump($snapshot->getErrors());
+                        //var_dump($order->getErrors());
                         if (isset($newTransactor)) {
                             //var_dump($newTransactor->getErrors());
                         }
@@ -306,19 +319,8 @@ class ExcelController extends BaseController
                     $transaction->rollBack();
                 }
 
-
-                /* echo "<hr/>";
-                 var_dump($existTransactor);
-                 var_dump($notExistTransactorName);
-                 echo "<hr/>";
-                 //print_r($snapshot); ok
-                 echo "<hr/>";
-                 //print_r($servicer); ok 保存之前检查name
-                 echo "<hr/>";
-                 //print_r($order);*/
             }
 
-           // echo '<hr/>';
         }
 
         if ($importTotal > 0) {
