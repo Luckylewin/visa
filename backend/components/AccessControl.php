@@ -30,12 +30,13 @@ class AccessControl extends \yii\filters\AccessControl {
 
            if(in_array($action->id, $rule->actions)) break;
 
-           /*if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
+          /* if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
                 $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
                     'actions' => [$action->id],
                     'allow' => true,
                 ]));
             } elseif (!Yii::$app->user->can($actionId)) {
+
                 $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
                     'actions' => [$action->id],
                     'allow' => false,
@@ -47,12 +48,23 @@ class AccessControl extends \yii\filters\AccessControl {
                 ]));
             }*/
 
-         if (!Yii::$app->user->isGuest) {
-               $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
-                   'actions' => [$action->id],
-                   'allow' => true,
-               ]));
-           }
+        if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
+            $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
+                'actions' => [$action->id],
+                'allow' => true,
+            ]));
+        } elseif (!Yii::$app->user->isGuest && strpos($action->id,'delete') !== false ) {
+            $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
+                'actions' => [$action->id],
+                'allow' => false,
+            ]));
+        } else {
+            $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
+                'actions' => [$action->id],
+                'allow' => true,
+            ]));
+        }
+
         }
         //----------
         $request = Yii::$app->getRequest();
