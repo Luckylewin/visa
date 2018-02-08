@@ -259,7 +259,6 @@ class ExcelController extends BaseController
                 // echo "<hr/>";
                 // print_r($servicer); ok 保存之前检查name
                 // echo "<hr/>";
-                print_r($order);continue;
 
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
@@ -355,7 +354,7 @@ class ExcelController extends BaseController
             ),
         );
     }
-    
+
     /**
      * 导出全部
      * @param $data
