@@ -133,7 +133,7 @@ class ExcelController extends BaseController
             $servicer = new Servicer();
             $existTransactor = [];
             $notExistTransactorName = [];
-
+            $error = false;
 
             if ($row->getRowIndex() > 1 ) {  //确定从哪一行开始读取
 
@@ -156,7 +156,7 @@ class ExcelController extends BaseController
                     }
 
                     $field = $columnToField[$indexToColumn[$column]];
-                    
+
                     if ($field) {
                         $data = $cell->getValue(); //获取cell中数据
                         switch ($field)
@@ -230,11 +230,23 @@ class ExcelController extends BaseController
                             case 'pay_date':
                             case 'receipt_date':
                             case 'company_receipt_date':
+                                //检测是否有年份
                                 if ($data) {
-                                    $data = date('Y-m-d', strtotime(str_replace(['月', '日'],['/', ''], $data)));
-                                    $order->$field = $data;
+                                    if (preg_match('/\d{4}/',$data)) {
+                                        $data = date('Y-m-d', strtotime(str_replace(['月', '日'],['/', ''], $data)));
+                                        $order->$field = $data;
+                                    } else {
+                                        $th = $this->setThName();
+                                        $th = $th[$indexToColumn[$column] . "2"] ;
+                                        $error = true;
+                                        if (!isset($errorMsg[$row->getRowIndex()])) {
+                                            $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg' => trim($th) . "缺少年份"];
+                                        }
+
+                                    }
                                 }
                                 break;
+
                             case 'remark':
                                 $order->remark = $data;
                                 break;
@@ -251,6 +263,9 @@ class ExcelController extends BaseController
                     $column++;
                 }
 
+                if ($error) {
+                    continue;
+                }
 
                 //对象已经收集数据完毕
                 //判断订单是否不存在 办理人是否存在
@@ -481,10 +496,10 @@ class ExcelController extends BaseController
         //设置宽度
         $sheet->getColumnDimension('A')->setWidth(22);
         $sheet->getColumnDimension('B')->setWidth(22);
-        $sheet->getColumnDimension('C')->setWidth(14);
-        $sheet->getColumnDimension('D')->setWidth(14);
-        $sheet->getColumnDimension('D')->setWidth(14);
-        $sheet->getColumnDimension('F')->setWidth(14);
+        $sheet->getColumnDimension('C')->setWidth(16);
+        $sheet->getColumnDimension('D')->setWidth(16);
+        $sheet->getColumnDimension('D')->setWidth(16);
+        $sheet->getColumnDimension('F')->setWidth(16);
         $sheet->getColumnDimension('G')->setWidth(20);
         $sheet->getColumnDimension('H')->setWidth(10);
         $sheet->getColumnDimension('I')->setWidth(10);
@@ -494,7 +509,7 @@ class ExcelController extends BaseController
         $sheet->getColumnDimension('AD')->setWidth(15);
         $sheet->getColumnDimension('AE')->setWidth(45);
         $sheet->getColumnDimension('AF')->setWidth(16);
-        $sheet->getColumnDimension('AG')->setWidth(15);
+        $sheet->getColumnDimension('AG')->setWidth(16);
         $sheet->getColumnDimension('AH')->setWidth(16);
         $sheet->getColumnDimension('AI')->setWidth(16);
         $sheet->getColumnDimension('AJ')->setWidth(16);
@@ -738,7 +753,7 @@ class ExcelController extends BaseController
                         $cellValue = "";
                         if ($object->$_field) {
                             if (strpos($_field, 'date') !== false ) {
-                                $cellValue = date('n月j日', strtotime($object->$_field));
+                                $cellValue = date('Y年n月j日', strtotime($object->$_field));
                             } else {
                                 $cellValue = !empty($object->$_field) ? $object->$_field : '';
                             }
