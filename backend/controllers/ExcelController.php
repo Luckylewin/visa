@@ -394,27 +394,29 @@ class ExcelController extends BaseController
         $sheet->getColumnDimension('A')->setWidth(22);
         $sheet->getColumnDimension('B')->setWidth(22);
         $sheet->getColumnDimension('C')->setWidth(16);
-        $sheet->getColumnDimension('D')->setWidth(16);
-        $sheet->getColumnDimension('E')->setWidth(16);
-        $sheet->getColumnDimension('F')->setWidth(20);
-        $sheet->getColumnDimension('G')->setWidth(8);
-        $sheet->getColumnDimension('H')->setWidth(8);
-        $sheet->getColumnDimension('J')->setWidth(45);
-        $sheet->getColumnDimension('L')->setWidth(16);
-        $sheet->getColumnDimension('W')->setWidth(16);
+        $sheet->getColumnDimension('D')->setWidth(10);
+        $sheet->getColumnDimension('E')->setWidth(10);
+        $sheet->getColumnDimension('F')->setWidth(10);
+        $sheet->getColumnDimension('G')->setWidth(20);
+        $sheet->getColumnDimension('H')->setWidth(10);
+        $sheet->getColumnDimension('I')->setWidth(10);
+        $sheet->getColumnDimension('J')->setWidth(10);
+        $sheet->getColumnDimension('K')->setWidth(45);
+        $sheet->getColumnDimension('M')->setWidth(16);
         $sheet->getColumnDimension('X')->setWidth(16);
-        $sheet->getColumnDimension('Y')->setWidth(35);
-        $sheet->getColumnDimension('Z')->setWidth(15);
+        $sheet->getColumnDimension('Y')->setWidth(16);
+        $sheet->getColumnDimension('Z')->setWidth(40);
         $sheet->getColumnDimension('AA')->setWidth(15);
         $sheet->getColumnDimension('AB')->setWidth(15);
-        $sheet->getColumnDimension('AC')->setWidth(16);
-        $sheet->getColumnDimension('AD')->setWidth(15);
-        $sheet->getColumnDimension('AE')->setWidth(16);
+        $sheet->getColumnDimension('AC')->setWidth(15);
+        $sheet->getColumnDimension('AD')->setWidth(16);
+        $sheet->getColumnDimension('AE')->setWidth(15);
         $sheet->getColumnDimension('AF')->setWidth(16);
         $sheet->getColumnDimension('AG')->setWidth(16);
         $sheet->getColumnDimension('AH')->setWidth(16);
         $sheet->getColumnDimension('AI')->setWidth(16);
-        $sheet->getColumnDimension('AJ')->setWidth(20);
+        $sheet->getColumnDimension('AJ')->setWidth(16);
+        $sheet->getColumnDimension('AK')->setWidth(20);
 
         //设置边框
         $borderStyle = array(
@@ -429,10 +431,10 @@ class ExcelController extends BaseController
 
         $fieldAttribute = [
             'A1' => '订单详情',
-            'M1' => '收入',
-            'S1' => '支出',
-            'W1' => '发货',
-            'AC1' => '结算',
+            'N1' => '收入',
+            'T1' => '支出',
+            'X1' => '发货',
+            'AD1' => '结算',
             'A2' => '客人ID',
             'B2' => '淘宝订单号',
             'C2' => '订单日期',
@@ -645,6 +647,7 @@ class ExcelController extends BaseController
                     case 'entry_date':
                     case 'putsign_date':
                     case 'delivergood_date':
+                    case 'deliver_date':
                     case 'receipt_date':
                     case 'company_receipt_date':
                     case 'pay_date':
@@ -734,8 +737,8 @@ class ExcelController extends BaseController
         $sheet = $objPHPExcel->getActiveSheet();
 
         $columns = [
-            ['A1','B1','C1','D1','E1','F1','G1','H1','I1','J1','K1','L1','M1','N1','O1','P1','Q1','R1','S1','T1','U1','V1','W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1','AJ1','AK1','AL1','AM1','AN1'],
-            ['A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2','O2','P2','Q2','R2','S2','T2','U2','V2','W2','X2','Y2','Z2','AA2','AB2','AC2','AD2','AE2','AF2','AG2','AH2','AI2','AJ2','AK2','AL2','AM2','AN2']
+            ['A1','B1','C1','D1','E1','F1','G1','H1','I1','J1','K1','L1','M1','N1','O1','P1','Q1','R1','S1','T1','U1','V1','W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1','AJ1','AK1','AL1','AM1',],
+            ['A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2','O2','P2','Q2','R2','S2','T2','U2','V2','W2','X2','Y2','Z2','AA2','AB2','AC2','AD2','AE2','AF2','AG2','AH2','AI2','AJ2','AK2','AL2','AM2',]
         ];
 
         foreach ($columns as $lines) {
@@ -1071,7 +1074,7 @@ class ExcelController extends BaseController
 
 
         //设置边框
-        $sheet->getStyle("A{$row}:AL{$row}")->applyFromArray($borderStyle);
+        $sheet->getStyle("A{$row}:AM{$row}")->applyFromArray($borderStyle);
         //填充统计数据颜色
         $hoverColumn = ['O'=>'ffff00','S'=>'ff0000','U'=>'ff0000','V'=>'ff0000','P'=>'','Q'=>'','R'=>'','W'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>'','AB'=>'','N'=>''];
         foreach ($hoverColumn as $column => $colorCode) {
