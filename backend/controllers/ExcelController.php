@@ -291,7 +291,7 @@ class ExcelController extends BaseController
                         $orderToTran->save();
                     }
 
-                    if (!$orderResult || !$snapshotResult || $transactorResult) {
+                    if (!$orderResult || !$snapshotResult || (isset($transactorResult) && !$transactorResult)) {
                         // var_dump($snapshot->getErrors());
                         // var_dump($order->getErrors());
                         if (isset($newTransactor)) {
@@ -305,7 +305,7 @@ class ExcelController extends BaseController
                 } catch (\Exception $e) {
                     $transaction->rollBack();
                 }
-                
+
 
                 /* echo "<hr/>";
                  var_dump($existTransactor);
