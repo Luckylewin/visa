@@ -37,7 +37,8 @@ class Snapshot extends \yii\db\ActiveRecord
             [['snap_combo_id', 'is_valid'], 'integer'],
             [['combo_cost'], 'number'],
             [['combo_name'], 'string', 'max' => 255],
-            [['combo_classify', 'combo_type'], 'string', 'max' => 1]
+            [['combo_classify', 'combo_type'], 'string', 'max' => 1],
+            [['combo_cost'], 'default', 'value' => 0.00]
         ];
     }
 

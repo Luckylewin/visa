@@ -204,7 +204,7 @@ class ExcelController extends BaseController
                             case 'combo_product':
                             case 'combo_charge':
                             case 'combo_cost':
-                                $snapshot->$field = (string)$data;
+                                $snapshot->$field = empty($data)? 0.00 : (string)$data;
                                 break;
                             case 'back_telphone':
                                 $data = trim($data, "'");
