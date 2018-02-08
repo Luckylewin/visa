@@ -89,48 +89,48 @@ class ExcelController extends BaseController
         $sheet = $PHPExcel->getSheet(0); // 读取第一个工作表(编号从 0 开始)
         $highestRow = $sheet->getHighestRow(); // 取得总行数
 
-        $indexToColumn =  [ 1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z',27=>'AA',28=>'AB',29=>'AC',30=>'AD',31=>'AE',32=>'AF',33=>'AG',34=>'AH',35=>'AI',36=>'AJ',37=>'AK','38'=>'AL'];
+        $indexToColumn =  [ 1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z',27=>'AA',28=>'AB',29=>'AC',30=>'AD',31=>'AE',32=>'AF',33=>'AG',34=>'AH',35=>'AI',36=>'AJ',37=>'AK',38=>'AL',39=>'AM'];
 
         $columnToField = [
             'A' => 'customer_id',
             'B' => 'order_num',
             'C' => 'order_date',//order_date
             'D' => 'collect_date',
-            /*'E' => 'deliver_date',*/
-            'E' => 'entry_date',
-            'F' => 'combo_product',
-            'G' => 'combo_type',
-            'H' => 'servicer',
-            'I' => 'operator_id',//操作人员
-            'J' => 'transator_id',//办理人名称
-            'K' => 'combo_classify',//套餐类型
-            'L' => 'combo_name',
-            'M' => 'single_sum',
-            'N' => 'total_person',
-            'O' => 'balance_sum',
-            'P' => 'flushphoto_sum',
-            'Q' => 'carrier_sum',//快递
-            'R' => '',//合计
-            'S' => 'combo_charge',//手续费
-            'T' => '',//实收
-            'U' => 'combo_cost',//单项实付合计
-            'V' => 'total_person',//数量
-            'W' => 'output_balance_sum',//补差
-            'X' => 'output_flushphoto_sum',//照片
-            'Y' => 'output_carrier_sum',//快递
-            'Z' => '',//实付合计
-            'AA' => '',//利润
-            'AB' => 'back_addressee',
-            'AC' => 'back_telphone',
-            'AD' => 'back_address',
-            'AE' => 'putsign_date',
-            'AF' => 'delivergood_date',
-            'AG' => '',//寄回客人单号
-            'AH' => 'pay_date',
-            'AI' => 'receipt_date',
-            'AJ' => 'company_receipt_date', //店铺收款日
-            'AK' => 'pay_account',
-            'AL' => 'remark'
+            'E' => 'deliver_date',
+            'F' => 'entry_date',
+            'G' => 'combo_product',
+            'H' => 'combo_type',
+            'I' => 'servicer',
+            'J' => 'operator_id',//操作人员
+            'K' => 'transator_id',//办理人名称
+            'L' => 'combo_classify',//套餐类型
+            'M' => 'combo_name',
+            'N' => 'single_sum',
+            'O' => 'total_person',
+            'P' => 'balance_sum',
+            'Q' => 'flushphoto_sum',
+            'R' => 'carrier_sum',//快递
+            'S' => '',//合计
+            'T' => 'combo_charge',//手续费
+            'U' => '',//实收
+            'V' => 'combo_cost',//单项实付合计
+            'W' => 'total_person',//数量
+            'X' => 'output_balance_sum',//补差
+            'Y' => 'output_flushphoto_sum',//照片
+            'Z' => 'output_carrier_sum',//快递
+            'AA' => '',//实付合计
+            'AB' => '',//利润
+            'AC' => 'back_addressee',
+            'AD' => 'back_telphone',
+            'AE' => 'back_address',
+            'AF' => 'putsign_date',
+            'AG' => 'delivergood_date',
+            'AH' => '',//寄回客人单号
+            'AI' => 'pay_date',
+            'AJ' => 'receipt_date',
+            'AK' => 'company_receipt_date', //店铺收款日
+            'AL' => 'pay_account',
+            'AM' => 'remark'
         ];
 
         $importTotal = 0;
@@ -246,14 +246,22 @@ class ExcelController extends BaseController
                     $column++;
                 }
 
+
                 //对象已经收集数据完毕
                 //判断订单是否不存在 办理人是否存在
                 $isExistOrder = Order::findOne(['order_num' => $order->order_num]);
                 $servicerData = Servicer::findOne(['name'=>$servicer->name]);
 
-                if (is_null($isExistOrder) && !is_null($servicerData)) {
 
-                    //保存快照
+
+                if (!is_null($isExistOrder) || is_null($servicerData)) {
+                      continue;
+                }
+
+                $transaction = Yii::$app->db->beginTransaction();
+
+                try {
+                    //新增快照
                     $snapshotResult = $snapshot->save();
 
                     //新增订单
@@ -262,7 +270,6 @@ class ExcelController extends BaseController
                     $order->back_addressee = empty($order->back_addressee)? "-" : $order->back_addressee;
                     $order->custom_servicer_id = $servicerData->id;
                     $order->output_balance_sum = empty($order->output_balance_sum) ? '0.00' : $order->output_balance_sum;
-
                     $orderResult = $order->save();
 
                     //处理不存在的办理人
@@ -284,29 +291,31 @@ class ExcelController extends BaseController
                         $orderToTran->save();
                     }
 
-                    if (!$orderResult || !$snapshotResult ) {
-                       // var_dump($snapshot->getErrors());
-                       // var_dump($order->getErrors());
+                    if (!$orderResult || !$snapshotResult || $transactorResult) {
+                        // var_dump($snapshot->getErrors());
+                        // var_dump($order->getErrors());
                         if (isset($newTransactor)) {
                             //var_dump($newTransactor->getErrors());
                         }
-                        
+                        throw new \Exception('导入保存发生错误');
                     }
+
+                    $transaction->commit();
                     $importTotal++;
+                } catch (\Exception $e) {
+                    $transaction->rollBack();
                 }
+                
 
-
-
-               /* echo "<hr/>";
-                var_dump($existTransactor);
-                var_dump($notExistTransactorName);
-                echo "<hr/>";
-                //print_r($snapshot); ok
-                echo "<hr/>";
-                //print_r($servicer); ok 保存之前检查name
-                echo "<hr/>";
-                //print_r($order);*/
-
+                /* echo "<hr/>";
+                 var_dump($existTransactor);
+                 var_dump($notExistTransactorName);
+                 echo "<hr/>";
+                 //print_r($snapshot); ok
+                 echo "<hr/>";
+                 //print_r($servicer); ok 保存之前检查name
+                 echo "<hr/>";
+                 //print_r($order);*/
             }
 
            // echo '<hr/>';
