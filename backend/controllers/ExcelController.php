@@ -778,10 +778,10 @@ class ExcelController extends BaseController
 
         $fieldAttribute = [
             'A1' => '订单详情',
-            'M1' => '收入',
-            'U1' => '支出',
-            'AB1' => '发货',
-            'AH1' => '结算',
+            'N1' => '收入',
+            'V1' => '支出',
+            'AC1' => '发货',
+            'AI1' => '结算',
             'A2' => '客人ID',
             'B2' => '淘宝订单号',
             'C2' => '订单日期',
@@ -827,7 +827,7 @@ class ExcelController extends BaseController
             $sheet->setCellValue($column_x,  $field);
         }
 
-        $headOne = ['A1:L1', 'M1:T1', 'U1:Z1', 'AB1:AG1', 'AH1:AM1'];
+        $headOne = ['A1:M1', 'N1:U1', 'V1:AB1', 'AC1:AH1', 'AI1:AL1'];
         foreach ($headOne as $head) {
             $sheet->mergeCells($head);
         }
