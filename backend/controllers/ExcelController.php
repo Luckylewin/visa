@@ -2,7 +2,7 @@
 
 namespace backend\controllers;
 
-use backend\models\search\AuthItemSearch;
+
 use common\models\ExportSetting;
 use Yii;
 use app\models\OrderToTransactor;
@@ -134,7 +134,8 @@ class ExcelController extends BaseController
             $existTransactor = [];
             $notExistTransactorName = [];
 
-            if ($row->getRowIndex() > 2 ) {  //确定从哪一行开始读取
+
+            if ($row->getRowIndex() > 1 ) {  //确定从哪一行开始读取
 
                 $column = 1;
                 foreach ($row->getCellIterator() as $cell) { //逐列读取
@@ -143,12 +144,21 @@ class ExcelController extends BaseController
                         continue;
                     }
 
-                    $field = $columnToField[$indexToColumn[$column]];
+                    if ($row->getRowIndex() == 2) {
+                        //检查excel的格式
+                        $th = array_values($this->setThName());
+                        $data = $cell->getValue(); //获取cell中数据
+                        if ($th[$column-1] != $data) {
+                            return \Yii::$app->session->setFlash('error', ":(  Excel表格式错误,请检查");
+                        }
+                        $column++;
+                        continue;
+                    }
 
+                    $field = $columnToField[$indexToColumn[$column]];
+                    
                     if ($field) {
                         $data = $cell->getValue(); //获取cell中数据
-                        //echo $order->getAttributeLabel($field)," : ", $data, "   ";
-                       // echo $field," : ", $data, "   ";
                         switch ($field)
                         {
                             case 'order_num':
@@ -369,13 +379,75 @@ class ExcelController extends BaseController
     }
 
     /**
+     * 合并表头
+     * @return array
+     */
+    public function setMergeName()
+    {
+        return [
+            'A1' => '订单详情',
+            'N1' => '收入',
+            'V1' => '支出',
+            'AC1' => '发货',
+            'AI1' => '结算'
+        ];
+    }
+
+    //设置表头
+    public function setThName()
+    {
+        $fieldAttribute = [
+            'A2' => '客人ID',
+            'B2' => '淘宝订单号',
+            'C2' => '订单日期',
+            'D2' => '收资料日',
+            'E2' => '送证日',
+            'F2' => '入馆日',
+            'G2' => '名称',
+            'H2' => '类型',
+            'I2' => "接待\n销售",
+            'J2' => "操作\n人员",
+            'K2' => '办理人',
+            'L2' => '套餐类型',
+            'M2' => '套餐名称',
+            'N2' => '单项实收',
+            'O2' => '数量',
+            'P2' => '补差',
+            'Q2' => '照片',
+            'R2' => '快递',
+            'S2' => '合计',
+            'T2' => '手续费',
+            'U2' => '实收',
+            'V2' => '单项实付',
+            'W2' => '数量',
+            'X2' => '补差',
+            'Y2' => '照片',
+            'Z2' => '快递',
+            'AA2' => '实付合计',
+            'AB2' => '利润',
+            'AC2' => '收件人',
+            'AD2' => '收件电话',
+            'AE2' => '收件地址',
+            'AF2' => "出签\n日期",
+            'AG2' => "发货\n日期",
+            'AH2' => '寄回客人单号',
+            'AI2' => '支付日期',
+            'AJ2' => "店铺收款日",
+            'AK2' => "公司收款日",
+            'AL2' => "收款帐户",
+            'AM2' => '备注'
+        ];
+
+        return $fieldAttribute;
+    }
+
+    /**
      * 导出全部
      * @param $data
      * @param $file_name
      */
     private function _exportExcel($data, $file_name)
     {
-
         //权限判断
         $showFlag = ExportSetting::getShowSetting();
 
@@ -440,52 +512,7 @@ class ExcelController extends BaseController
             ),
         );
 
-        $fieldAttribute = [
-            'A1' => '订单详情',
-            'N1' => '收入',
-            'V1' => '支出',
-            'AC1' => '发货',
-            'AI1' => '结算',
-            'A2' => '客人ID',
-            'B2' => '淘宝订单号',
-            'C2' => '订单日期',
-            'D2' => '收资料日',
-            'E2' => '送证日',
-            'F2' => '入馆日',
-            'G2' => '名称',
-            'H2' => '类型',
-            'I2' => "接待\n销售",
-            'J2' => "操作\n人员",
-            'K2' => '办理人',
-            'L2' => '套餐类型',
-            'M2' => '套餐名称',
-            'N2' => '单项实收',
-            'O2' => '数量',
-            'P2' => '补差',
-            'Q2' => '照片',
-            'R2' => '快递',
-            'S2' => '合计',
-            'T2' => '手续费',
-            'U2' => '实收',
-            'V2' => '单项实付',
-            'W2' => '数量',
-            'X2' => '补差',
-            'Y2' => '照片',
-            'Z2' => '快递',
-            'AA2' => '实付合计',
-            'AB2' => '利润',
-            'AC2' => '收件人',
-            'AD2' => '收件电话',
-            'AE2' => '收件地址',
-            'AF2' => "出签\n日期",
-            'AG2' => "发货\n日期",
-            'AH2' => '寄回客人单号',
-            'AI2' => '支付日期',
-            'AJ2' => "店铺收款日",
-            'AK2' => "公司收款日",
-            'AL2' => "收款帐户",
-            'AM2' => '备注'
-        ];
+        $fieldAttribute = $this->setMergeName() + $this->setThName();
 
         foreach ($fieldAttribute as $column_x => $field) {
             $sheet->setCellValue($column_x,  $field);
