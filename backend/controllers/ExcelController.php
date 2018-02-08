@@ -232,18 +232,18 @@ class ExcelController extends BaseController
                             case 'company_receipt_date':
                                 //检测是否有年份
                                 if ($data) {
-                                    if (preg_match('/\d{4}/',$data)) {
-                                        $data = date('Y-m-d', strtotime(str_replace(['月', '日'],['/', ''], $data)));
-                                        $order->$field = $data;
+                                    $data = date('Y-m-d', strtotime(str_replace(['年','月', '日'],['/', ''], $data)));
+                                    $order->$field = $data;
+                                    /* if (preg_match('/\d{4}/',$data)) {
+
                                     } else {
-                                        $th = $this->setThName();
+                                       $th = $this->setThName();
                                         $th = $th[$indexToColumn[$column] . "2"] ;
                                         $error = true;
                                         if (!isset($errorMsg[$row->getRowIndex()])) {
-                                            $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg' => trim($th) . "缺少年份"];
-                                        }
-
-                                    }
+                                           // $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg' => trim($th) . "缺少年份"];
+                                        } }
+                                    */
                                 }
                                 break;
 
