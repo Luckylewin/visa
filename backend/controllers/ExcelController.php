@@ -862,7 +862,7 @@ class ExcelController extends BaseController
             'P' => 'balance_sum',//补差收入
             'Q' => 'flushphoto_sum',//冲洗照片补差收入
             'R' => 'carrier_sum',//快递补差收入
-            'S' => 'total_person',//合计
+            'S' => 'cal_charge',//合计
             'T' => 'charge',//手续费
             'U' => 'total_charge',//实收
             'V' => 'single_sum',//单项实付合计
@@ -979,6 +979,13 @@ class ExcelController extends BaseController
                         $cellValue = $charge;
                         break;
 
+                    case 'cal_charge':
+                        $cellValue = $object->total_person * $object->single_sum +
+                            $object->flushphoto_sum +
+                            $object->carrier_sum +
+                            $object->balance_sum;
+                        break;
+
                     case 'total_charge': //累加处理
                         $income = $object->total_person * $object->single_sum +
                             $object->flushphoto_sum +
@@ -1066,7 +1073,7 @@ class ExcelController extends BaseController
         //设置边框
         $sheet->getStyle("A{$row}:AL{$row}")->applyFromArray($borderStyle);
         //填充统计数据颜色
-        $hoverColumn = ['O'=>'ffff00','S'=>'ff0000','U'=>'ff0000','V'=>'ff0000','P'=>'','Q'=>'','R'=>'','V'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>'','AB'=>''];
+        $hoverColumn = ['O'=>'ffff00','S'=>'ff0000','U'=>'ff0000','V'=>'ff0000','P'=>'','Q'=>'','R'=>'','W'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>'','AB'=>'','N'=>''];
         foreach ($hoverColumn as $column => $colorCode) {
             //居中
             $sheet->getStyle( $column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY);
