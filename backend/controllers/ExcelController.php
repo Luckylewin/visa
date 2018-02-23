@@ -217,16 +217,9 @@ class ExcelController extends BaseController
                                     $data = substr($data, 0, $pos);
                                 }
 
+                                $data = str_replace([',', '，'], [' ',' '], $data);
                                 //查找办理人
-                                if (strpos($data, ',') !== false) {
-                                    $separator = ',';
-                                } elseif (strpos($data, '，') !== false) {
-                                    $separator = '，';
-                                } else {
-                                    $separator = ' ';
-                                }
-
-                                $transactors = explode($separator, trim($data));
+                                $transactors = explode(' ', trim($data));
 
                                 array_walk($transactors, function(&$v,$k){
                                     $v = trim($v);
