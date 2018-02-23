@@ -62,7 +62,6 @@ class MenuSearch extends Menu
         $query->andFilterWhere([
             'id' => $this->id,
             'pid' => $this->pid,
-            'display' => $this->display,
             'sort' => $this->sort,
         ]);
 
