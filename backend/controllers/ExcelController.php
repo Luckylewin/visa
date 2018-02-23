@@ -210,6 +210,11 @@ class ExcelController extends BaseController
                                     preg_match('/(?<=\()[^\)]+/', $data, $preg);
                                     isset($preg[0]) && !empty($preg[0]) && $order->remark = $preg[0];
                                     $data = substr($data, 0, $pos);
+                                }  elseif (($pos = strpos($data, '（')) !== false) {
+
+                                    preg_match('/(?<=（)[^）]+/', $data, $preg);
+                                    isset($preg[0]) && !empty($preg[0]) && $order->remark = $preg[0];
+                                    $data = substr($data, 0, $pos);
                                 }
 
                                 //查找办理人
