@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use app\models\OrderToTransactor;
 use common\models\ExportSetting;
 use Yii;
 use common\models\Order;

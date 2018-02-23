@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use app\models\OrderToTransactor;
 use backend\models\Admin;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -21,6 +22,7 @@ use yii\db\ActiveRecord;
  * @property integer $custom_servicer_id
  * @property string $single_sum
  * @property integer $total_person
+ * @property integer $output_total_person
  * @property string $balance_order
  * @property string $balance_sum
  * @property string $output_balance_sum
@@ -68,8 +70,8 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'total_person', 'single_sum'], 'required'],
-            [['pid', 'combo_id', 'custom_servicer_id',  'total_person'], 'integer'],
+            [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'output_total_person' ,'total_person', 'single_sum'], 'required'],
+            [['pid', 'combo_id', 'custom_servicer_id',  'total_person', 'output_total_person'], 'integer'],
             [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'company_receipt_date', 'pay_account'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum','output_balance_sum', 'output_flushphoto_sum', 'output_carrier_sum'], 'number'],
             [['back_address', 'remark'], 'string','max' => 300],
@@ -81,7 +83,7 @@ class Order extends \yii\db\ActiveRecord
             [['balance_sum','flushphoto_sum','carrier_sum','output_balance_sum','output_flushphoto_sum','output_carrier_sum'], 'default', 'value' => '0.00'],
             [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => ''],
             [['single_sum'],'default','value' => '0.00'],
-            [['total_person'],'default','value' => '1'],
+            [['total_person', 'output_total_person'],'default','value' => '1'],
             [['back_telphone','back_address','remark','pay_account'],'default','value' => '']
         ];
     }
@@ -104,6 +106,7 @@ class Order extends \yii\db\ActiveRecord
             'custom_servicer' => '接待客服',
             'single_sum' => '单项实收金额',
             'total_person' => '人数',
+            'output_total_person' => '人数',
             'balance_order' => '补差订单号',
             'balance_sum' => '补差收入金额',
             'output_balance_sum' => '补差支出金额',
@@ -156,7 +159,17 @@ class Order extends \yii\db\ActiveRecord
        ];
     }
 
-
+    public function afterSave($insert, $changedAttributes)
+    {
+        if (parent::afterSave($insert, $changedAttributes)) {
+            if ($this->isNewRecord) {
+                //更新引用
+                $snapshot = Snapshot::findOne(['id' => $this->combo_id]);
+                $snapshot->quote += 1;
+                $snapshot->save();
+            }
+        }
+    }
 
     public function beforeSave($insert)
     {
@@ -207,9 +220,20 @@ class Order extends \yii\db\ActiveRecord
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            Transator::deleteAll(['order_id' => $this->id]);
-            return true;
+            //删除关联关系表数据
+            OrderToTransactor::deleteAll(['o_id' => $this->id]);
+            //查找快照 判断索引
+            $snapshot = Snapshot::findOne(['id' => $this->combo_id]);
+            if (!is_null($snapshot)) {
+                if ($snapshot->quote <= 1) {
+                    $snapshot->delete();
+                } else {
+                    $snapshot->quote -= 1;
+                    $snapshot->save();
+                }
+            }
         }
+        return true;
     }
 
     //国家

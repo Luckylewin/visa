@@ -64,7 +64,7 @@ class Toastr extends \yii\bootstrap\Widget
                         $num = 0;
                         foreach ($msgStr as $msg) {
                             if ($num < 20) {
-                                $str .= "第{$msg['row']}行  {$msg['msg']}<br/>";
+                                $str .= "文件第{$msg['row']}行  {$msg['msg']}<br/>";
                             }
                             $num++;
                         }

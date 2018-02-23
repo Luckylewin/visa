@@ -21,7 +21,7 @@ class ExcelController extends BaseController
 {
     public function actionIndex()
     {
-
+        set_time_limit(0);
         $queryParams = Yii::$app->request->get('orderQuery');
         $selected_id = Yii::$app->request->get('selected_id');
 
@@ -59,6 +59,7 @@ class ExcelController extends BaseController
 
     public function actionImport()
     {
+        set_time_limit(0);
         $model = new UploadForm();
 
         if (Yii::$app->request->isPost) {
@@ -103,7 +104,7 @@ class ExcelController extends BaseController
             'T' => 'combo_charge',//手续费
             'U' => '',//实收
             'V' => 'combo_cost',//单项实付合计
-            'W' => 'total_person',//数量
+            'W' => 'output_total_person',//数量
             'X' => 'output_balance_sum',//补差
             'Y' => 'output_flushphoto_sum',//照片
             'Z' => 'output_carrier_sum',//快递
@@ -133,18 +134,20 @@ class ExcelController extends BaseController
             $servicer = new Servicer();
             $existTransactor = [];
             $notExistTransactorName = [];
-            $error = false;
 
-            if ($row->getRowIndex() > 1 ) {  //确定从哪一行开始读取
+            $currentRow = $row->getRowIndex();
+
+            if ($currentRow > 1 && $currentRow != $highestRow) {  //确定从哪一行开始读取
 
                 $column = 1;
+
                 foreach ($row->getCellIterator() as $cell) { //逐列读取
 
                     if (!isset($indexToColumn[$column])) {
                         continue;
                     }
 
-                    if ($row->getRowIndex() == 2) {
+                    if ($currentRow == 2) {
                         //检查excel的格式
                         $th = array_values($this->setThName());
                         $data = $cell->getValue(); //获取cell中数据
@@ -153,12 +156,15 @@ class ExcelController extends BaseController
                         }
                         $column++;
                         continue;
+
                     }
 
                     $field = $columnToField[$indexToColumn[$column]];
 
                     if ($field) {
-                        $data = $cell->getValue(); //获取cell中数据
+                        //获取cell中数据
+                        $data = $cell->getValue();
+
                         switch ($field)
                         {
                             case 'order_num':
@@ -168,27 +174,61 @@ class ExcelController extends BaseController
 
                             case 'combo_type':
                                 $types = Type::getComboType();
-                                $type = array_search($data, $types);
+                                $type = array_search(trim($data), $types);
+
                                 $snapshot->$field = (string)$type;
                                 $order->order_type = (string)$type;
                                 break;
 
                            case 'servicer':
                                 //查找系统 有没有此客服
-                                 $servicer->name = $data;
+                                $servicerData = Servicer::findOne(['name' => trim($data)]);
+                                if (!is_null($servicerData)) {
+                                    $servicer->name = trim($data);
+                                    $order->custom_servicer_id = $servicerData->id;
+                                }
                                 break;
 
                             case 'operator_id':
                                 //查找操作用户
-                                $uid = Admin::findOne(['username' => $data]);
+                                $uid = Admin::findOne(['username' => trim($data)]);
                                 if ($uid) {
                                     $order->$field = $uid->id;
                                 }
                                 break;
 
                             case 'transator_id':
+
+                                //过滤字符串
+                                if (($pos = strpos($data, '【')) !== false) {
+                                    preg_match('/(?<=【)[^】]+/', $data, $preg);
+                                    isset($preg[0]) && !empty($preg[0]) && $order->remark = $preg[0];
+                                    $data = substr($data, 0, $pos);
+
+                                } elseif (($pos = strpos($data, '(')) !== false) {
+
+                                    preg_match('/(?<=\()[^\)]+/', $data, $preg);
+                                    isset($preg[0]) && !empty($preg[0]) && $order->remark = $preg[0];
+                                    $data = substr($data, 0, $pos);
+                                }
+
                                 //查找办理人
-                                $transactors = explode(' ',trim($data));
+                                if (strpos($data, ',') !== false) {
+                                    $separator = ',';
+                                } elseif (strpos($data, '，') !== false) {
+                                    $separator = '，';
+                                } else {
+                                    $separator = ' ';
+                                }
+
+                                $transactors = explode($separator, trim($data));
+
+                                array_walk($transactors, function(&$v,$k){
+                                    $v = trim($v);
+                                });
+
+                                $transactors = array_filter($transactors);
+
                                 if (!empty($transactors)) {
                                     foreach ($transactors as $transactor) {
                                         $_transactor = Transator::findOne(['name' => $transactor]);
@@ -232,6 +272,11 @@ class ExcelController extends BaseController
                             case 'company_receipt_date':
                                 //检测是否有年份
                                 if ($data) {
+                                    //如果是浮点数 则转换
+                                    if (is_float($data)) {
+                                        $data = \PHPExcel_Shared_Date::ExcelToPHP($data);
+                                        $data = date('Y-m-d', $data);
+                                    }
                                     $data = date('Y-m-d', strtotime(str_replace(['年','月', '日'],['/', ''], $data)));
                                     $order->$field = $data;
                                     /* if (preg_match('/\d{4}/',$data)) {
@@ -248,7 +293,9 @@ class ExcelController extends BaseController
                                 break;
 
                             case 'remark':
-                                $order->remark = $data;
+                                if (!$order->remark) {
+                                    $order->remark = $data;
+                                }
                                 break;
 
                             default:
@@ -263,18 +310,27 @@ class ExcelController extends BaseController
                     $column++;
                 }
 
-                if ($error) {
+                if ($currentRow == 2) {
                     continue;
                 }
 
                 //对象已经收集数据完毕
                 //判断订单是否不存在 办理人是否存在
                 $isExistOrder = Order::findOne(['order_num' => $order->order_num]);
-                $servicerData = Servicer::findOne(['name'=>$servicer->name]);
 
-                if (!is_null($isExistOrder) || is_null($servicerData)) {
-                      continue;
+                if (!is_null($isExistOrder) ) {
+                    //echo $isExistOrder->id,'-',$currentRow,'<br/>';
+                    continue;
                 }
+
+
+
+
+/*
+               if ($importTotal >= 1) {
+                    continue;
+               }*/
+
 
                 // echo "<hr/>";
                 // var_dump($existTransactor);
@@ -295,7 +351,7 @@ class ExcelController extends BaseController
                     $order->transactor_id = "0";
                     $order->combo_id = $snapshot->id;
                     $order->back_addressee = empty($order->back_addressee)? "-" : $order->back_addressee;
-                    $order->custom_servicer_id = $servicerData->id;
+
                     $order->output_balance_sum = empty($order->output_balance_sum) ? '0.00' : $order->output_balance_sum;
                     $orderResult = $order->save();
 
@@ -305,7 +361,7 @@ class ExcelController extends BaseController
                             $newTransactor = new Transator();
                             $newTransactor->name = $newTrName;
                             $transactorResult = $newTransactor->save(false);
-                            $isExistOrder[] = $newTransactor->tid;
+                            $existTransactor[] = $isExistOrder[] = $newTransactor->tid;
                         }
                     }
 
@@ -323,8 +379,8 @@ class ExcelController extends BaseController
                         $orderError = array_values($order->getFirstErrors());
 
                         if (!empty($snapshotError)) {
-                            $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg'=>$snapshotError[0]];
 
+                            $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg'=>$snapshotError[0]];
                         } else if (!empty($orderError)) {
 
                             $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg'=>$orderError[0]];
@@ -498,13 +554,15 @@ class ExcelController extends BaseController
         $sheet->getColumnDimension('B')->setWidth(22);
         $sheet->getColumnDimension('C')->setWidth(16);
         $sheet->getColumnDimension('D')->setWidth(16);
-        $sheet->getColumnDimension('D')->setWidth(16);
+        $sheet->getColumnDimension('E')->setWidth(16);
+        $sheet->getColumnDimension('U')->setWidth(20);
         $sheet->getColumnDimension('F')->setWidth(16);
         $sheet->getColumnDimension('G')->setWidth(20);
         $sheet->getColumnDimension('H')->setWidth(10);
         $sheet->getColumnDimension('I')->setWidth(10);
         $sheet->getColumnDimension('K')->setWidth(35);
         $sheet->getColumnDimension('M')->setWidth(10);
+        $sheet->getColumnDimension('AB')->setWidth(15);
         $sheet->getColumnDimension('AC')->setWidth(15);
         $sheet->getColumnDimension('AD')->setWidth(15);
         $sheet->getColumnDimension('AE')->setWidth(45);
@@ -695,7 +753,7 @@ class ExcelController extends BaseController
                     case 'total_pay':
                         //累加处理
                         if ($showFlag) {
-                            $cellValue = $object->total_person * $cost +
+                            $cellValue = $object->output_total_person * $cost +
                                 $object->output_flushphoto_sum +
                                 $object->output_carrier_sum +
                                 $object->output_balance_sum;
@@ -710,7 +768,7 @@ class ExcelController extends BaseController
                                     $object->carrier_sum +
                                     $object->balance_sum) * ( $charge > 0 ? $charge : 1);
 
-                            $cost = $object->total_person * $cost +
+                            $cost = $object->output_total_person * $cost +
                                 $object->output_flushphoto_sum +
                                 $object->output_carrier_sum +
                                 $object->output_balance_sum;
@@ -824,10 +882,7 @@ class ExcelController extends BaseController
      */
     private function getSumString($col,$start,$end)
     {
-        $str = '';
-        for ($i=$start; $i<=$end; $i++) {
-            $str .= ($col . $i . ':' );
-        }
+        $str = $col . $start . ':' . $col . $end;
         $str = trim($str, ':');
         $str = "=SUM(" . $str . ")";
         return $str;

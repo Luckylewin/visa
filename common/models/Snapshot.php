@@ -16,6 +16,7 @@ use Yii;
  * @property integer $snap_combo_id
  * @property integer $combo_charge
  * @property string $is_valid
+ * @property integer $quote
  */
 class Snapshot extends \yii\db\ActiveRecord
 {
@@ -35,10 +36,12 @@ class Snapshot extends \yii\db\ActiveRecord
         return [
             [['combo_name', 'combo_cost', 'combo_classify', 'combo_type', 'snap_combo_id','combo_product','combo_charge'], 'required'],
             [['snap_combo_id', 'is_valid'], 'integer'],
+            [['quote'], 'safe'],
             [['combo_cost'], 'number'],
             [['combo_name'], 'string', 'max' => 255],
             [['combo_classify', 'combo_type'], 'string', 'max' => 1],
-            [['combo_cost'], 'default', 'value' => 0.00]
+            [['combo_cost'], 'default', 'value' => 0.00],
+            [['quote'], 'default', 'value' => 1]
         ];
     }
 
