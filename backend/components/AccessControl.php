@@ -26,17 +26,27 @@ class AccessControl extends \yii\filters\AccessControl {
         //-----菜单权限检查-----
         $actionId = $action->getUniqueId();
 
+        $auth = Yii::$app->authManager;
+        $roleAuth = $auth->getPermissionsByUser($user->id);
+        $roleIoc = [];
+        foreach ($roleAuth as $role) {
+            $roleIoc[] = $role->ruleName;
+        }
+
         foreach ($this->rules as $i => $rule) {
 
-           if(in_array($action->id, $rule->actions)) break;
-
-          /* if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
+            if (in_array($action->id, $rule->actions)) break;
+            if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
                 $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
                     'actions' => [$action->id],
                     'allow' => true,
                 ]));
-            } elseif (!Yii::$app->user->can($actionId)) {
-
+            } elseif (!Yii::$app->user->isGuest && strpos($action->id,'delete') !== false ) {
+                $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
+                    'actions' => [$action->id],
+                    'allow' => false,
+                ]));
+            } elseif (!in_array($actionId, $roleIoc)) {
                 $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
                     'actions' => [$action->id],
                     'allow' => false,
@@ -46,24 +56,7 @@ class AccessControl extends \yii\filters\AccessControl {
                     'actions' => [$action->id],
                     'allow' => true,
                 ]));
-            }*/
-
-        if(!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'admin') {
-            $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
-                'actions' => [$action->id],
-                'allow' => true,
-            ]));
-        } elseif (!Yii::$app->user->isGuest && strpos($action->id,'delete') !== false ) {
-            $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
-                'actions' => [$action->id],
-                'allow' => false,
-            ]));
-        } else {
-            $this->rules[] = Yii::createObject(array_merge($this->ruleConfig, [
-                'actions' => [$action->id],
-                'allow' => true,
-            ]));
-        }
+            }
 
         }
         //----------
