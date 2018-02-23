@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-02-23 16:25:38
+Date: 2018-02-23 16:38:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -393,22 +393,14 @@ CREATE TABLE `yii2_menu` (
 INSERT INTO `yii2_menu` VALUES ('1', '0', '我的面板', 'index/index', 'fa-home', '0', '0');
 INSERT INTO `yii2_menu` VALUES ('2', '0', '系统设置', 'config/basic', 'fa-cogs', '1', '99');
 INSERT INTO `yii2_menu` VALUES ('3', '0', '管理员设置', 'admin/index', 'fa-user', '1', '98');
-INSERT INTO `yii2_menu` VALUES ('4', '0', '内容设置', '', 'fa-edit', '0', '0');
-INSERT INTO `yii2_menu` VALUES ('5', '0', '用户设置', '', 'fa-users', '0', '0');
 INSERT INTO `yii2_menu` VALUES ('6', '0', '数据库设置', 'database/export', 'fa-hdd-o', '0', '0');
-INSERT INTO `yii2_menu` VALUES ('7', '0', '界面设置', '', 'fa-picture-o', '0', '0');
 INSERT INTO `yii2_menu` VALUES ('8', '1', '系统信息', 'index/index', '', '1', '0');
 INSERT INTO `yii2_menu` VALUES ('9', '2', '站点配置', 'config/basic', '', '0', '0');
 INSERT INTO `yii2_menu` VALUES ('10', '2', '后台菜单管理', 'menu/index', '', '1', '0');
 INSERT INTO `yii2_menu` VALUES ('11', '3', '管理员管理', 'admin/index', '', '1', '0');
 INSERT INTO `yii2_menu` VALUES ('12', '3', '角色管理', 'role/index', '', '1', '0');
-INSERT INTO `yii2_menu` VALUES ('13', '4', '内容管理', '', '', '1', '0');
-INSERT INTO `yii2_menu` VALUES ('14', '4', '栏目管理', '', '', '1', '0');
-INSERT INTO `yii2_menu` VALUES ('15', '4', '模型管理', '', '', '1', '0');
 INSERT INTO `yii2_menu` VALUES ('16', '5', '用户管理', '', '', '0', '0');
 INSERT INTO `yii2_menu` VALUES ('17', '6', '数据库管理', 'database/export', '', '1', '0');
-INSERT INTO `yii2_menu` VALUES ('18', '7', '主题管理', '', '', '0', '0');
-INSERT INTO `yii2_menu` VALUES ('19', '7', '模板管理', '', '', '0', '0');
 INSERT INTO `yii2_menu` VALUES ('20', '9', '基本配置', 'config/basic', '', '1', '0');
 INSERT INTO `yii2_menu` VALUES ('21', '9', '邮箱配置', 'config/send-mail', '', '1', '0');
 INSERT INTO `yii2_menu` VALUES ('22', '9', '附件配置', 'config/attachment', '', '1', '0');
@@ -1049,7 +1041,7 @@ CREATE TABLE `yii2_session` (
 -- ----------------------------
 INSERT INTO `yii2_session` VALUES ('6p8k95s1tarcg2f7hbm4l82hm7', '1518088502', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('906ihehl3vsha2a1u11n08k3b0', '1517902614', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C733A313A2231223B);
-INSERT INTO `yii2_session` VALUES ('b8he02s77ngjlsckbf4fsvd057', '1519375761', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
+INSERT INTO `yii2_session` VALUES ('b8he02s77ngjlsckbf4fsvd057', '1519376549', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 INSERT INTO `yii2_session` VALUES ('bbrvi08q3hcbejm44o1b071lj3', '1518001454', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2234223B);
 INSERT INTO `yii2_session` VALUES ('pmvcgqemjqn7r5k5p37sp7fjg6', '1517828420', 0x5F5F666C6173687C613A303A7B7D5F5F69647C733A313A2231223B);
 
