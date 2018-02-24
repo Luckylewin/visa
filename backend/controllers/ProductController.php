@@ -167,7 +167,7 @@ class ProductController extends BaseController
         }
 
         $query = (new Query())
-                ->select('c.*')
+                ->select('c.combo_name,c.combo_id')
                 ->from('yii2_product AS a')
                 ->leftJoin('yii2_combo AS c','c.product_id = a.id')
                 ->where($where)

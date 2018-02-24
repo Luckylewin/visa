@@ -394,7 +394,7 @@ $tranlator = new Transator();
                     "Remark" : json.result[i][2]
                 });
             }
-            console.table(data);
+            //console.table(data);
 
             return data;
         }
