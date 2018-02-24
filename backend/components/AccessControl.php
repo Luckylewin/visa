@@ -1,7 +1,6 @@
 <?php
 /**
  * 控制过滤器, 集成了RBAC菜单权限验证
- * @author 边走边乔 <771405950>
  */
 namespace backend\components;
 
