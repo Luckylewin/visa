@@ -48,6 +48,7 @@ class OrderQuery extends Order
         if ($all) {
             $condition = [
                 'query' => $query,
+                'pagination' => false,
             ];
         } else {
             $condition = [
