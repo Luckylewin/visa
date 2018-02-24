@@ -2,17 +2,15 @@
 
 namespace backend\controllers;
 
-
-use common\models\ExportSetting;
 use Yii;
 use app\models\OrderToTransactor;
 use backend\models\Admin;
+use common\models\ExportSetting;
 use common\models\Order;
 use common\models\Servicer;
 use common\models\Snapshot;
 use common\models\Transator;
 use common\models\OrderQuery;
-use common\models\ProductQuery;
 use common\models\Type;
 use common\models\UploadForm;
 use yii\web\UploadedFile;
@@ -277,16 +275,6 @@ class ExcelController extends BaseController
                                     }
                                     $data = date('Y-m-d', strtotime(str_replace(['年','月', '日'],['/', ''], $data)));
                                     $order->$field = $data;
-                                    /* if (preg_match('/\d{4}/',$data)) {
-
-                                    } else {
-                                       $th = $this->setThName();
-                                        $th = $th[$indexToColumn[$column] . "2"] ;
-                                        $error = true;
-                                        if (!isset($errorMsg[$row->getRowIndex()])) {
-                                           // $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg' => trim($th) . "缺少年份"];
-                                        } }
-                                    */
                                 }
                                 break;
 
@@ -321,15 +309,11 @@ class ExcelController extends BaseController
                     continue;
                 }
 
-
-
-
-/*
-               if ($importTotal >= 1) {
-                    continue;
-               }*/
-
-
+                /*
+                   if ($importTotal >= 1) {
+                        continue;
+                   }
+                */
                 // echo "<hr/>";
                 // var_dump($existTransactor);
                 // var_dump($notExistTransactorName);
@@ -520,6 +504,12 @@ class ExcelController extends BaseController
         //权限判断
         $showFlag = ExportSetting::getShowSetting();
 
+        \PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
+        \PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
+        $cacheMethod = \PHPExcel_CachedObjectStorageFactory::cache_to_discISAM;
+        $cacheSettings = array('memoryCacheSize'=>'512MB');
+        \PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
         //初始化实例
         $objPHPExcel = new \PHPExcel();
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
@@ -667,10 +657,6 @@ class ExcelController extends BaseController
                 //设置水平竖直居中
                 $sheet->getStyle($_column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                 $sheet->getStyle($_column . $row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-
-                //设置宽度
-                $width = $sheet->getColumnDimension($_column)->getWidth();
-                //$sheet->getColumnDimension($_column)->setWidth($width);
 
                 //设置自动换行
                 $sheet->getStyle($_column)->getAlignment()->setWrapText(true);
