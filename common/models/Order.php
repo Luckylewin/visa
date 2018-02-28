@@ -70,9 +70,9 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id', 'output_total_person' ,'total_person', 'single_sum'], 'required'],
+            [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id' ,'total_person', 'single_sum'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person', 'output_total_person'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'company_receipt_date', 'pay_account'], 'safe'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'company_receipt_date', 'pay_account','output_total_person'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum','output_balance_sum', 'output_flushphoto_sum', 'output_carrier_sum'], 'number'],
             [['back_address', 'remark'], 'string','max' => 300],
             [['delivercompany'], 'string', 'max' => 50],
@@ -83,10 +83,11 @@ class Order extends \yii\db\ActiveRecord
             [['balance_sum','flushphoto_sum','carrier_sum','output_balance_sum','output_flushphoto_sum','output_carrier_sum'], 'default', 'value' => '0.00'],
             [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => ''],
             [['single_sum'],'default','value' => '0.00'],
-            [['total_person', 'output_total_person'],'default','value' => '1'],
-            [['back_telphone','back_address','remark','pay_account'],'default','value' => '']
+            [['total_person'],'default','value' => '1'],
+            [['back_telphone','back_address','remark','pay_account'],'default','value' => ''],
         ];
     }
+
 
     /**
      * @inheritdoc
@@ -180,6 +181,12 @@ class Order extends \yii\db\ActiveRecord
            $this->operator_id = Yii::$app->getUser()->id;
 
            if ($this->isNewRecord) {
+
+               //人数
+               if ($this->total_person) {
+                    $this->output_total_person = $this->total_person;
+               }
+
                //记录快照
                $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
                if (!is_null($snapShot)) {
