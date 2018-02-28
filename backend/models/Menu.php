@@ -96,4 +96,23 @@ class Menu extends \yii\db\ActiveRecord
         return $treeObj->getTreeArray();
     }
 
+    public static function getActualMenu()
+    {
+        $allMenus = self::getMenu();
+        if (Yii::$app->user->identity->username != 'admin') {
+            foreach ($allMenus as $key => $menus) {
+                foreach ($menus['_child'] as $_key => $menu) {
+                    if (!\Yii::$app->user->can($menu['url'])) {
+                        unset($allMenus[$key]['_child'][$_key]);
+                    }
+                }
+                if (count($allMenus[$key]['_child']) <= 0) {
+                    unset($allMenus[$key]);
+                }
+            }
+        }
+
+        return $allMenus;
+    }
+
 }

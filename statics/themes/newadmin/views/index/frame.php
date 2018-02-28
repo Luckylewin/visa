@@ -12,7 +12,7 @@ use common\widgets\Alert;
 use backend\models\Menu;
 
 AppAsset::register($this);
-$allMenus = Menu::getMenu();
+$allMenus = Menu::getActualMenu();
 
 ?>
 <!DOCTYPE html>
@@ -81,7 +81,9 @@ $allMenus = Menu::getMenu();
                             foreach ($menus['_child'] as $menu) {
                                 $menuArr = explode('/', $menu['url']);
                                 ?>
+
                                 <li><a class="J_menuItem" href="<?=Url::to([$menu['url']]);?>"><?=$menu['name'];?></a></li>
+                               
                             <?php }?>
                         </ul>
                     </li>
@@ -507,7 +509,7 @@ $allMenus = Menu::getMenu();
             </button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="<?=Url::to([$allMenus[0]['url']]);?>">首页</a>
+                    <a href="javascript:;" class="active J_menuTab" data-id="<?=Url::to([isset($allMenus[0]['url'])?$allMenus[0]['url']:'']);?>">首页</a>
                 </div>
             </nav>
             <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
