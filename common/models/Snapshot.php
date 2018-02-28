@@ -62,4 +62,19 @@ class Snapshot extends \yii\db\ActiveRecord
             'is_valid' => '是否有效',
         ];
     }
+
+    public static function duplicateOne(Combo $combo)
+    {
+        $snapShot = new Snapshot();
+        $snapShot->combo_name = $combo->combo_name;
+        $snapShot->combo_cost = $combo->combo_cost;
+        $snapShot->combo_classify = $combo->combo_classify;
+        $snapShot->combo_type = $combo->combo_type;
+        $snapShot->snap_combo_id = $combo->combo_id;
+        $snapShot->combo_product = $combo->product->name;
+        $snapShot->combo_charge = $combo->combo_charge;
+        $snapShot->save(false);
+
+        return $snapShot->id;
+    }
 }
