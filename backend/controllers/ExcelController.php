@@ -273,7 +273,8 @@ class ExcelController extends BaseController
                                         $data = \PHPExcel_Shared_Date::ExcelToPHP($data);
                                         $data = date('Y-m-d', $data);
                                     }
-                                    $data = date('Y-m-d', strtotime(str_replace(['年','月', '日'],['/', ''], $data)));
+
+                                    $data = date('Y-m-d', strtotime(str_replace(['年', '月', '日'],['-', '-',''], $data)));
                                     $order->$field = $data;
                                 }
                                 break;
