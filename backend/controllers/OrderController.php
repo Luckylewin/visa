@@ -105,6 +105,13 @@ class OrderController extends BaseController
                 Yii::$app->getSession()->setFlash('error', $error);
             }
 
+            $identity = Yii::$app->user->identity;
+            //判断订单所属者
+            if ( $identity->username != 'admin' && $identity->getId() != $model->operator_id ) {
+                Yii::$app->getSession()->setFlash('error', '操作失败: 只能修改自己创建的订单');
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+            
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -119,7 +126,16 @@ class OrderController extends BaseController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        //判断订单所属者
+        $identity = Yii::$app->user->identity;
+            if ( $identity->username != 'admin' && $identity->getId() != $model->operator_id ) {
+                Yii::$app->getSession()->setFlash('error', '操作失败: 只能删除自己创建的订单');
+                return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $model->delete();
 
         Yii::$app->session->setFlash('success', '操作成功');
         return $this->redirect(['index']);
