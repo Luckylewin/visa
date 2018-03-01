@@ -52,7 +52,7 @@ $allMenus = Menu::getActualMenu();
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                <span class="block m-t-xs"><strong class="font-bold"><?= $username ?></strong></span>
-                                <span class="text-muted text-xs block"><?= "管理员"; ?><b class="caret"></b></span>
+                                <span class="text-muted text-xs block"><?= isset($rolename)?$rolename:'管理员'; ?><b class="caret"></b></span>
                                 </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
