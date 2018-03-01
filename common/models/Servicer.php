@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\models\Admin;
 use Yii;
 
 /**
@@ -10,6 +11,7 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property string $tb_servicer_id
+ * @property integer $admin_id
  */
 class Servicer extends \yii\db\ActiveRecord
 {
@@ -30,6 +32,7 @@ class Servicer extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['name'], 'string', 'max' => 50],
             [['tb_servicer_id'], 'string', 'max' => 30],
+            [['admin_id'], 'safe'],
         ];
     }
 
@@ -42,6 +45,13 @@ class Servicer extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => '客服名字',
             'tb_servicer_id' => '淘宝客服id',
+            'admin_id' => '绑定帐号'
         ];
     }
+
+    public function getAccount()
+    {
+        return $this->hasOne(Admin::className(),['id' => 'admin_id']);
+    }
+
 }

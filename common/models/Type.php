@@ -9,6 +9,10 @@
 namespace common\models;
 
 
+use backend\models\Admin;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
+
 class Type
 {
 
@@ -45,4 +49,19 @@ class Type
         }
         return $rowspan;
     }
+
+    //客服绑定帐号
+    public static function getAccount()
+    {
+        //除去已经被绑定的
+        $admin_id = array_filter(array_values(ArrayHelper::getColumn(Servicer::find()->all(),'admin_id')));
+        if (!empty($admin_id)) {
+            $data =Admin::find()->where(['not in','id', $admin_id])->all();
+        } else {
+            $data = Admin::find()->all();
+        }
+
+        return ArrayHelper::map($data,'id','username');
+    }
+
 }

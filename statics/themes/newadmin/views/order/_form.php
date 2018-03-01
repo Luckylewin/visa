@@ -73,7 +73,17 @@ $tranlator = new Transator();
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
-                <?= $form->field($model, 'custom_servicer_id')->dropDownList(ArrayHelper::map(Servicer::find()->all(),'id','name')); ?>
+                <?php
+                    $servicer = Servicer::findOne(['admin_id' => Yii::$app->user->identity->getId()]);
+
+                    if (is_null($servicer)) {
+                        $servicer = ArrayHelper::map(Servicer::find()->all(),'id','name');
+                    } else {
+                        $servicer = [$servicer->id => $servicer->name];
+                    }
+                ?>
+
+                <?= $form->field($model, 'custom_servicer_id')->dropDownList($servicer); ?>
 
                 <?= $form->field($model, 'order_num')->textInput() ?>
 

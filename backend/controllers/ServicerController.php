@@ -96,6 +96,23 @@ class ServicerController extends BaseController
         return $this->redirect(['index']);
     }
 
+    public function actionGrant($sid)
+    {
+        $model = $this->findModel($sid);
+
+        if (Yii::$app->request->isPost) {
+            $model->admin_id = Yii::$app->request->post('admin_id');
+            $model->save();
+            Yii::$app->session->setFlash('success','帐号绑定成功');
+            return $this->redirect(['servicer/index'
+            ]);
+        }
+
+        return $this->render('grant', [
+            'model' => $model
+        ]);
+    }
+
     /**
      * Finds the Servicer model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

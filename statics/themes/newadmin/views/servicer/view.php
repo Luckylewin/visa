@@ -20,12 +20,34 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'tb_servicer_id',
+            [
+                'attribute' => 'name',
+                'label' => '帐号绑定',
+                'format' => 'raw',
+                'value' => function($model) {
+                    $account = $model->account;
+                    if (!$account) {
+                        return Html::a('点击绑定', \yii\helpers\Url::to(['servicer/grant','sid' => $model->id]),[
+                            'class' => 'btn btn-info btn-xs'
+                        ]);
+                    }
+                    return Html::a($account->username,\yii\helpers\Url::to(['admin/view','id'=>$account->id]));
+                },
+                'options' => [
+                    'style' => 'width:150px;'
+                ],
+            ],
         ],
     ]) ?>
 
     <p>
         <?php if(strpos(Yii::$app->request->referrer, 'order') === false): ?>
 
+            <?php if($model->account): ?>
+            <?= Html::a('重新绑定帐号', \yii\helpers\Url::to(['servicer/grant','sid' => $model->id]),[
+                    'class' => 'btn btn-info'
+                ]); ?>
+            <?php endif; ?>
             <?= Html::a('编辑', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('删除', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
