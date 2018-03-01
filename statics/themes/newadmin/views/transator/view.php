@@ -61,6 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('返回', ['transator/index'], ['class' => 'btn btn-default']) ?>
+
 
     <?php else: ?>
 
