@@ -65,14 +65,15 @@ class Admin extends ActiveRecord implements IdentityInterface
             'auth_key' => 'Auth Key',
             'password' => '密码',
             'password_hash' => 'Password Hash',
-            'email' => 'Email',
-            'reg_ip' => 'Reg Ip',
+            'email' => '邮箱',
+            'reg_ip' => '注册IP',
             'last_login_time' => '最后登录时间',
             'last_login_ip' => '最后登录IP',
             'status' => '状态',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'user_role' => '所属角色'
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
+            'user_role' => '所属角色',
+            'role' => '所属角色组'
         ];
     }
 
@@ -166,6 +167,18 @@ class Admin extends ActiveRecord implements IdentityInterface
     //获取用户所在的用户组
     public function getGroup() {
         return implode(',', array_keys(Yii::$app->authManager->getRolesByUser($this->id)));
+    }
+
+    public function getRole()
+    {
+        $role = Yii::$app->authManager->getRolesByUser($this->id);
+        if ($role) {
+            $role = current($role)->name;
+        } else {
+            $role = "未指定角色";
+        }
+
+        return $role;
     }
 
     public function beforeSave($insert) {
