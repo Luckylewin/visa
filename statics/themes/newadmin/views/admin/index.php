@@ -37,7 +37,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return long2ip($data->last_login_ip);
                 }
             ],
-            'last_login_time:datetime',
+            [
+                    'attribute' => 'last_login_time',
+                    'value' => function ($model) {
+                        return date('Y/m/d H:i',$model->last_login_time);
+                    }
+            ],
             [
                 'attribute' => 'user_role',
                 'format' => 'raw',
