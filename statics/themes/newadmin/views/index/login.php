@@ -31,7 +31,7 @@ $this->title = '管理员登录';
     ]);?>
 
     <div class="form-signin-heading text-center">
-        <h1 class="sign-title">登 录</h1>
+        <h1 class="sign-title">Sign In</h1>
         <img src="/statics/themes/admin/images/login-logo.png" alt=""/>
     </div>
     <div class="login-wrap">
