@@ -437,7 +437,8 @@ class ExcelController extends BaseController
                 $data = (string)$data;
             }
 
-            if ($order->$field == '' || ($order->$field != $data)) {
+            if (($order->$field != $data)) {
+                
                 $order->$field = $data;
                 $isNewRecord = true;
             }
