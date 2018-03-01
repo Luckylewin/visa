@@ -122,6 +122,7 @@ class ExcelController extends BaseController
         ];
 
         $importTotal = 0;
+        $updateTotal = 0;
         $errorMsg = [];
 
         foreach ($sheet->getRowIterator() as $row) {  //逐行处理
@@ -307,6 +308,14 @@ class ExcelController extends BaseController
 
                 if (!is_null($isExistOrder) ) {
                     //echo $isExistOrder->id,'-',$currentRow,'<br/>';
+                    $order = $this->_updateByExcel($isExistOrder,$order);
+
+                    if ($order === true) {
+                        $updateTotal++;
+                    } elseif (!is_null($order)) {
+                        $error = array_values($order->getFirstErrors());
+                        $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg' => $error[0]];
+                    }
                     continue;
                 }
 
@@ -386,7 +395,9 @@ class ExcelController extends BaseController
 
         if ($importTotal > 0) {
             \Yii::$app->session->setFlash('success', "本次成功导入{$importTotal}条订单数据");
-        } else{
+        } else if($updateTotal > 0 ){
+            \Yii::$app->session->setFlash('success', "本次导入更新了{$updateTotal}条订单数据");
+        } else {
             \Yii::$app->session->setFlash('warning', "没有符合条件的订单");
         }
 
@@ -394,7 +405,52 @@ class ExcelController extends BaseController
             \Yii::$app->session->setFlash('error', json_encode($errorMsg));
         }
 
+        return true;
+    }
 
+    private function _updateByExcel(Order $order, $excelOrder)
+    {
+        //对比数据进行更新
+        $checkFields = [
+            'balance_order', 'balance_sum', 'output_balance_sum',
+            'flushphoto_order', 'flushphoto_sum', 'output_flushphoto_sum',
+            'carrier_order', 'carrier_sum', 'output_carrier_sum',
+            'collect_date','deliver_date','entry_date','putsign_date', 'delivergood_date', 'receipt_date', 'company_receipt_date', 'pay_date',
+            'back_address','back_addressee','back_telphone','deliver_order','delivercompany','remark','pay_account'
+        ];
+
+        $isNewRecord = false;
+
+        foreach ($checkFields as $field) {
+            $data = $excelOrder->$field;
+            if (is_null($data)) continue;
+
+            if (strpos($field, 'date')) {
+                    //如果是浮点数 则转换
+                    if (is_float($data)) {
+                        $data = \PHPExcel_Shared_Date::ExcelToPHP($data);
+                        $data = date('Y-m-d', $data);
+                    }
+                    $data = date('Y-m-d', strtotime(str_replace(['年', '月', '日'],['-', '-',''], $data)));
+
+            } else if (is_float($data)){
+                $data = (string)$data;
+            }
+
+            if ($order->$field == '' || ($order->$field != $data)) {
+                $order->$field = $data;
+                $isNewRecord = true;
+            }
+        }
+
+        if ($isNewRecord) {
+            $order->scenario = 'updateByExcel';
+            if ($order->save()) {
+                return true;
+            }
+            return $order;
+        }
+        return null;
     }
 
     private function getHeaderStyle()

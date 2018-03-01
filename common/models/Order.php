@@ -37,6 +37,7 @@ use yii\db\ActiveRecord;
  * @property string $entry_date
  * @property string $putsign_date
  * @property string $operator_id
+ * @property string $mod_operator_id
  * @property string $back_address
  * @property string $back_addressee
  * @property string $back_telphone
@@ -72,7 +73,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id' ,'total_person', 'single_sum'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person', 'output_total_person'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'company_receipt_date', 'pay_account','output_total_person'], 'safe'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'mod_operator_id', 'company_receipt_date', 'pay_account','output_total_person'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum','output_balance_sum', 'output_flushphoto_sum', 'output_carrier_sum'], 'number'],
             [['back_address', 'remark'], 'string','max' => 300],
             [['delivercompany'], 'string', 'max' => 50],
@@ -88,6 +89,22 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $myScenarios = [
+            'updateByExcel' => [
+                'balance_order', 'balance_sum', 'output_balance_sum',
+                'flushphoto_order', 'flushphoto_sum', 'output_flushphoto_sum',
+                'carrier_order', 'carrier_sum', 'output_carrier_sum',
+                'collect_date','deliver_date','entry_date','putsign_date', 'delivergood_date', 'receipt_date', 'company_receipt_date', 'pay_date',
+                'back_address','back_addressee','back_telphone','deliver_order','delivercompany','remark','pay_account'
+            ],
+        ];
+
+        return array_merge($scenarios, $myScenarios);
+    }
 
     /**
      * @inheritdoc
@@ -122,6 +139,7 @@ class Order extends \yii\db\ActiveRecord
             'entry_date' => '入馆日',
             'putsign_date' => '出签日',
             'operator_id' => '操作员',
+            'mod_operator_id' => '最后编辑者',
             'back_address' => '回寄地址',
             'back_addressee' => '收件人',
             'back_telphone' => '收件人电话',
@@ -178,7 +196,7 @@ class Order extends \yii\db\ActiveRecord
            unset($this->transactor_id);
 
            //记录操作用户
-           $this->operator_id = Yii::$app->getUser()->id;
+          $this->mod_operator_id =  $this->operator_id = Yii::$app->getUser()->id;
 
            if ($this->isNewRecord) {
 
@@ -303,5 +321,11 @@ class Order extends \yii\db\ActiveRecord
     public function getOperator()
     {
         return $this->hasOne(Admin::className(), ['id' => 'operator_id']);
+    }
+
+    //修改员
+    public function getMOperator()
+    {
+        return $this->hasOne(Admin::className(), ['id' => 'mod_operator_id']);
     }
 }

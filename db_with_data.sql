@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-03-01 14:13:16
+Date: 2018-03-01 18:04:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,16 +40,16 @@ CREATE TABLE `yii2_admin` (
 -- ----------------------------
 -- Records of yii2_admin
 -- ----------------------------
-INSERT INTO `yii2_admin` VALUES ('1', 'admin', 'SbSY36BLw3V2lU-GB7ZAzCVJKDFx82IJ', '$2y$13$0UVcG.mXF6Og0rnjfwJd2.wixT2gdn.wDO9rN44jGtIGc6JvBqR7i', '771405950@qq.com', '2130706433', '1519884354', '1742115638', '1', '1482305564', '1519884354');
+INSERT INTO `yii2_admin` VALUES ('1', 'admin', 'SbSY36BLw3V2lU-GB7ZAzCVJKDFx82IJ', '$2y$13$0UVcG.mXF6Og0rnjfwJd2.wixT2gdn.wDO9rN44jGtIGc6JvBqR7i', '771405950@qq.com', '2130706433', '1519895953', '2004602770', '1', '1482305564', '1519895953');
 INSERT INTO `yii2_admin` VALUES ('4', 'admin2', 'SbSY36BLw3V2lU-GB7ZAzCVJKDFx82IJ', '$2y$13$DPm3NP2B4HDth70cflSqCeC0k562iwHf9P1gsBT728WrFA8oYcy2C', '876505905@qq.com', '2130706433', '1519881927', '1742115638', '1', '1482305564', '1519881927');
 INSERT INTO `yii2_admin` VALUES ('5', 'test_admin', 'WEjgqej0F5wm2302g_8YBgWdspPNZaZQ', '$2y$13$ZgBVcI.l1LTMGjRlULoaiu7TrrGLKQpl0G4uH4Mal424PmBmAmxnu', 'test@qq.com', '2130706433', '1517996294', '2130706433', '1', '1517996226', '1517996294');
 INSERT INTO `yii2_admin` VALUES ('6', 'customersevice', 'DxlkT2gDSiuSF_Jr5EdVILTjPY7juMaB', '$2y$13$rsk/gLdYWjbKWqlE8eaIaeR7o9BmpZyI/8x1xF2tv3VU6TzwK.D6u', 'newpoyang@163.com', '2004602159', '1519884600', '1742115638', '1', '1519450624', '1519884600');
 INSERT INTO `yii2_admin` VALUES ('8', 'admin1', 'K8BNr0aM6tAt57spK5fL7sKrEY6gDRRW', '$2y$13$.TYukIqSTsC6Bb5S3HAKou5M4ptHfyFQUBbpX/0xPUIXS2gDcIlMO', 'newpoyang@sohu.com', '2004602006', '1519811780', '2004602006', '1', '1519810203', '1519811780');
 INSERT INTO `yii2_admin` VALUES ('9', 'LECHUFA-FENG', 'jonJehgNj5xIfL7X_zVCVJrDOlr6nk3w', '$2y$13$iu9EdQ8PhcDlgGm.rgzkSOtTtuL..5hnHGiAmJ1QrozumC8Lf9GLq', '3148018245@qq.com', '2147483647', '0', '0', '1', '1519830823', '1519830823');
-INSERT INTO `yii2_admin` VALUES ('10', 'LECHUFA-SU', '3e9jiq_BX7maO8C_76ooN6eCfOhFpXbl', '$2y$13$BhVP50sNlgJMl0MajDBXWO7h4pNvpbnk7TJWvua3j3bzp2oYd/3sq', '3352646786@qq.com', '2147483647', '1519884463', '2147483647', '1', '1519831326', '1519884463');
+INSERT INTO `yii2_admin` VALUES ('10', 'LECHUFA-SU', '3e9jiq_BX7maO8C_76ooN6eCfOhFpXbl', '$2y$13$BhVP50sNlgJMl0MajDBXWO7h4pNvpbnk7TJWvua3j3bzp2oYd/3sq', '3352646786@qq.com', '2147483647', '1519894485', '2147483647', '1', '1519831326', '1519894485');
 INSERT INTO `yii2_admin` VALUES ('11', 'LECHUFA-ZHONG', '_UtDe0BckV0ToFu1_HIjQfarJx1F8uuS', '$2y$13$qEnDvwI9H2RlWd53nwrw0e1UAS2lSDIbgfjjq/ghsG/.gmxprmIvm', '3389773613@qq.com', '2147483647', '1519882010', '2004602006', '1', '1519831374', '1519882010');
-INSERT INTO `yii2_admin` VALUES ('12', 'LECHUFA-QIONG', 'dCXJ5xfc4f2YW6C5PcZJKkQcAEM4w1TW', '$2y$13$X7cz7BzV42o2hSqLrA88Eu0IXFg1IszhvCh3y2rrtr2HyyPbkBABS', '2644943551@QQ.COM', '2147483647', '0', '0', '1', '1519831404', '1519831404');
-INSERT INTO `yii2_admin` VALUES ('13', 'LECHUFA-YANG', 'IsnYzUaokcJl2lisTsEA3djCIkk6bJ_I', '$2y$13$MEmpcKV4A9xRCr98dFTv2O/5MSV978FVPHJxzjhN6sD/iIuRCgD3u', '3127547767@qq.com', '2147483647', '1519883370', '2004602006', '1', '1519831470', '1519883370');
+INSERT INTO `yii2_admin` VALUES ('12', 'LECHUFA-QIONG', 'dCXJ5xfc4f2YW6C5PcZJKkQcAEM4w1TW', '$2y$13$X7cz7BzV42o2hSqLrA88Eu0IXFg1IszhvCh3y2rrtr2HyyPbkBABS', '2644943551@qq.com', '2147483647', '0', '0', '1', '1519831404', '1519890914');
+INSERT INTO `yii2_admin` VALUES ('13', 'LECHUFA-YANG', 'IsnYzUaokcJl2lisTsEA3djCIkk6bJ_I', '$2y$13$MEmpcKV4A9xRCr98dFTv2O/5MSV978FVPHJxzjhN6sD/iIuRCgD3u', '3127547767@qq.com', '2147483647', '1519895759', '2004602770', '1', '1519831470', '1519895759');
 
 -- ----------------------------
 -- Table structure for yii2_auth_assignment
@@ -570,6 +570,7 @@ CREATE TABLE `yii2_order` (
   `entry_date` char(10) NOT NULL COMMENT '入馆日',
   `putsign_date` char(10) NOT NULL COMMENT '出签日',
   `operator_id` smallint(6) NOT NULL COMMENT '操作员',
+  `mod_operator_id` smallint(6) DEFAULT NULL,
   `back_address` tinytext NOT NULL COMMENT '回寄地址',
   `back_addressee` varchar(50) NOT NULL COMMENT '收件人',
   `back_telphone` varchar(36) NOT NULL COMMENT '收件人电话',
@@ -587,14 +588,15 @@ CREATE TABLE `yii2_order` (
   `updated_at` int(10) NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`),
   KEY `order_deliverycompany_id` (`delivercompany`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2169 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2170 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yii2_order
 -- ----------------------------
-INSERT INTO `yii2_order` VALUES ('2166', '67639', '120098330227611849', '1', '1', '2018-02-27', 'n1ce12n1ce', '3471', '2', '', '248.00', '1', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '23.00', '0.00', '2018-02-27', '2018-02-27', '2018-02-28', '', '10', '重庆  重庆市  渝北区  回兴街道农业园区宝石路14号枫桥水郡14栋2单元6-2 ', '李娟', '18996222217', '', '', '', '', '', '', '', '', '4', '0', '1519832035', '1519882907');
-INSERT INTO `yii2_order` VALUES ('2167', '67639', 'ZK20180227', '2', '1', '2018-02-27', '驿签签证', '3472', '2', '', '248.00', '1', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '0.00', '0.00', '2018-02-27', '2018-02-28', '2018-02-28', '', '10', '福建省厦门市东渡路都市港湾5#2103', '张蕊', '18506955721', '', '', '', '', '', '', '', '', '4', '0', '1519882530', '1519884535');
-INSERT INTO `yii2_order` VALUES ('2168', '67639', 'TH20180227', '3', '2', '2018-02-27', '菲亚旅行社', '3473', '1', '', '425.00', '1', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '0.00', '0.00', '2018-03-01', '2018-03-02', '2018-03-04', '', '10', '山东省潍坊市安丘市景芝镇临浯社区', '宋国杰', '15265672916', '', '', '', '', '', '', '', '', '4', '0', '1519882750', '1519882947');
+INSERT INTO `yii2_order` VALUES ('2166', '67639', '120098330227611849', '1', '1', '2018-02-27', 'n1ce12n1ce', '3471', '2', '', '248.00', '1', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '23.00', '0.00', '2018-02-27', '2018-02-27', '2018-02-28', '', '10', null, '重庆  重庆市  渝北区  回兴街道农业园区宝石路14号枫桥水郡14栋2单元6-2 ', '李娟', '18996222217', '', '', '', '', '', '', '', '', '4', '0', '1519832035', '1519882907');
+INSERT INTO `yii2_order` VALUES ('2167', '67639', 'ZK20180227', '2', '1', '2018-02-27', '驿签签证', '3472', '2', '', '248.00', '1', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '0.00', '0.00', '2018-02-27', '2018-02-28', '2018-02-28', '', '10', null, '福建省厦门市东渡路都市港湾5#2103', '张蕊', '18506955721', '', '', '', '', '', '', '', '', '4', '0', '1519882530', '1519884535');
+INSERT INTO `yii2_order` VALUES ('2168', '67639', 'TH20180227', '3', '2', '2018-02-27', '菲亚旅行社', '3473', '1', '', '425.00', '1', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '0.00', '0.00', '2018-03-01', '2018-03-02', '2018-03-04', '', '10', null, '山东省潍坊市安丘市景芝镇临浯社区', '宋国杰', '15265672916', '', '', '', '', '', '', '', '', '4', '0', '1519882750', '1519882947');
+INSERT INTO `yii2_order` VALUES ('2169', '67639', 'TH20180301', '3', '2', '2018-03-01', '国旅四川-马良', '3473', '2', '', '425.00', '1', '1', '', '0.00', '0.00', '', '0.00', '0.00', '', '0.00', '0.00', '2018-03-01', '2018-03-02', '2018-03-04', '', '10', null, '', '', '', '', '', '', '', '', '', '', '', '4', '0', '1519894472', '1519894555');
 
 -- ----------------------------
 -- Table structure for yii2_order_product
@@ -912,6 +914,7 @@ INSERT INTO `yii2_order_to_transactor` VALUES ('2165', '3410');
 INSERT INTO `yii2_order_to_transactor` VALUES ('2166', '3411');
 INSERT INTO `yii2_order_to_transactor` VALUES ('2167', '3412');
 INSERT INTO `yii2_order_to_transactor` VALUES ('2168', '3413');
+INSERT INTO `yii2_order_to_transactor` VALUES ('2169', '3414');
 
 -- ----------------------------
 -- Table structure for yii2_product
@@ -962,13 +965,13 @@ CREATE TABLE `yii2_servicer` (
   `tb_servicer_id` varchar(30) DEFAULT NULL COMMENT '淘宝客服id',
   `admin_id` int(11) NOT NULL COMMENT '后台帐号id',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yii2_servicer
 -- ----------------------------
-INSERT INTO `yii2_servicer` VALUES ('1', '陈琼', '23', '0');
-INSERT INTO `yii2_servicer` VALUES ('2', '小阳', 'xiaoyang', '0');
+INSERT INTO `yii2_servicer` VALUES ('1', '多多', '多多', '12');
+INSERT INTO `yii2_servicer` VALUES ('2', '小阳', 'xiaoyang', '13');
 
 -- ----------------------------
 -- Table structure for yii2_session
@@ -984,11 +987,12 @@ CREATE TABLE `yii2_session` (
 -- ----------------------------
 -- Records of yii2_session
 -- ----------------------------
-INSERT INTO `yii2_session` VALUES ('9ut8ordg7e73h5m4oms2anbur3', '1519885245', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A313B);
-INSERT INTO `yii2_session` VALUES ('crje3h7kq4orjcq6ukrlg1vef6', '1519886065', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A363B);
+INSERT INTO `yii2_session` VALUES ('3kktioalbs8t4e74luotpk4ee4', '1519897676', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('gng7knrdksomf5v80af6kcrfh6', '1519833566', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A31303B);
+INSERT INTO `yii2_session` VALUES ('ik47aq376ukl9cq7tto1gpr2b5', '1519896048', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('jmtqqbc4u042jjbvlsu8uhlnr7', '1519813223', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A383B);
-INSERT INTO `yii2_session` VALUES ('nevmc4ur0n5qp16kj21vv63k05', '1519886086', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A31303B);
+INSERT INTO `yii2_session` VALUES ('nldof53o7k96755f4fi4kan2r1', '1519889436', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
+INSERT INTO `yii2_session` VALUES ('p3oeh14qklgcvpu58eshgpign5', '1519894862', 0x5F5F666C6173687C613A303A7B7D5F5F69647C693A313B);
 INSERT INTO `yii2_session` VALUES ('pjm6lgqvunaeth51ntnfp21nn2', '1519811522', 0x5F5F666C6173687C613A303A7B7D5F5F72657475726E55726C7C733A31303A222F61646D696E2E706870223B5F5F69647C693A363B);
 
 -- ----------------------------
@@ -1208,7 +1212,7 @@ CREATE TABLE `yii2_transator` (
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`tid`),
   KEY `nameindex` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3414 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=3415 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of yii2_transator
@@ -1484,13 +1488,12 @@ INSERT INTO `yii2_transator` VALUES ('3403', '戴雅瑜', '1', '', '', '', '0', 
 INSERT INTO `yii2_transator` VALUES ('3404', '廖玉卿', '1', '', '', '', '0', '1519460716', '0', '');
 INSERT INTO `yii2_transator` VALUES ('3405', '谢志火', '1', '', '', '', '0', '1519460716', '0', '');
 INSERT INTO `yii2_transator` VALUES ('3406', '杨柳波', '1', '', '', '', '0', '1519873957', '0', '');
-INSERT INTO `yii2_transator` VALUES ('3407', 'as', '1', '', '', '', '0', '1519874946', '0', '');
-INSERT INTO `yii2_transator` VALUES ('3408', 'asd', '1', '', '', '', '0', '1519874995', '0', '');
 INSERT INTO `yii2_transator` VALUES ('3409', '范茂杰', '1', '', '', '', '0', '1519891071', '0', '');
 INSERT INTO `yii2_transator` VALUES ('3410', '程妍', '1', '', '', '', '0', '1519891071', '0', '');
 INSERT INTO `yii2_transator` VALUES ('3411', '李娟', '1', '', '', '', '0', '1519918410', '0', '');
 INSERT INTO `yii2_transator` VALUES ('3412', '胡金亮', '1', '', '', '', '0', '1519968877', '0', '父亲名字：胡金根，\n母亲：成水凤，\n老婆：李燕  \n女儿：胡至芯 10岁 \n儿子：胡至远 10岁\n电话18170085682\n入境城市：马尼拉\n');
 INSERT INTO `yii2_transator` VALUES ('3413', '宋国杰', '1', '', '', '', '0', '1519969049', '0', '');
+INSERT INTO `yii2_transator` VALUES ('3414', '魏巍', '1', '', '', '', '0', '1519980860', '0', '');
 
 -- ----------------------------
 -- Table structure for yii2_user
