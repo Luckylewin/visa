@@ -698,8 +698,14 @@ class ExcelController extends BaseController
         foreach ($data as $object) {
 
             //数据准备
-            $charge = $object->snapshot->combo_charge;
-            $cost = $object->snapshot->combo_cost;
+            try {
+                $charge = $object->snapshot->combo_charge;
+                $cost = $object->snapshot->combo_cost;
+            } catch (\Exception $e) {
+                //$object->id
+                continue;
+            }
+
 
             foreach ($columnFieldMap as $_column => $_field) {
 

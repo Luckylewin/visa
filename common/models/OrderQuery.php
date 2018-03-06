@@ -42,6 +42,10 @@ class OrderQuery extends Order
      */
     public function search($params, $all = false)
     {
+
+        //处理没有
+
+
         $query = Order::find();
 
         // add conditions that should always apply here
@@ -65,12 +69,15 @@ class OrderQuery extends Order
             //关联表处理
             if (isset($params['OrderQuery']['transactor_id'])) {
                  $transator = Transator::findOne(['name' => $params['OrderQuery']['transactor_id']]);
-                 if ($transator) {
+                 $transator_name = $params['OrderQuery']['transactor_id'];
+                 $ids = 0;
 
-                     $ids = Yii::$app->db->createCommand('SELECT o_id FROM yii2_order_to_transactor WHERE t_id = '. $transator->tid)->queryAll();
-                     $ids = ArrayHelper::getColumn($ids, 'o_id');
-                     $ids = implode(',', $ids);
-                     $transator_name = $transator->name;
+                 if ($transator) {
+                     $transators = Yii::$app->db->createCommand('SELECT o_id FROM yii2_order_to_transactor WHERE t_id = '. $transator->tid)->queryAll();
+                     if (!empty($ids)) {
+                         $ids = ArrayHelper::getColumn($transators, 'o_id');
+                         $ids = implode(',', $ids);
+                     }
                  }
             }
         }
