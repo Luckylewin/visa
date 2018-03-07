@@ -153,17 +153,7 @@ class TransatorController extends BaseController
     public function actionDelete($id)
     {
         //删除之前判断下 这个人有没有订单
-        $relations = OrderToTransactor::find()->where(['t_id' => $id])->all();
-
-        $flag = false;
-        foreach ($relations as $relation) {
-            $order = Order::findOne($relation->o_id);
-            if (is_null($order)) {
-                OrderToTransactor::deleteAll(['o_id' => $relation->o_id, 't_id'=> $relation->t_id]);
-            } else {
-                $flag = true;
-            }
-        }
+        $flag = OrderToTransactor::clearTransator($id);
 
         if ($flag === false) {
             $this->findModel($id)->delete();
@@ -174,6 +164,28 @@ class TransatorController extends BaseController
 
         return $this->redirect(['index']);
     }
+
+    public function actionClear()
+    {
+        $transators = Transator::find()->select('tid')->all();
+        $deleteTotal = 0;
+
+        foreach ($transators as $transator) {
+            $flag = OrderToTransactor::clearTransator($transator->tid);
+            if ($flag === false) {
+                $transator->delete();
+                $deleteTotal++;
+            }
+        }
+        if ($deleteTotal) {
+            Yii::$app->session->setFlash('success', "清除无效数据{$deleteTotal}条");
+        } else {
+            Yii::$app->session->setFlash('info', "没有找到无效数据");
+        }
+
+        return $this->redirect(['transator/index']);
+    }
+
 
     /**
      * Finds the Transator model based on its primary key value.

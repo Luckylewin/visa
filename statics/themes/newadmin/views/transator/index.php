@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transator-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?php //Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -48,4 +48,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+
+    <p>
+        <?php echo Html::a("清除无效数据", \yii\helpers\Url::to(['transator/clear']),[
+                'class' => 'btn btn-warning'
+        ]) ?>
+    </p>
 </div>

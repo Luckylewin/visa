@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use common\models\Order;
 use Yii;
 
 /**
@@ -40,5 +41,22 @@ class OrderToTransactor extends \yii\db\ActiveRecord
             'o_id' => 'O ID',
             't_id' => 'T ID',
         ];
+    }
+
+    public static function clearTransator($id)
+    {
+        $relations = self::find()->where(['t_id' => $id])->all();
+
+        $flag = false;
+        foreach ($relations as $relation) {
+            $order = Order::findOne($relation->o_id);
+            if (is_null($order)) {
+                self::deleteAll(['o_id' => $relation->o_id, 't_id'=> $relation->t_id]);
+            } else {
+                $flag = true;
+            }
+        }
+
+        return $flag;
     }
 }
