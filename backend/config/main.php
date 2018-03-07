@@ -18,6 +18,11 @@ return [
     'layout' => 'main',//布局文件 优先级: 控制器>配置文件>系统默认
     //组件
     'components' => [
+        //cache组件
+        'cache' => [
+            'class' => 'yii\caching\FileCache',
+            'cachePath' => '@runtime/myCache',
+        ],
         //request组件
         'request' => [
             'csrfParam' => '_csrf-backend',

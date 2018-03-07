@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use Codeception\Lib\Generator\Helper;
 use Yii;
 use app\models\OrderToTransactor;
 use backend\models\Admin;
@@ -298,7 +299,7 @@ class ExcelController extends BaseController
 
                                 $order->deliver_order = str_replace("'","",$data);
                                 break;
-                            
+
                             case 'remark':
                                 if (!$order->remark) {
                                     $order->remark = $data;
@@ -587,6 +588,10 @@ class ExcelController extends BaseController
      */
     private function _exportExcel($data, $file_name)
     {
+        $cacheObject = Yii::$app->cache;
+        $uid = Yii::$app->user->getId();
+        $cacheObject->set($uid, 0, 3600);
+
         //权限判断
         $showFlag = ExportSetting::getShowSetting();
 
@@ -741,7 +746,13 @@ class ExcelController extends BaseController
         //统计
         $total_person_sum = 0;
 
-        foreach ($data as $object) {
+        $totalData = count($data);
+
+
+
+        foreach ($data as $key => $object) {
+
+            $cacheObject->set($uid, floor(($key+1)*100/$totalData), 3600);
 
             //数据准备
             try {
@@ -982,6 +993,16 @@ class ExcelController extends BaseController
         return $str;
     }
 
+
+    public function actionPercent()
+    {
+        $data = Yii::$app->cache->get(Yii::$app->user->getId());
+
+        $response = Yii::$app->response;
+        $response->format = $response::FORMAT_JSON;
+        $response->data = ['status' => 0, 'data'=> $data];
+        $response->send();
+    }
 
 
 

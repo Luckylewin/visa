@@ -225,9 +225,16 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
     ]); ?>
 </div>
 
+
+<div class="progress progress-striped active" style="display: none">
+    <div style="width: 0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="75" role="progressbar" class="progress-bar progress-bar-info" >
+        <span class="sr-only">40% Complete (success)</span>
+    </div>
+</div>
+
 <p>
     <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
-    <?= Html::a('导出excel', \yii\helpers\Url::to(['excel/index','orderQuery' => $queryParams]), ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
+    <?= Html::button('导出excel', ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
     <?= Html::a("批量删除", "javascript:void(0);", ["class" => "btn btn-warning gridview"]) ?>
 
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -236,6 +243,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
 <?php \common\widgets\Jsblock::begin() ?>
 <script>
+
     $(".gridview").on("click", function () {
         var keys = $("#grid").yiiGridView("getSelectedRows");
         if (keys.length < 1) {
@@ -267,9 +275,33 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
     $('#export_link').click(function() {
             var keys = $("#grid").yiiGridView("getSelectedRows");
             var _this = $(this);
-            _this.attr('href', _this.attr('href') + '&selected_id=' + keys);
+            _this.attr("disabled", true);
+            var percentUrl = '<?php echo \yii\helpers\Url::to(['excel/percent']); ?>';
+            var url = '<?= \yii\helpers\Url::to(['excel/index','orderQuery' => $queryParams]);?>';
+            url += ('&selected_id=' + keys);
+            $('.progress-striped').slideDown();
+
+            var timer = setInterval(function(){
+                $.getJSON(percentUrl,"",function(d){
+                    console.log(d.data);
+                    if (d.data>0 && d.data <100) {
+                        var width = d.data + '%';
+                        $('.progress-bar').css('width', width);
+                    }else if(d.data === 100) {
+                        $('.progress-striped').slideUp(2000);
+                        clearInterval(timer);
+                        _this.attr("disabled", false);
+                    }
+
+                })
+            },500);
+            //_this.attr('href', _this.attr('href') + '&selected_id=' + keys);
+            window.location.href = url;
     });
 </script>
 
 <?php \common\widgets\Jsblock::end(); ?>
+
+
+
 

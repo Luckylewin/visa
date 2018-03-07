@@ -128,12 +128,8 @@ class OrderController extends BaseController
     {
         $model = $this->findModel($id);
 
-        //判断订单所属者
-        /*$identity = Yii::$app->user->identity;
-            if ( $identity->username != 'admin' && $identity->getId() != $model->operator_id ) {
-                Yii::$app->getSession()->setFlash('error', '操作失败: 只能删除自己创建的订单');
-                return $this->redirect(Yii::$app->request->referrer);
-        }*/
+        //删除订单-办理者关联关系
+
 
         $model->delete();
 
