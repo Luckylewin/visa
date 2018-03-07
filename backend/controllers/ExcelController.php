@@ -216,7 +216,7 @@ class ExcelController extends BaseController
                                     $data = substr($data, 0, $pos);
                                 }
 
-                                $data = str_replace([',', '，'], [' ',' '], $data);
+                                $data = str_replace([',', '，', '、'], [' ',' ', ' '], $data);
                                 //查找办理人
                                 $transactors = explode(' ', trim($data));
 
