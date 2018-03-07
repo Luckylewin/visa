@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use app\models\OrderToTransactor;
+use common\models\Order;
 use Yii;
 use common\models\Transator;
 use common\models\TransatorQuery;
@@ -150,9 +152,26 @@ class TransatorController extends BaseController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //删除之前判断下 这个人有没有订单
+        $relations = OrderToTransactor::find()->where(['t_id' => $id])->all();
 
-        Yii::$app->session->setFlash('success', '操作成功');
+        $flag = false;
+        foreach ($relations as $relation) {
+            $order = Order::findOne($relation->o_id);
+            if (is_null($order)) {
+                OrderToTransactor::deleteAll(['o_id' => $relation->o_id, 't_id'=> $relation->t_id]);
+            } else {
+                $flag = true;
+            }
+        }
+
+        if ($flag === false) {
+            $this->findModel($id)->delete();
+            Yii::$app->session->setFlash('success', '操作成功');
+        } else {
+            Yii::$app->session->setFlash('error', '该用户有订单数据，无法删除');
+        }
+
         return $this->redirect(['index']);
     }
 
