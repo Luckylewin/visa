@@ -100,11 +100,7 @@ class OrderQuery extends Order
             'combo_id' => $this->combo_id,
             'custom_servicer_id' => $this->custom_servicer_id,
             'transactor_id' => $this->transactor_id,
-            'single_sum' => $this->single_sum,
             'total_person' => $this->total_person,
-            'balance_sum' => $this->balance_sum,
-            'flushphoto_sum' => $this->flushphoto_sum,
-            'carrier_sum' => $this->carrier_sum,
             'collect_date' => $this->collect_date,
             'deliver_date' => $this->deliver_date,
             'entry_date' => $this->entry_date,
@@ -117,8 +113,7 @@ class OrderQuery extends Order
             'order_type' => $this->order_type,
         ]);
 
-        $query->andFilterWhere(['like', 'transactor_name', $this->transactor_name])
-            ->andFilterWhere(['like', 'carrier_order', $this->carrier_order])
+        $query->andFilterWhere(['like', 'carrier_order', $this->carrier_order])
             ->andFilterWhere(['like', 'operator', $this->operator])
             ->andFilterWhere(['like', 'back_address', $this->back_address])
             ->andFilterWhere(['like', 'back_addressee', $this->back_addressee])

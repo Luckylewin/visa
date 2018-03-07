@@ -113,6 +113,30 @@ use yii\widgets\ActiveForm;
                     </div>
                 </div>
 
+                <div class="col-md-3">
+                    <?= $form->field($model, 'pay_date')->textInput([
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:380px!important'
+                    ]) ?>
+
+                    <?= $form->field($model, 'receipt_date')->textInput([
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:380px!important'
+                    ]) ?>
+
+                    <?= $form->field($model, 'company_receipt_date')->textInput([
+                        'class' => 'form-control layer-date',
+                        'placeholder' => '请选择日期',
+                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'style' => 'display:block!important;max-width:380px!important'
+                    ]) ?>
+
+                </div>
+
             </div>
         </div>
     </div>

@@ -97,7 +97,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     }
 
                 },
-                'options' => ['style'=>'width:90px;']
+                'options' => ['style'=>'width:75px;']
             ],
 
             //送证日
@@ -108,7 +108,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return str_replace('-','/', substr($model->deliver_date, 2));
                     }
                 },
-                'options' => ['style'=>'width:90px;']
+                'options' => ['style'=>'width:75px;']
             ],
 
             //入管日
@@ -119,7 +119,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return str_replace('-','/', substr($model->entry_date, 2));
                     }
                 },
-                'options' => ['style'=>'width:90px;']
+                'options' => ['style'=>'width:75px;']
             ],
             [
                 'attribute' => 'combo_id',
@@ -148,6 +148,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             //接待销售
             [
                 'attribute' => 'custom_servicer_id',
+                'label' => '客服',
                 'format' => 'raw',
                 'value' => function($model){
                     $servicer = $model->servicer;
