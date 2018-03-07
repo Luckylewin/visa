@@ -70,11 +70,12 @@ class OrderQuery extends Order
             if (isset($params['OrderQuery']['transactor_id'])) {
                  $transator = Transator::findOne(['name' => $params['OrderQuery']['transactor_id']]);
                  $transator_name = $params['OrderQuery']['transactor_id'];
-                 $ids = 0;
 
+                 $ids = 0;
                  if ($transator) {
                      $transators = Yii::$app->db->createCommand('SELECT o_id FROM yii2_order_to_transactor WHERE t_id = '. $transator->tid)->queryAll();
-                     if (!empty($ids)) {
+
+                     if (!empty($transators)) {
                          $ids = ArrayHelper::getColumn($transators, 'o_id');
                          $ids = implode(',', $ids);
                      }
@@ -125,12 +126,13 @@ class OrderQuery extends Order
             ->andFilterWhere(['like', 'deliver_order', $this->deliver_order]);
 
         if (isset($ids) && isset($transator_name)) {
+
             $query->andOnCondition("id in ($ids)");
             $this->transactor_id = $transator_name;
         }
 
-        // $commandQuery = clone $query;
-        // echo $commandQuery->createCommand()->getRawSql();
+      $commandQuery = clone $query;
+       echo $commandQuery->createCommand()->getRawSql();
 
         return $dataProvider;
     }
