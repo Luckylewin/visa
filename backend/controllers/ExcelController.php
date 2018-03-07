@@ -77,7 +77,13 @@ class ExcelController extends BaseController
         $sheet = $PHPExcel->getSheet(0); // 读取第一个工作表(编号从 0 开始)
         $highestRow = $sheet->getHighestRow(); // 取得总行数
 
-        $indexToColumn =  [ 1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z',27=>'AA',28=>'AB',29=>'AC',30=>'AD',31=>'AE',32=>'AF',33=>'AG',34=>'AH',35=>'AI',36=>'AJ',37=>'AK',38=>'AL',39=>'AM'];
+        $indexToColumn =  [
+            1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',
+            11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',
+            21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z',27=>'AA',28=>'AB',29=>'AC',30=>'AD',
+            31=>'AE',32=>'AF',33=>'AG',34=>'AH',35=>'AI',36=>'AJ',37=>'AK',38=>'AL',39=>'AM',40=>'AN',
+            41 => 'AO', '42'=>'AP',43=>'AQ'
+        ];
 
         $columnToField = [
             'A' => 'customer_id',
@@ -113,12 +119,20 @@ class ExcelController extends BaseController
             'AE' => 'back_address',
             'AF' => 'putsign_date',
             'AG' => 'delivergood_date',
-            'AH' => '',//寄回客人单号
-            'AI' => 'pay_date',
-            'AJ' => 'receipt_date',
-            'AK' => 'company_receipt_date', //店铺收款日
-            'AL' => 'pay_account',
-            'AM' => 'remark'
+            'AH' => 'delivercompany',
+            'AI' => 'deliver_order',//寄回客人单号
+
+            'AJ' => 'pay_date', //店铺收款日
+            'AK' => 'receipt_date',
+            'AL' => 'company_receipt_date',
+            'AM' => 'pay_account',
+
+            'AN' => 'remark',
+
+            'AO' => 'balance_order',
+            'AP' => 'flushphoto_order',
+            'AQ' => 'carrier_order',
+
         ];
 
         $importTotal = 0;
@@ -280,6 +294,11 @@ class ExcelController extends BaseController
                                 }
                                 break;
 
+                            case 'deliver_order':
+
+                                $order->deliver_order = str_replace("'","",$data);
+                                break;
+                            
                             case 'remark':
                                 if (!$order->remark) {
                                     $order->remark = $data;
@@ -412,6 +431,8 @@ class ExcelController extends BaseController
     {
         //对比数据进行更新
         $checkFields = [
+            'delivercompany', 'deliver_order',
+            'balance_order', 'flushphoto_order', 'carrier_order',
             'balance_order', 'balance_sum', 'output_balance_sum',
             'flushphoto_order', 'flushphoto_sum', 'output_flushphoto_sum',
             'carrier_order', 'carrier_sum', 'output_carrier_sum',
@@ -449,6 +470,7 @@ class ExcelController extends BaseController
             if ($order->save()) {
                 return true;
             }
+
             return $order;
         }
         return null;
@@ -500,7 +522,8 @@ class ExcelController extends BaseController
             'N1' => '收入',
             'V1' => '支出',
             'AC1' => '发货',
-            'AI1' => '结算'
+            'AK1' => '结算',
+            'AO1' => '其他'
         ];
     }
 
@@ -519,8 +542,8 @@ class ExcelController extends BaseController
             'I2' => "接待\n销售",
             'J2' => "操作\n人员",
             'K2' => '办理人',
-            'L2' => '套餐类型',
-            'M2' => '套餐名称',
+            'L2' => "套餐\n类型",
+            'M2' => "套餐\n名称",
             'N2' => '单项实收',
             'O2' => '数量',
             'P2' => '补差',
@@ -541,12 +564,17 @@ class ExcelController extends BaseController
             'AE2' => '收件地址',
             'AF2' => "出签\n日期",
             'AG2' => "发货\n日期",
-            'AH2' => '寄回客人单号',
-            'AI2' => '支付日期',
-            'AJ2' => "店铺收款日",
-            'AK2' => "公司收款日",
-            'AL2' => "收款帐户",
-            'AM2' => '备注'
+            'AH2' => "快递公司",
+            'AI2' => "寄回客人\n单号",
+
+            'AJ2' => '支付日期',
+            'AK2' => "店铺收款日",
+            'AL2' => "公司收款日",
+            'AM2' => "收款帐户",
+            'AN2' => '备注',
+            'AO2' => '补差订单',
+            'AP2' => '代冲洗照片订单',
+            'AQ2' => '快递费补差订单',
         ];
 
         return $fieldAttribute;
@@ -578,8 +606,8 @@ class ExcelController extends BaseController
         $sheet = $objPHPExcel->getActiveSheet();
 
         $columns = [
-            ['A1','B1','C1','D1','E1','F1','G1','H1','I1','J1','K1','L1','M1','N1','O1','P1','Q1','R1','S1','T1','U1','V1','W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1','AJ1','AK1','AL1','AM1',],
-            ['A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2','O2','P2','Q2','R2','S2','T2','U2','V2','W2','X2','Y2','Z2','AA2','AB2','AC2','AD2','AE2','AF2','AG2','AH2','AI2','AJ2','AK2','AL2','AM2',]
+            ['A1','B1','C1','D1','E1','F1','G1','H1','I1','J1','K1','L1','M1','N1','O1','P1','Q1','R1','S1','T1','U1','V1','W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1','AJ1','AK1','AL1','AM1','AN1','AO1','AP1',"AQ1"],
+            ['A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2','O2','P2','Q2','R2','S2','T2','U2','V2','W2','X2','Y2','Z2','AA2','AB2','AC2','AD2','AE2','AF2','AG2','AH2','AI2','AJ2','AK2','AL2','AM2','AN2','AO2','AP2',"AQ2"]
         ];
 
         foreach ($columns as $lines) {
@@ -616,10 +644,16 @@ class ExcelController extends BaseController
         $sheet->getColumnDimension('AG')->setWidth(16);
         $sheet->getColumnDimension('AH')->setWidth(16);
         $sheet->getColumnDimension('AI')->setWidth(16);
-        $sheet->getColumnDimension('AJ')->setWidth(16);
+        $sheet->getColumnDimension('AJ')->setWidth(20);
         $sheet->getColumnDimension('AK')->setWidth(16);
         $sheet->getColumnDimension('AL')->setWidth(16);
+
         $sheet->getColumnDimension('AM')->setWidth(20);
+        $sheet->getColumnDimension('AN')->setWidth(25);
+        $sheet->getColumnDimension('AO')->setWidth(25);
+        $sheet->getColumnDimension('AP')->setWidth(25);
+        $sheet->getColumnDimension('AQ')->setWidth(25);
+
 
         //设置边框
         $borderStyle = array(
@@ -637,7 +671,7 @@ class ExcelController extends BaseController
             $sheet->setCellValue($column_x,  $field);
         }
 
-        $headOne = ['A1:M1', 'N1:U1', 'V1:AB1', 'AC1:AH1', 'AI1:AL1'];
+        $headOne = ['A1:M1', 'N1:U1', 'V1:AB1', 'AC1:AI1', 'AJ1:AM1','AO1:AQ1'];
         foreach ($headOne as $head) {
             $sheet->mergeCells($head);
         }
@@ -657,6 +691,7 @@ class ExcelController extends BaseController
             'K' => 'transactor',//办理人名称
             'L' => 'combo_type',//套餐类型
             'M' => 'combo_name',//套餐名称
+
             'N' => 'single_sum',
             'O' => 'total_person',
             'P' => 'balance_sum',//补差收入
@@ -665,6 +700,7 @@ class ExcelController extends BaseController
             'S' => 'cal_charge',//合计
             'T' => 'charge',//手续费
             'U' => 'total_charge',//实收
+
             'V' => 'combo_cost',//单项实付合计
             'W' => 'total_person',//数量
             'X' => 'output_balance_sum',//补差
@@ -672,19 +708,29 @@ class ExcelController extends BaseController
             'Z' => 'output_carrier_sum',//快递
             'AA' => 'total_pay',//实付合计
             'AB' => 'fee',//利润
+
             'AC' => 'back_addressee',
             'AD' => 'back_telphone',
             'AE' => 'back_address',
             'AF' => 'putsign_date',
             'AG' => 'deliver_date',
-            'AH' => 'deliver_order',//寄回客人单号
-            'AI' => 'pay_date',//
-            'AJ' => 'receipt_date',
-            'AK' => 'company_receipt_date', //店铺收款日
-            'AL' => 'pay_account',
-            'AM' => 'remark'
+            'AH' => 'delivercompany',
+            'AI' => 'deliver_order',//寄回客人单号
+
+            'AJ' => 'pay_date', //店铺收款日
+            'AK' => 'receipt_date',
+            'AL' => 'company_receipt_date',
+            'AM' => 'pay_account',
+
+            'AN' => 'remark',
+
+            'AO' => 'balance_order',
+            'AP' => 'flushphoto_order',
+            'AQ' => 'carrier_order',
         ];
 
+        $startColumn = 'A';
+        $endColumn = "AQ";
         $row = 3;
 
         //设置默认字体 大小 颜色
@@ -716,7 +762,7 @@ class ExcelController extends BaseController
                 $sheet->getRowDimension($row)->setRowHeight(23);
 
                 //设置边框
-                $sheet->getStyle("A{$row}:AM{$row}")->applyFromArray($borderStyle);
+                $sheet->getStyle("{$startColumn}{$row}:{$endColumn}{$row}")->applyFromArray($borderStyle);
 
                 //设置水平竖直居中
                 $sheet->getStyle($_column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -878,7 +924,7 @@ class ExcelController extends BaseController
 
 
         //设置边框
-        $sheet->getStyle("A{$row}:AM{$row}")->applyFromArray($borderStyle);
+        $sheet->getStyle("{$startColumn}{$row}:{$endColumn}{$row}")->applyFromArray($borderStyle);
         //填充统计数据颜色
         $hoverColumn = ['O'=>'ffff00','S'=>'ff0000','U'=>'ff0000','V'=>'ff0000','P'=>'','Q'=>'','R'=>'','W'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>'','AB'=>'','N'=>''];
         foreach ($hoverColumn as $column => $colorCode) {

@@ -95,6 +95,8 @@ class Order extends \yii\db\ActiveRecord
 
         $myScenarios = [
             'updateByExcel' => [
+                'delivercompany', 'deliver_order',
+                'balance_order', 'flushphoto_order', 'carrier_order',
                 'balance_order', 'balance_sum', 'output_balance_sum',
                 'flushphoto_order', 'flushphoto_sum', 'output_flushphoto_sum',
                 'carrier_order', 'carrier_sum', 'output_carrier_sum',
