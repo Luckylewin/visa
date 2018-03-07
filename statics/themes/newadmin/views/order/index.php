@@ -294,7 +294,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     }
 
                 })
-            },500);
+            },1000);
             //_this.attr('href', _this.attr('href') + '&selected_id=' + keys);
             window.location.href = url;
     });
