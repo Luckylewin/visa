@@ -882,9 +882,12 @@ class ExcelController extends BaseController
                         }
                         break;
 
+                    case 'balance_order':
+                    case 'flushphoto_order':
+                    case 'carrier_order':
                     case 'deliver_order':
-                        if ($object->deliver_order) {
-                            $cellValue = "'" . $object->deliver_order;
+                        if ($object->$_field) {
+                            $cellValue = "'" . $object->$_field;
                         }
                         break;
 
