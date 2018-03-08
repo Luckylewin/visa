@@ -312,6 +312,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return date('Y-m-d H:i:s', $model->updated_at);
                     }
             ],
+
+            [
+                'attribute' => 'mod_operator_id',
+                'value' => $model->mOperator->username
+            ],
+
             [
                 'attribute' => 'operator_id',
                 'value' => $model->operator->username

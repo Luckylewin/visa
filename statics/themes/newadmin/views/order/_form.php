@@ -37,7 +37,12 @@ $tranlator = new Transator();
 
 <div class="order-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'id' => 'form-id',
+        'enableAjaxValidation' => $model->isNewRecord ? true : false, // 开启ajax验证
+        'enableClientValidation' => true,
+        'validationUrl' => \yii\helpers\Url::toRoute(['validate-form']),
+    ]); ?>
     <div class="product-chose hidden">
         <table class="table table-bordered">
             <thead>

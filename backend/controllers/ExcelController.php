@@ -2,7 +2,6 @@
 
 namespace backend\controllers;
 
-use Codeception\Lib\Generator\Helper;
 use Yii;
 use app\models\OrderToTransactor;
 use backend\models\Admin;
@@ -177,7 +176,12 @@ class ExcelController extends BaseController
 
                     if ($field) {
                         //获取cell中数据
+
                         $data = $cell->getValue();
+
+                        if (is_object($data)) {
+                            $data= $data->__toString();
+                        }
 
                         switch ($field)
                         {
@@ -460,7 +464,7 @@ class ExcelController extends BaseController
             }
 
             if (($order->$field != $data)) {
-                
+
                 $order->$field = $data;
                 $isNewRecord = true;
             }

@@ -8,6 +8,7 @@ use Yii;
 use common\models\Order;
 use common\models\OrderQuery;
 use common\models\Transator;
+use yii\bootstrap\ActiveForm;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
@@ -78,6 +79,18 @@ class OrderController extends BaseController
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+    }
+
+
+    public function actionValidateForm()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Yii::$app->request->isAjax) {
+            $model = new Order();
+            $model->load(Yii::$app->request->post());
+            $model->scenario = 'create';
+            return ActiveForm::validate($model);
         }
     }
 

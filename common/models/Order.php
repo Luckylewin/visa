@@ -86,6 +86,7 @@ class Order extends \yii\db\ActiveRecord
             [['single_sum'],'default','value' => '0.00'],
             [['total_person'],'default','value' => '1'],
             [['back_telphone','back_address','remark','pay_account'],'default','value' => ''],
+            ['order_num', 'unique', 'on' => 'create', 'message' => '已有{attribute}{value},请勿重复']
         ];
     }
 
@@ -103,6 +104,9 @@ class Order extends \yii\db\ActiveRecord
                 'collect_date','deliver_date','entry_date','putsign_date', 'delivergood_date', 'receipt_date', 'company_receipt_date', 'pay_date',
                 'back_address','back_addressee','back_telphone','deliver_order','delivercompany','remark','pay_account'
             ],
+            'create' => [
+                'order_num'
+            ]
         ];
 
         return array_merge($scenarios, $myScenarios);
@@ -218,13 +222,15 @@ class Order extends \yii\db\ActiveRecord
                    }
                }
            } else {
-               $snapShot = Snapshot::findOne(['id' => (int)($this->combo_id), 'is_valid' => '1']);
+
+               /*$snapShot = Snapshot::findOne(['id' => (int)($this->combo_id), 'is_valid' => '1']);
                if (!$snapShot) {
                    $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
                    if (!is_null($snapShot)) {
                        $this->combo_id = $snapShot->id;
                    }
-               }
+               }*/
+               unset($this->combo_id);
            }
 
            $status = ['collect_date'=>'2','deliver_date'=>'3','entry_date'=>'4','putsign_date'=>'5'];
