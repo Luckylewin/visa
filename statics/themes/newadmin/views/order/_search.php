@@ -41,7 +41,7 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("订单日期 开始") ?>
+                            ])->label("订单日期开始") ?>
                         </div>
 
                         <div class="col-md-6">
@@ -195,7 +195,7 @@ use yii\widgets\ActiveForm;
 
                 <div class="col-md-4">
 
-                    <div class="col-md-12">
+                    <div>
                         <div class="col-md-6">
                             <?= $form->field($model, 'pay_date_start')->textInput([
                                 'class' => 'form-control layer-date',
@@ -216,7 +216,7 @@ use yii\widgets\ActiveForm;
 
                     </div>
 
-                    <div class="col-md-12">
+                    <div>
                         <div class="col-md-6">
                             <?= $form->field($model, 'receipt_date_start')->textInput([
                                 'class' => 'form-control layer-date',
@@ -237,7 +237,7 @@ use yii\widgets\ActiveForm;
                     </div>
 
 
-                    <div class="col-md-12">
+                    <div>
                         <div class="col-md-6">
                             <?= $form->field($model, 'company_receipt_date_start')->textInput([
                                 'class' => 'form-control layer-date',
