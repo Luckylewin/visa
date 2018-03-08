@@ -34,6 +34,26 @@ use yii\widgets\ActiveForm;
 
                 <div class="col-md-3">
 
+                    <div >
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'order_date_start')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("订单日期 开始") ?>
+                        </div>
+
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'order_date_end')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("结束日期") ?>
+                        </div>
+                    </div>
+
                     <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify(),[
                         'prompt' => '请选择',
                         'prompt_val' => '0',
@@ -44,13 +64,6 @@ use yii\widgets\ActiveForm;
                         'prompt_val' => '0',
                     ]) ?>
 
-                    <?= $form->field($model, 'order_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:380px!important'
-                    ]) ?>
-
                     <?= $form->field($model, 'customer_id') ?>
 
                     <?= $form->field($model, 'order_num') ?>
@@ -59,44 +72,111 @@ use yii\widgets\ActiveForm;
 
                 <div class="col-md-3">
 
-                    <?= $form->field($model, 'collect_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:380px!important'
-                    ]) ?>
+                    <div >
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'collect_date_start')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("收资料日开始") ?>
+                        </div>
 
-                    <?= $form->field($model, 'deliver_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:380px!important'
-                    ]) ?>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'collect_date_end')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("结束日期") ?>
+                        </div>
+                    </div>
 
-                    <?= $form->field($model, 'entry_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:380px!important'
-                    ]) ?>
+                    <div >
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'deliver_date_start')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("送证日期开始") ?>
+                        </div>
 
-                    <?= $form->field($model, 'putsign_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:380px!important'
-                    ]) ?>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'deliver_date_end')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("结束日期") ?>
+                        </div>
+                    </div>
 
-                    <?= $form->field($model, 'delivergood_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:380px!important'
-                    ]) ?>
+                    <div >
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'entry_date_start')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("入馆日期开始") ?>
+                        </div>
+
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'entry_date_end')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("结束日期") ?>
+                        </div>
+                    </div>
+
+                    <div >
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'putsign_date_start')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("出签日期开始") ?>
+                        </div>
+
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'putsign_date_end')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("结束日期") ?>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'delivergood_date_start')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("发货日期开始") ?>
+                        </div>
+
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'delivergood_date_end')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("结束日期") ?>
+                        </div>
+                    </div>
+
+
 
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
 
                     <?= $form->field($model, 'transactor_id') ?>
 
@@ -113,27 +193,69 @@ use yii\widgets\ActiveForm;
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <?= $form->field($model, 'pay_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:380px!important'
-                    ]) ?>
+                <div class="col-md-4">
 
-                    <?= $form->field($model, 'receipt_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:380px!important'
-                    ]) ?>
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'pay_date_start')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("支付开始日期") ?>
+                        </div>
 
-                    <?= $form->field($model, 'company_receipt_date')->textInput([
-                        'class' => 'form-control layer-date',
-                        'placeholder' => '请选择日期',
-                        'onclick' => "laydate({range: true,format: 'YYYY-MM-DD'})",
-                        'style' => 'display:block!important;max-width:380px!important'
-                    ]) ?>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'pay_date_end')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("结束日期") ?>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'receipt_date_start')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("店铺收款开始日期") ?>
+                        </div>
+
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'receipt_date_end')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("结束日期") ?>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'company_receipt_date_start')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("店铺收款开始日期") ?>
+                        </div>
+
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'company_receipt_date_end')->textInput([
+                                'class' => 'form-control layer-date',
+                                'placeholder' => '请选择日期',
+                                'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                                'style' => 'display:block!important;max-width:380px!important'
+                            ])->label("结束日期") ?>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -146,18 +268,6 @@ use yii\widgets\ActiveForm;
 
 
 <?php \common\widgets\Jsblock::begin(); ?>
-
-    //同时绑定多个
-    lay('.layer-date').each(function(){
-        laydate.render({
-                elem: this
-                ,range: true
-                ,trigger: 'click'
-                ,format: 'yyyy/MM/dd'
-                ,theme: '#337AB7'
-                ,max: 0
-            });
-    });
 
 $('.my-search').click(function() {
         var _switch = $(this).attr('value');

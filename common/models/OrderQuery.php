@@ -13,6 +13,25 @@ use yii\helpers\ArrayHelper;
  */
 class OrderQuery extends Order
 {
+    public $order_date_start;
+    public $order_date_end;
+    public $deliver_date_start;
+    public $deliver_date_end;
+    public $entry_date_start;
+    public $entry_date_end;
+    public $putsign_date_start;
+    public $putsign_date_end;
+    public $delivergood_date_start;
+    public $delivergood_date_end;
+    public $receipt_date_start;
+    public $receipt_date_end;
+    public $pay_date_start;
+    public $pay_date_end;
+    public $collect_date_start;
+    public $collect_date_end;
+    public $company_receipt_date_start;
+    public $company_receipt_date_end;
+
     /**
      * @inheritdoc
      */
@@ -20,7 +39,24 @@ class OrderQuery extends Order
     {
         return [
             [['id', 'pid',  'combo_id', 'custom_servicer_id', 'total_person'], 'integer'],
-            [['customer_id', 'order_num', 'order_classify', 'order_type', 'order_date', 'transactor_name', 'balance_order', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'audit_status', 'cid', 'company_receipt_date'], 'safe'],
+            [
+                [   "order_date_start", "order_date_end",
+                    "deliver_date_start", "deliver_date_end",
+                    "entry_date_start", "entry_date_end",
+                    "putsign_date_start", "putsign_date_end",
+                    "delivergood_date_start", "delivergood_date_end",
+                    "receipt_date_start", "receipt_date_end",
+                    "pay_date_start",   "pay_date_end",
+                    "collect_date_start", "collect_date_end",
+                    'company_receipt_date_start', "company_receipt_date_end",
+                    'customer_id', 'order_num', 'order_classify',
+                    'order_type', 'order_date', 'transactor_name',
+                    'balance_order', 'flushphoto_order', 'carrier_order',
+                    'collect_date', 'deliver_date', 'entry_date', 'putsign_date',
+                    'operator', 'back_address', 'back_addressee', 'back_telphone',
+                    'delivergood_date', 'deliver_order', 'remark', 'receipt_date',
+                    'pay_date', 'audit_status', 'cid', 'company_receipt_date'
+                ], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
         ];
     }
@@ -89,16 +125,28 @@ class OrderQuery extends Order
         }
 
         $dateFields = [
-                        "order_date", "deliver_date", "entry_date",
-                        "putsign_date", "delivergood_date", "receipt_date",
-                        "pay_date", "collect_date", 'company_receipt_date'
+                        "order_date_start", "order_date_end",
+                        "deliver_date_start", "deliver_date_end",
+                        "entry_date_start", "entry_date_end",
+                        "putsign_date_start", "putsign_date_end",
+                        "delivergood_date_start", "delivergood_date_end",
+                        "receipt_date_start", "receipt_date_end",
+                        "pay_date_start",   "pay_date_end",
+                        "collect_date_start", "collect_date_end",
+                        'company_receipt_date_start', "company_receipt_date_end"
         ];
 
         foreach ($dateFields as $dateField) {
+
             if ($this->$dateField) {
-                $date = explode(' - ', $this->$dateField);
-                $query->andFilterWhere([">=", $dateField, date('Y-m-d', strtotime(trim($date[0])))]);
-                $query->andFilterWhere(["<=", $dateField, date('Y-m-d', strtotime(trim($date[1])))]);
+                $value = trim($this->$dateField);
+                if (strpos($dateField, "start") !== false) {
+                    $field = str_replace('_start', "", $dateField);
+                    $query->andFilterWhere([">=", $field, $value]);
+                } else {
+                    $field = str_replace('_end', "", $dateField);
+                    $query->andFilterWhere(["<=", $field, $value]);
+                }
             }
         }
 
