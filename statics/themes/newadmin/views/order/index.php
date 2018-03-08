@@ -11,7 +11,7 @@ use common\models\Country;
 
 $this->title = '订单列表';
 $this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate-v5/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 ?>
 

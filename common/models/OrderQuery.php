@@ -20,7 +20,7 @@ class OrderQuery extends Order
     {
         return [
             [['id', 'pid',  'combo_id', 'custom_servicer_id', 'total_person'], 'integer'],
-            [['customer_id', 'order_num', 'order_classify', 'order_type', 'order_date', 'transactor_name', 'balance_order', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'audit_status', 'cid'], 'safe'],
+            [['customer_id', 'order_num', 'order_classify', 'order_type', 'order_date', 'transactor_name', 'balance_order', 'flushphoto_order', 'carrier_order', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'operator', 'back_address', 'back_addressee', 'back_telphone', 'delivergood_date', 'deliver_order', 'remark', 'receipt_date', 'pay_date', 'audit_status', 'cid', 'company_receipt_date'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
         ];
     }
@@ -42,10 +42,7 @@ class OrderQuery extends Order
      */
     public function search($params, $all = false)
     {
-
         //处理没有
-
-
         $query = Order::find();
 
         // add conditions that should always apply here
@@ -91,23 +88,29 @@ class OrderQuery extends Order
             return $dataProvider;
         }
 
+        $dateFields = [
+                        "order_date", "deliver_date", "entry_date",
+                        "putsign_date", "delivergood_date", "receipt_date",
+                        "pay_date", "collect_date", 'company_receipt_date'
+        ];
+
+        foreach ($dateFields as $dateField) {
+            if ($this->$dateField) {
+                $date = explode(' - ', $this->$dateField);
+                $query->andFilterWhere([">=", $dateField, date('Y-m-d', strtotime(trim($date[0])))]);
+                $query->andFilterWhere(["<=", $dateField, date('Y-m-d', strtotime(trim($date[1])))]);
+            }
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'order_num' => $this->order_num,
-            'order_date' => $this->order_date,
             'customer_id' => $this->customer_id,
             'combo_id' => $this->combo_id,
             'custom_servicer_id' => $this->custom_servicer_id,
             'transactor_id' => $this->transactor_id,
             'total_person' => $this->total_person,
-            'collect_date' => $this->collect_date,
-            'deliver_date' => $this->deliver_date,
-            'entry_date' => $this->entry_date,
-            'putsign_date' => $this->putsign_date,
-            'delivergood_date' => $this->delivergood_date,
-            'receipt_date' => $this->receipt_date,
-            'pay_date' => $this->pay_date,
             'cid' => $this->cid,
             'order_classify' => $this->order_classify,
             'order_type' => $this->order_type,
@@ -126,8 +129,8 @@ class OrderQuery extends Order
             $this->transactor_id = $transator_name;
         }
 
-      //$commandQuery = clone $query;
-       //echo $commandQuery->createCommand()->getRawSql();
+       $commandQuery = clone $query;
+       echo $commandQuery->createCommand()->getRawSql();
 
         return $dataProvider;
     }

@@ -131,7 +131,7 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'company_receipt_date')->textInput([
                         'class' => 'form-control layer-date',
                         'placeholder' => '请选择日期',
-                        'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
+                        'onclick' => "laydate({range: true,format: 'YYYY-MM-DD'})",
                         'style' => 'display:block!important;max-width:380px!important'
                     ]) ?>
 
@@ -144,8 +144,22 @@ use yii\widgets\ActiveForm;
 </div>
 
 
+
 <?php \common\widgets\Jsblock::begin(); ?>
-    $('.my-search').click(function() {
+
+    //同时绑定多个
+    lay('.layer-date').each(function(){
+        laydate.render({
+                elem: this
+                ,range: true
+                ,trigger: 'click'
+                ,format: 'yyyy/MM/dd'
+                ,theme: '#337AB7'
+                ,max: 0
+            });
+    });
+
+$('.my-search').click(function() {
         var _switch = $(this).attr('value');
         if (_switch == 'hide') {
             $('i').removeClass('hide');
