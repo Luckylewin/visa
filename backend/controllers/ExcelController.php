@@ -530,7 +530,7 @@ class ExcelController extends BaseController
             'N1' => '收入',
             'V1' => '支出',
             'AC1' => '发货',
-            'AK1' => '结算',
+            'AJ1' => '结算',
             'AO1' => '其他'
         ];
     }
