@@ -86,11 +86,21 @@ class OrderQuery extends Order
             $condition = [
                 'query' => $query,
                 'pagination' => false,
+                'sort'=> [
+                    'defaultOrder' => [
+                        'id'=>SORT_DESC
+                    ]
+                ]
             ];
         } else {
             $condition = [
                 'query' => $query,
-                'pagination' => ['pageSize'=>8],
+                'pagination' => ['pageSize'=>10],
+                'sort'=> [
+                    'defaultOrder' => [
+                        'id'=>SORT_DESC
+                    ]
+                ]
             ];
         }
 

@@ -164,7 +164,8 @@ class ExcelController extends BaseController
                         //检查excel的格式
                         $th = array_values($this->setThName());
                         $data = $cell->getValue(); //获取cell中数据
-                        if ($th[$column-1] != $data) {
+
+                        if (str_replace(["\n"," "],["",""], $th[$column-1]) != str_replace(["\n"," "],["",""], $data)) {
                             \Yii::$app->session->setFlash('error', ":(  Excel表格式错误,请检查");
                             return false;
                         }
