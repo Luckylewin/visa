@@ -165,7 +165,8 @@ class ExcelController extends BaseController
                         $th = array_values($this->setThName());
                         $data = $cell->getValue(); //获取cell中数据
                         if ($th[$column-1] != $data) {
-                            return \Yii::$app->session->setFlash('error', ":(  Excel表格式错误,请检查");
+                            \Yii::$app->session->setFlash('error', ":(  Excel表格式错误,请检查");
+                            return false;
                         }
                         $column++;
                         continue;
@@ -313,6 +314,8 @@ class ExcelController extends BaseController
                             default:
                                 if (strpos($field, 'sum') !== false) {
                                     $order->$field = (float)$data;
+                                } elseif (strpos($field, 'order') !== false){
+                                    $order->$field = (string)$data;
                                 } else {
                                     $order->$field = $data;
                                 }
