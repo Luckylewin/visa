@@ -29,10 +29,30 @@ use yii\widgets\ActiveForm;
 
             </h3>
         </div>
+
         <div class="panel-body search-body hide">
             <div class="col-md-12">
 
-                <div class="col-md-3">
+                <div class="col-md-2">
+
+                    <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), [
+                        'prompt' => '请选择',
+                        'prompt_val' => '0',
+                    ]) ?>
+
+                    <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify(),[
+                        'prompt' => '请选择',
+                        'prompt_val' => '0',
+                    ]) ?>
+
+                    <?= $form->field($model, 'customer_id') ?>
+
+                    <?= $form->field($model, 'order_num') ?>
+
+
+                </div>
+
+                <div class="col-md-4">
 
                     <div >
                         <div class="col-md-6">
@@ -53,24 +73,6 @@ use yii\widgets\ActiveForm;
                             ])->label("结束日期") ?>
                         </div>
                     </div>
-
-                    <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify(),[
-                        'prompt' => '请选择',
-                        'prompt_val' => '0',
-                    ]) ?>
-
-                    <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), [
-                        'prompt' => '请选择',
-                        'prompt_val' => '0',
-                    ]) ?>
-
-                    <?= $form->field($model, 'customer_id') ?>
-
-                    <?= $form->field($model, 'order_num') ?>
-
-                </div>
-
-                <div class="col-md-3">
 
                     <div >
                         <div class="col-md-6">
@@ -186,11 +188,7 @@ use yii\widgets\ActiveForm;
 
                     <?= $form->field($model, 'deliver_order') ?>
 
-                    <label for="aa">提交查询</label>
-                    <div id="aa" class="form-group">
-                        <?= Html::submitButton('<i class="fa fa-search"></i>查询', ['class' => 'btn btn-primary']) ?>
-                        <?= Html::resetButton('<i class="fa fa-hand-stop-o"></i>重置', ['class' => 'btn btn-default']) ?>
-                    </div>
+
                 </div>
 
                 <div class="col-md-4">
@@ -255,10 +253,21 @@ use yii\widgets\ActiveForm;
                                 'style' => 'display:block!important;max-width:380px!important'
                             ])->label("结束日期") ?>
                         </div>
+
                     </div>
 
                 </div>
 
+            </div>
+
+            <div class="col-md-12" style="border-top: 1px dashed #ccc">
+                <div style="float: right">
+                    <br>
+                    <div id="aa" class="form-group">
+                        <?= Html::submitButton('<i class="fa fa-search"></i>查询', ['class' => 'btn btn-primary']) ?>
+                        <?= Html::resetButton('<i class="fa fa-hand-stop-o"></i>重置', ['class' => 'btn btn-default']) ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
