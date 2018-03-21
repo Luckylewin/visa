@@ -10,7 +10,9 @@ use yii\widgets\ActiveForm;
 
 <?php \common\widgets\Cssblock::begin() ?>
 .my-search{cursor:pointer;}
+.s-label{font-size:11px;}
 <?php \common\widgets\Cssblock::end() ?>
+
 
 <div class="order-search">
 
@@ -61,7 +63,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("订单日期开始") ?>
+                            ])->label("订单日期开始", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                         <div class="col-md-6">
@@ -70,7 +74,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("结束日期") ?>
+                            ])->label("订单日期结束", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
                     </div>
 
@@ -81,7 +87,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("收资料日开始") ?>
+                            ])->label("收资料日开始", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                         <div class="col-md-6">
@@ -90,7 +98,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("结束日期") ?>
+                            ])->label("收资料日期结束", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
                     </div>
 
@@ -101,7 +111,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("送证日期开始") ?>
+                            ])->label("送证日期开始", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                         <div class="col-md-6">
@@ -110,7 +122,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("结束日期") ?>
+                            ])->label("送证日期结束", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
                     </div>
 
@@ -121,7 +135,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("入馆日期开始") ?>
+                            ])->label("入馆日期开始", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                         <div class="col-md-6">
@@ -130,7 +146,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("结束日期") ?>
+                            ])->label("入馆日期结束", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
                     </div>
 
@@ -141,7 +159,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("出签日期开始") ?>
+                            ])->label("出签日期开始", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                         <div class="col-md-6">
@@ -150,7 +170,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("结束日期") ?>
+                            ])->label("出签日期结束", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
                     </div>
 
@@ -161,7 +183,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("发货日期开始") ?>
+                            ])->label("发货日期开始", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                         <div class="col-md-6">
@@ -170,7 +194,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("结束日期") ?>
+                            ])->label("发货日期结束", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
                     </div>
 
@@ -200,7 +226,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("支付开始日期") ?>
+                            ])->label("支付日期开始", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                         <div class="col-md-6">
@@ -209,7 +237,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("结束日期") ?>
+                            ])->label("支付日期结束", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                     </div>
@@ -221,7 +251,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("店铺收款开始日期") ?>
+                            ])->label("店铺收款日期开始", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                         <div class="col-md-6">
@@ -230,7 +262,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("结束日期") ?>
+                            ])->label("店铺收款日期结束", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
                     </div>
 
@@ -242,7 +276,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("店铺收款开始日期") ?>
+                            ])->label("公司收款日期开始", [
+                                'class' => 's-label'
+                            ]) ?>
                         </div>
 
                         <div class="col-md-6">
@@ -251,7 +287,9 @@ use yii\widgets\ActiveForm;
                                 'placeholder' => '请选择日期',
                                 'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                                 'style' => 'display:block!important;max-width:380px!important'
-                            ])->label("结束日期") ?>
+                            ])->label("公司收款日期结束", [
+                                    'class' => 's-label'
+                            ]) ?>
                         </div>
 
                     </div>
