@@ -32,7 +32,9 @@ use yii\widgets\ActiveForm;
             </h3>
         </div>
 
-        <div class="panel-body search-body hide">
+        <?php $is_query = Yii::$app->request->get('OrderQuery')?"":"hide"; ?>
+
+        <div class="panel-body search-body <?= $is_query?>">
             <div class="col-md-12">
 
                 <div class="col-md-2">
@@ -152,7 +154,7 @@ use yii\widgets\ActiveForm;
                         </div>
                     </div>
 
-                    <div >
+                    <div>
                         <div class="col-md-6">
                             <?= $form->field($model, 'putsign_date_start')->textInput([
                                 'class' => 'form-control layer-date',
@@ -220,7 +222,17 @@ use yii\widgets\ActiveForm;
                 <div class="col-md-4">
 
                     <div>
-                        <div class="col-md-6">
+
+                        <div class="col-md-12">
+                            <?php $model->is_pay = isset($model->is_pay) ? $model->is_pay : 0 ?>
+                            <?= $form->field($model, "is_pay")->radioList([0=>"全部",1=>"未支付",2=>"已支付"],[
+                                'class' => 'form-control'
+                            ]) ?>
+                        </div>
+
+                        <?php $display = $model->is_pay == '2'? 'block':'none'; ?>
+
+                        <div class="col-md-6 is_pay" style="display: <?= $display?>">
                             <?= $form->field($model, 'pay_date_start')->textInput([
                                 'class' => 'form-control layer-date',
                                 'placeholder' => '请选择日期',
@@ -231,7 +243,7 @@ use yii\widgets\ActiveForm;
                             ]) ?>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 is_pay" style="display: <?= $display?>">
                             <?= $form->field($model, 'pay_date_end')->textInput([
                                 'class' => 'form-control layer-date',
                                 'placeholder' => '请选择日期',
@@ -245,7 +257,17 @@ use yii\widgets\ActiveForm;
                     </div>
 
                     <div>
-                        <div class="col-md-6">
+
+                        <div class="col-md-12">
+                            <?php $model->is_shop_receipt = isset($model->is_shop_receipt)? $model->is_shop_receipt : '0'; ?>
+                            <?= $form->field($model, "is_shop_receipt")->radioList([0=>"全部",1=>"未收款",2=>"已收款"],[
+                                'class' => 'form-control'
+                            ]) ?>
+                        </div>
+
+                        <?php $display = $model->is_shop_receipt == '2'? 'block':'none'; ?>
+
+                        <div class="col-md-6 is_shop_receipt" style="display: <?= $display?>">
                             <?= $form->field($model, 'receipt_date_start')->textInput([
                                 'class' => 'form-control layer-date',
                                 'placeholder' => '请选择日期',
@@ -256,7 +278,7 @@ use yii\widgets\ActiveForm;
                             ]) ?>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 is_shop_receipt" style="display: <?= $display?>">
                             <?= $form->field($model, 'receipt_date_end')->textInput([
                                 'class' => 'form-control layer-date',
                                 'placeholder' => '请选择日期',
@@ -270,7 +292,17 @@ use yii\widgets\ActiveForm;
 
 
                     <div>
-                        <div class="col-md-6">
+
+                        <div class="col-md-12">
+                            <?php  $model->is_company_receipt = isset($model->is_company_receipt)? $model->is_company_receipt : 0; ?>
+                            <?= $form->field($model, "is_company_receipt")->radioList([0=>"全部",1=>"未收款",2=>"已收款"],[
+                                'class' => 'form-control',
+                            ]) ?>
+                        </div>
+
+                        <?php $display = $model->is_company_receipt == '2'? 'block':'none'; ?>
+
+                        <div class="col-md-6 is_company_receipt" style="display: <?= $display?>">
                             <?= $form->field($model, 'company_receipt_date_start')->textInput([
                                 'class' => 'form-control layer-date',
                                 'placeholder' => '请选择日期',
@@ -281,7 +313,7 @@ use yii\widgets\ActiveForm;
                             ]) ?>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 is_company_receipt" style="display: <?= $display?>">
                             <?= $form->field($model, 'company_receipt_date_end')->textInput([
                                 'class' => 'form-control layer-date',
                                 'placeholder' => '请选择日期',
@@ -330,4 +362,23 @@ $('.my-search').click(function() {
             $('.search-body').addClass('hide');
         }
     });
+
+var searcher = {
+   change:function _change(elements, input){
+        $(elements).change(function(){
+        var val = $(this).val();
+        if (val == 2) {
+            $(input).css('display', 'block');
+        }else {
+            $(input).css('display', 'none');
+        }
+        });
+    }
+}
+
+searcher.change('#orderquery-is_pay input','.is_pay');
+searcher.change('#orderquery-is_shop_receipt input','.is_shop_receipt');
+searcher.change('#orderquery-is_company_receipt input','.is_company_receipt');
+
+
 <?php \common\widgets\Jsblock::end(); ?>

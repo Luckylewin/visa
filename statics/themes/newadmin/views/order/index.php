@@ -80,13 +80,16 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             //订单分类
             [
                     'attribute' => 'order_classify',
+                    'format' => 'raw',
                     'value' => function($model) {
                         $classify = Type::getComboClassify();
                         $classify = isset($classify[$model->order_classify]) ? $classify[$model->order_classify] : '未设置';
-                        return $classify;
+                        return Html::button(substr($classify,0,3), [
+                                'class' => 'btn btn-info btn-xs'
+                        ]);
                     },
                     'filter' => Type::getComboClassify(),
-                    'options' => ['style'=>'width:54px;']
+                    'options' => ['style'=>'width:34px;']
             ],
 
             //收资料日
@@ -197,9 +200,9 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             //'back_telphone',
             //'deliver_order',
             [
-                    'class' => 'yii\grid\ActionColumn',
+                    'class' => 'common\grid\MyActionColumn',
                     'header' => '操作',
-                    'options' => ['style'=>'width:105px;']
+                    'options' => ['style'=>'width:250px;'],
             ],
             // 'id',
             //'pid',

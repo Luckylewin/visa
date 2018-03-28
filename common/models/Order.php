@@ -56,6 +56,9 @@ class Order extends \yii\db\ActiveRecord
 
     public $transactor_id;
     public $custom_servicer;
+    public $is_pay;
+    public $is_shop_receipt;
+    public $is_company_receipt;
 
     /**
      * @inheritdoc
@@ -73,7 +76,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id' ,'total_person', 'single_sum'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person', 'output_total_person'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'mod_operator_id', 'company_receipt_date', 'pay_account','output_total_person'], 'safe'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'mod_operator_id', 'company_receipt_date', 'pay_account','output_total_person','is_pay','is_shop_receipt', 'is_company_receipt'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum','output_balance_sum', 'output_flushphoto_sum', 'output_carrier_sum'], 'number'],
             [['back_address', 'remark'], 'string','max' => 300],
             [['delivercompany'], 'string', 'max' => 50],
@@ -162,7 +165,10 @@ class Order extends \yii\db\ActiveRecord
             'audit_status' => '审核状态',//1审核中2审核未通过3审核通过
             'created_at' => '创建时间',
             'updated_at' => '修改时间',
-            'transactor_id' => '办理人'
+            'transactor_id' => '办理人',
+            'is_shop_receipt' => '店铺是否已收款',
+            'is_company_receipt' => '公司是否已收款',
+            'is_pay' => '是否已支付',
         ];
     }
 

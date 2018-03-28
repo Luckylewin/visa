@@ -31,8 +31,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/toastr/toastr.min.js'
 <?php $this->beginBody() ?>
 <div class="wrapper">
     <div class="panel">
-        <div class="panel-body">
-            <div class="col-md-12">
+        <div class="panel-body" style="padding: 0px!important;">
+            <div >
                 <!-- 面包屑导航 -->
                 <div>
                     <?=    Breadcrumbs::widget([

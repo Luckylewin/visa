@@ -31,6 +31,9 @@ class OrderQuery extends Order
     public $collect_date_end;
     public $company_receipt_date_start;
     public $company_receipt_date_end;
+    public $is_pay;
+    public $is_shop_receipt;
+    public $is_company_receipt;
 
     /**
      * @inheritdoc
@@ -55,7 +58,8 @@ class OrderQuery extends Order
                     'collect_date', 'deliver_date', 'entry_date', 'putsign_date',
                     'operator', 'back_address', 'back_addressee', 'back_telphone',
                     'delivergood_date', 'deliver_order', 'remark', 'receipt_date',
-                    'pay_date', 'audit_status', 'cid', 'company_receipt_date'
+                    'pay_date', 'audit_status', 'cid', 'company_receipt_date',
+                    'is_pay', 'is_company_receipt','is_shop_receipt'
                 ], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
         ];
@@ -134,6 +138,42 @@ class OrderQuery extends Order
             return $dataProvider;
         }
 
+        $payFields = [
+            'is_pay', 'is_shop_receipt', 'is_company_receipt'
+        ];
+
+        foreach ($payFields as $payField) {
+                 if (!$this->$payField) {
+                    continue;
+                 }
+                 switch ($payField)
+                 {
+                     case 'is_pay' :
+                         if ($this->$payField == 1) {
+                             $query->andFilterWhere(["<", 'pay_date', '0']);
+                         } else {
+                             $query->andFilterWhere([">", 'pay_date', '0']);
+                         }
+                     break;
+
+                     case 'is_shop_receipt' :
+                         if (!$this->$payField  == 1) {
+                             $query->andFilterWhere(["<", 'receipt_date', '0']);
+                         }else{
+                             $query->andFilterWhere([">", 'receipt_date', '0']);
+                         }
+                         break;
+
+                     case 'is_company_receipt':
+                         if (!$this->$payField  == 1) {
+                             $query->andFilterWhere(["<", 'company_receipt_date', '0']);
+                         }else{
+                             $query->andFilterWhere([">", 'company_receipt_date', '0']);
+                         }
+                         break;
+                 }
+        }
+
         $dateFields = [
                         "order_date_start", "order_date_end",
                         "deliver_date_start", "deliver_date_end",
@@ -193,7 +233,7 @@ class OrderQuery extends Order
             $this->transactor_id = $transator_name;
         }
 
-       /*$commandQuery = clone $query;
+      /* $commandQuery = clone $query;
        echo $commandQuery->createCommand()->getRawSql();*/
 
         return $dataProvider;
