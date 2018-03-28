@@ -95,7 +95,7 @@ class OrderQuery extends Order
         } else {
             $condition = [
                 'query' => $query,
-                'pagination' => ['pageSize'=>10],
+                'pagination' => ['pageSize' => 20],
                 'sort'=> [
                     'defaultOrder' => [
                         'id'=>SORT_DESC
@@ -152,7 +152,13 @@ class OrderQuery extends Order
                 $value = trim($this->$dateField);
                 if (strpos($dateField, "start") !== false) {
                     $field = str_replace('_start', "", $dateField);
-                    $query->andFilterWhere([">=", $field, $value]);
+
+                    $endField = $field . '_end';
+                    if ($this->$endField) {
+                        $query->andFilterWhere([">=", $field, $value]);
+                    } else {
+                        $query->andFilterWhere(["=", $field, $value]);
+                    }
                 } else {
                     $field = str_replace('_end', "", $dateField);
                     $query->andFilterWhere(["<=", $field, $value]);
