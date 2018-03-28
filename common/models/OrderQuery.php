@@ -157,7 +157,7 @@ class OrderQuery extends Order
                      break;
 
                      case 'is_shop_receipt' :
-                         if (!$this->$payField  == 1) {
+                         if ($this->$payField  == 1) {
                              $query->andFilterWhere(["<", 'receipt_date', '0']);
                          }else{
                              $query->andFilterWhere([">", 'receipt_date', '0']);
@@ -165,7 +165,7 @@ class OrderQuery extends Order
                          break;
 
                      case 'is_company_receipt':
-                         if (!$this->$payField  == 1) {
+                         if ($this->$payField  == 1) {
                              $query->andFilterWhere(["<", 'company_receipt_date', '0']);
                          }else{
                              $query->andFilterWhere([">", 'company_receipt_date', '0']);
@@ -233,8 +233,8 @@ class OrderQuery extends Order
             $this->transactor_id = $transator_name;
         }
 
-      /* $commandQuery = clone $query;
-       echo $commandQuery->createCommand()->getRawSql();*/
+       //$commandQuery = clone $query;
+       //echo $commandQuery->createCommand()->getRawSql();
 
         return $dataProvider;
     }
