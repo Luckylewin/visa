@@ -15,7 +15,7 @@ class IndexController extends BaseController
 
         return $this->render('frame', [
             'username' => Yii::$app->user->identity->username,
-            'rolename' => current($role)->name
+            'rolename' => isset(current($role)->name)? current($role)->name : '未分配角色'
         ]);
     }
 

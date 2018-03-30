@@ -250,7 +250,7 @@ $tranlator = new Transator();
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '创建' : '更新', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
-        <?= Html::a('返回', Yii::$app->request->referrer, ['class' => 'btn btn-default']) ?>
+        <?= Html::a('返回', strpos(Yii::$app->request->referrer,'r=') !== false ? Yii::$app->request->referrer : \yii\helpers\Url::to(['index/index']), ['class' => 'btn btn-default']) ?>
 
     </div>
 
