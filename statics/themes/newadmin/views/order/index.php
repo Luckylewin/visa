@@ -3,8 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use common\models\Type;
-use common\models\Country;
-
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\OrderQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -25,7 +24,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= $this->render('_search', ['model' => $searchModel]); ?>
-
+    <?php Pjax::begin(); ?>
     <?= GridView::widget([
          //分页
         'dataProvider' => $dataProvider,
@@ -36,11 +35,13 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 "id" => "grid"
         ],
         'pager'=>[
+             'class' => 'common\widgets\goPager',
+              'go' => true,
             //'options'=>['class'=>'hidden']//关闭自带分页
-            'firstPageLabel'=>"第一页",
-            'prevPageLabel'=>'上一页',
-            'nextPageLabel'=>'下一页',
-            'lastPageLabel'=>'最后一页',
+              'firstPageLabel'=>"第一页",
+              'prevPageLabel'=>'上一页',
+              'nextPageLabel'=>'下一页',
+              'lastPageLabel'=>'最后一页',
         ],
         'columns' => [
             [
@@ -52,6 +53,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                     'attribute' => 'customer_id',
                     'label' => '客户ID',
+                    'options' => ['style'=>'width:100px;']
             ],
             //淘宝订单号
             [
@@ -74,7 +76,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     }
 
                 },
-                'options' => ['style'=>'width:90px;']
+                'options' => ['style'=>'width:80px;']
             ],
 
             //订单分类
@@ -112,7 +114,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return str_replace('-','/', substr($model->deliver_date, 2));
                     }
                 },
-                'options' => ['style'=>'width:75px;']
+                'options' => ['style'=>'width:70px;']
             ],
 
             //入管日
@@ -158,7 +160,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     $servicer = $model->servicer;
                     return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
                 },
-                'options' => ['style'=>'width:60px;']
+                'options' => ['style'=>'width:50px;']
             ],
             //办理人
             [
@@ -192,7 +194,9 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'attribute' => 'single_sum',
                     'label' => '单项实收'
             ],
-
+            [
+                    'attribute' => 'remark'
+            ],
             //'entry_date',
             //'putsign_date',
             //'delivergood_date',
@@ -227,6 +231,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             // 'audit_status',
         ],
     ]); ?>
+    <?php Pjax::end(); ?>
 </div>
 
 
@@ -287,7 +292,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
             var timer = setInterval(function(){
                 $.getJSON(percentUrl,"",function(d){
-                    console.log(d.data);
+                    //console.log(d.data,d.memory);
                     if (d.data>0 && d.data <100) {
                         var width = d.data + '%';
                         $('.progress-bar').css('width', width);
@@ -298,7 +303,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     }
 
                 })
-            },1000);
+            },4000);
             //_this.attr('href', _this.attr('href') + '&selected_id=' + keys);
             window.location.href = url;
     });

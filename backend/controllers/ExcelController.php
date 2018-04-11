@@ -603,8 +603,8 @@ class ExcelController extends BaseController
         //权限判断
         $showFlag = ExportSetting::getShowSetting();
 
-        \PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
-        \PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
+        //\PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized;
+        //\PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
         $cacheMethod = \PHPExcel_CachedObjectStorageFactory::cache_to_discISAM;
         $cacheSettings = array('memoryCacheSize'=>'512MB');
         \PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
@@ -726,7 +726,7 @@ class ExcelController extends BaseController
             'AD' => 'back_telphone',
             'AE' => 'back_address',
             'AF' => 'putsign_date',
-            'AG' => 'deliver_date',
+            'AG' => 'delivergood_date',
             'AH' => 'delivercompany',
             'AI' => 'deliver_order',//寄回客人单号
 
