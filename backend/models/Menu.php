@@ -100,13 +100,18 @@ class Menu extends \yii\db\ActiveRecord
     {
         $allMenus = self::getMenu();
        /* */
-        foreach ($allMenus as $key => $menus) {
+       $username = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
+       if (isset(array_keys($username)[0])) {
+            $rolename = array_keys($username)[0];
+       }
+
+       foreach ($allMenus as $key => $menus) {
             foreach ($menus['_child'] as $_key => $menu) {
-               /* if (Yii::$app->user->identity->username != 'admin') {
+               if (!isset($rolename) || $rolename != '超级管理员') {
                     if (!\Yii::$app->user->can($menu['url'])) {
                         unset($allMenus[$key]['_child'][$_key]);
                     }
-                }*/
+                }
             }
             if (!isset($allMenus[$key]['_child']) || count($allMenus[$key]['_child']) <= 0) {
                 unset($allMenus[$key]);
