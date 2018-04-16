@@ -5,14 +5,13 @@ namespace backend\controllers;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use backend\models\Crontab;
 
 /**
  * CrontabController implements the CRUD actions for Crontab model.
  */
-class CrontabController extends Controller
+class CrontabController extends BaseController
 {
     /**
      * Lists all Crontab models.

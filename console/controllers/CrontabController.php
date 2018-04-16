@@ -8,15 +8,15 @@
 
 namespace console\controllers;
 
-use backend\controllers\BaseController;
 use Yii;
 use backend\models\Crontab;
+use yii\console\Controller;
 
 /**
  * 定时任务调度控制器
  * @author jlb
  */
-class CrontabController extends BaseController
+class CrontabController extends Controller
 {
 
     /**
