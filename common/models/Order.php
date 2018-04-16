@@ -210,13 +210,11 @@ class Order extends \yii\db\ActiveRecord
            //记录操作用户
           $this->mod_operator_id =  $this->operator_id = Yii::$app->getUser()->id;
 
+          if ($this->total_person) {
+               $this->output_total_person = $this->total_person;
+          }
+
            if ($this->isNewRecord) {
-
-               //人数
-               if ($this->total_person) {
-                    $this->output_total_person = $this->total_person;
-               }
-
                //记录快照
                $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
                if (!is_null($snapShot)) {

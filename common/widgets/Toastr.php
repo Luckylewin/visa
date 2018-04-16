@@ -70,6 +70,7 @@ class Toastr extends \yii\bootstrap\Widget
                         }
                         $message = $str;
                     }
+                    $message  = str_replace("'", '"', $message);
                     echo $js = "toastr.{$function}('{$message}');";
                     $view->registerJs($js);
                 }
