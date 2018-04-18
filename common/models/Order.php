@@ -190,24 +190,12 @@ class Order extends \yii\db\ActiveRecord
        ];
     }
 
-    public function afterSave($insert, $changedAttributes)
-    {
-        if (parent::afterSave($insert, $changedAttributes)) {
-            if ($this->isNewRecord) {
-                //更新引用
-                $snapshot = Snapshot::findOne(['id' => $this->combo_id]);
-                $snapshot->quote += 1;
-                $snapshot->save();
-            }
-        }
-    }
+
 
     public function beforeSave($insert)
     {
        if (parent::beforeSave($insert)) {
            unset($this->transactor_id);
-
-
 
           if ($this->total_person) {
                $this->output_total_person = $this->total_person;
@@ -264,11 +252,10 @@ class Order extends \yii\db\ActiveRecord
             //查找快照 判断索引
             $snapshot = Snapshot::findOne(['id' => $this->combo_id]);
             if (!is_null($snapshot)) {
-                if ($snapshot->quote <= 1) {
+                //查找当前的snapshot是否还有订单在引用
+                $isQuoteExist = self::find()->select('id')->where(['combo_id' => $snapshot->id])->asArray()->all();
+                if (count($isQuoteExist) <= 1 && $isQuoteExist['id'] == $snapshot->id) {
                     $snapshot->delete();
-                } else {
-                    $snapshot->quote -= 1;
-                    $snapshot->save();
                 }
             }
         }
