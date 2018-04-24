@@ -25,8 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                     'attribute' => 'order_classify',
                     'value' => function($model) {
-                        $classify = Type::getComboClassify();
-                        return isset($classify[$model->order_classify]) ? $classify[$model->order_classify] : '未设置';
+                        try {
+                            $classify = Type::getComboClassify();
+                            $combo = $model->snapshot;
+                            return isset($classify[$combo->combo_classify]) ? $classify[$combo->combo_classify] : '未设置';
+
+                        }catch (\Exception $e) {
+                            return '<i class="fa fa-trash"></i>已被删除';
+                        }
+
+
                     }
             ],
             [

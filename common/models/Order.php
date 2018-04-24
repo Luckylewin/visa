@@ -205,12 +205,15 @@ class Order extends \yii\db\ActiveRecord
                //记录快照
                $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
                if (!is_null($snapShot)) {
+                   $this->order_classify = $snapShot->combo_classify;
                    $this->combo_id = $snapShot->id;
                } else {
                    $combo = Combo::findOne(['combo_id' => $this->combo_id]);
                    if (!is_null($combo)) {
                        $this->combo_id = Snapshot::duplicateOne($combo);
+                       $this->order_classify  = $combo->combo_classify;
                    }
+                   return false;
                }
                //记录操作用户
                $this->mod_operator_id =  $this->operator_id = Yii::$app->getUser()->id;

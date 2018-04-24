@@ -209,7 +209,7 @@ class OrderQuery extends Order
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'order_num' => $this->order_num,
+
             'customer_id' => $this->customer_id,
             'combo_id' => $this->combo_id,
             'custom_servicer_id' => $this->custom_servicer_id,
@@ -223,6 +223,7 @@ class OrderQuery extends Order
         $query->andFilterWhere(['like', 'carrier_order', $this->carrier_order])
             ->andFilterWhere(['like', 'operator', $this->operator])
             ->andFilterWhere(['like', 'back_address', $this->back_address])
+            ->andFilterWhere(['like', 'order_num', $this->order_num])
             ->andFilterWhere(['like', 'back_addressee', $this->back_addressee])
             ->andFilterWhere(['like', 'back_telphone', $this->back_telphone])
             ->andFilterWhere(['like', 'deliver_order', $this->deliver_order]);
