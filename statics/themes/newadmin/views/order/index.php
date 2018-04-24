@@ -84,11 +84,16 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'attribute' => 'order_classify',
                     'format' => 'raw',
                     'value' => function($model) {
-                        $classify = Type::getComboClassify();
-                        $classify = isset($classify[$model->order_classify]) ? $classify[$model->order_classify] : '未设置';
-                        return Html::button(substr($classify,0,3), [
+                        try{
+                            $classify = Type::getComboClassify();
+                            $classifyIndex = $model->snapshot->combo_classify;
+                            $classify = isset($classify[$classifyIndex]) ? $classify[$classifyIndex] : '未设置';
+                            return Html::button(substr($classify,0,3), [
                                 'class' => 'btn btn-info btn-xs'
-                        ]);
+                            ]);
+                        }catch (\Exception $e) {
+                            return "未设置";
+                        }
                     },
                     'filter' => Type::getComboClassify(),
                     'options' => ['style'=>'width:34px;']
