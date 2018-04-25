@@ -53,7 +53,6 @@ use yii\db\ActiveRecord;
  */
 class Order extends \yii\db\ActiveRecord
 {
-
     public $transactor_id;
     public $custom_servicer;
     public $is_pay;
@@ -194,57 +193,48 @@ class Order extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-       if (parent::beforeSave($insert)) {
-           unset($this->transactor_id);
+        parent::beforeSave($insert);
 
-          if ($this->total_person) {
-               $this->output_total_person = $this->total_person;
-          }
+        //插入
+        if ($this->isNewRecord) {
+            if (!$this->_setSnapshot()) {
+                return false;
+            }
+        }
+        //更新
+        if ($this->isNewRecord == false) {
+            //判断是否更改了套餐
+            if ($this->getOldAttribute('combo_id') != $this->combo_id) {
 
-           if ($this->isNewRecord) {
-               //记录快照
-               $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => '1']);
-               if (!is_null($snapShot)) {
-                   $this->order_classify = $snapShot->combo_classify;
-                   $this->combo_id = $snapShot->id;
-               } else {
-                   $combo = Combo::findOne(['combo_id' => $this->combo_id]);
-                   if (!is_null($combo)) {
-                       $this->combo_id = Snapshot::duplicateOne($combo);
-                       $this->order_classify  = $combo->combo_classify;
-                   }
-                   return false;
-               }
-               //记录操作用户
-               $this->mod_operator_id =  $this->operator_id = Yii::$app->getUser()->id;
+                if (!$this->_setSnapshot()) {
+                    return false;
+                }
+            }
+            //记录修改用户
+            $this->mod_operator_id = Yii::$app->getUser()->id;
 
-           } else {
+        }
 
-               //记录修改用户
-               $this->mod_operator_id = Yii::$app->getUser()->id;
-               unset($this->combo_id);
-           }
+        //记录操作用户
+        $this->mod_operator_id =  $this->operator_id = Yii::$app->getUser()->id;
+        $this->output_total_person = $this->total_person;
+        $status = ['collect_date'=>'2','deliver_date'=>'3','entry_date'=>'4','putsign_date'=>'5'];
 
-           $status = ['collect_date'=>'2','deliver_date'=>'3','entry_date'=>'4','putsign_date'=>'5'];
+        //判断日期 决定审核状态
+        if ($this->audit_status != 6) {
+            $temp = [];
+            foreach ($status as $date_field => $statusValue) {
+                if ($this->$date_field) {
+                    $temp[] = $date_field;
+                    $this->audit_status = $statusValue;
+                }
+            }
+            if (empty($temp)) {
+                $this->audit_status = 1;
+            }
+        }
 
-           //判断日期 决定审核状态
-           if ($this->audit_status != 6) {
-               $temp = [];
-               foreach ($status as $date_field => $statusValue) {
-                   if ($this->$date_field) {
-                       $temp[] = $date_field;
-                       $this->audit_status = $statusValue;
-                   }
-               }
-
-               if (empty($temp)) {
-                   $this->audit_status = 1;
-               }
-           }
-           
-           return true;
-       }
-       return false;
+        return true;
     }
 
     public function beforeDelete()
@@ -265,6 +255,34 @@ class Order extends \yii\db\ActiveRecord
                 }
             }
         }
+        return true;
+    }
+
+    /**
+     * 设置快照
+     * @return bool
+     */
+    private function _setSnapshot()
+    {
+        //记录快照
+        $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id)]);
+
+        if (!is_null($snapShot)) {
+            $this->order_classify = $snapShot->combo_classify;
+            $this->combo_id = $snapShot->id;
+        } else {
+
+            $combo = Combo::findOne(['combo_id' => (int)$this->combo_id]);
+            if (!is_null($combo)) {
+                $this->combo_id = Snapshot::duplicateOne($combo);
+                $this->order_classify  = $combo->combo_classify;
+                if ($this->combo_id) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         return true;
     }
 

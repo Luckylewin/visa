@@ -77,4 +77,11 @@ class Snapshot extends \yii\db\ActiveRecord
 
         return $snapShot->id;
     }
+
+    //一个快照对应一个或多个订单
+    public function getOrder()
+    {
+        return $this->hasMany(Order::className(), ['combo_id' => 'id']);
+    }
+
 }

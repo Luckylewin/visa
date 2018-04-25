@@ -8,9 +8,13 @@
 
 namespace console\controllers;
 
+use common\models\Order;
+use common\models\Snapshot;
 use Yii;
 use backend\models\Crontab;
 use yii\console\Controller;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 /**
  * 定时任务调度控制器
@@ -92,6 +96,17 @@ class CrontabController extends Controller
     {
         list ($microSec, $sec) = explode(" ", microtime());
         return (float)$microSec + (float)$sec;
+    }
+
+    public function actionClear()
+    {
+        //查询所有的快照ID
+        $data = Order::find()->select('combo_id')->asArray()->all();
+        $data = ArrayHelper::getColumn($data, 'combo_id');
+
+        //查询所有的快照
+        $snapshot = Snapshot::deleteAll(['not in', 'id', $data]);
+
     }
 
 }

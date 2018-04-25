@@ -66,14 +66,6 @@ $tranlator = new Transator();
         <div class="panel-body">
             <div class="col-md-3">
 
-                <?php
-                        try {
-                            if (!$model->isNewRecord) {
-                                $model->order_classify = $model->snapshot->combo_classify;
-                            }
-                        }catch(\Exception $e) {}
-                ?>
-
                 <?= $form->field($model, 'order_classify')->dropDownList(\common\models\Type::getComboClassify(),[
                     'prompt' => '请选择产品',
                     'prompt_val' => '0',
