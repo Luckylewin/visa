@@ -17,7 +17,11 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 ?>
 
 <?php \common\widgets\Cssblock::begin() ?>
-
+<style>
+    td:hover{
+        cursor: pointer;
+    }
+</style>
 <?php \common\widgets\Cssblock::end() ?>
 
 <div class="order-index">
@@ -27,6 +31,9 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
     <?= $this->render('_search', ['model' => $searchModel]); ?>
     <?php Pjax::begin(); ?>
     <?= GridView::widget([
+         'tableOptions' => [
+                 'class' => 'table table-bordered table-hover'
+         ],
          //分页
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
