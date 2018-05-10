@@ -13,7 +13,7 @@ $this->title = '订单列表';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
 //$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate-v5/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
-$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset']]);
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset'], 'position' => $this::POS_HEAD]);
 ?>
 
 <?php \common\widgets\Cssblock::begin() ?>
@@ -212,11 +212,12 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'format' => 'raw',
                     'value' => function($model) {
                         if ($model->remark) {
+                            $script = "<script>layer.tips(" . "'{$model->remark}','#remark-{$model->id}',{time: 5000, tipsMore: true, tips: [1, '#FF9933']}" .");</script>";
                             return Html::a('<i class="fa fa-bookmark"></i>',null, [
                                     'id' => "remark-" . $model->id,
                                     'class' => 'remark-show',
                                     "text" => $model->remark
-                            ]);
+                            ]) . $script;
                         }
                         return '';
                     }
@@ -276,15 +277,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
 <?php \common\widgets\Jsblock::begin() ?>
 <script>
-
-    $('.remark-show').click(function() {
-        layer.tips($(this).attr('text'), "#" + $(this).attr('id'),{time: 5000, tipsMore: true, tips: [1, '#FF9933']});
-    });
-
-    $(function(){
-       $('.remark-show').click();
-    });
-
+    
     $(".gridview").on("click", function () {
         var keys = $("#grid").yiiGridView("getSelectedRows");
         if (keys.length < 1) {
