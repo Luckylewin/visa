@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use common\models\Type;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\OrderQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -200,7 +201,18 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'label' => '单项实收'
             ],
             [
-                    'attribute' => 'remark'
+                    'attribute' => 'remark',
+                    'format' => 'raw',
+                    'value' => function($model) {
+                        if ($model->remark) {
+                            return Html::a('<i class="fa fa-bookmark"></i>',null, [
+                                    'id' => "remark-" . $model->id,
+                                    'class' => 'remark-show',
+                                    "text" => $model->remark
+                            ]);
+                        }
+                        return '';
+                    }
             ],
             //'entry_date',
             //'putsign_date',
@@ -257,6 +269,14 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
 <?php \common\widgets\Jsblock::begin() ?>
 <script>
+
+    $('.remark-show').click(function() {
+        layer.tips($(this).attr('text'), "#" + $(this).attr('id'),{time: 5000, tipsMore: true, tips: [1, '#FF9933']});
+    });
+
+    $(function(){
+       $('.remark-show').click();
+    });
 
     $(".gridview").on("click", function () {
         var keys = $("#grid").yiiGridView("getSelectedRows");
