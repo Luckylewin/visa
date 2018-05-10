@@ -212,11 +212,13 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'format' => 'raw',
                     'value' => function($model) {
                         if ($model->remark) {
-                            $script = "<script>layer.tips(" . "'{$model->remark}','#remark-{$model->id}',{time: 5000, tipsMore: true, tips: [1, '#FF9933']}" .");</script>";
+                            $text = preg_replace('/\s+/', '', $model->remark );
+                            $id = "#remark-{$model->id}";
+                            $script = '<script>$("' . $id.'").click(function(){'. "layer.tips(" . "'{$text}','{$id}',{time: 3000, tipsMore: true, tips: [1, '#FF9933']}" .");" .'}).click()</script>';
                             return Html::a('<i class="fa fa-bookmark"></i>',null, [
                                     'id' => "remark-" . $model->id,
                                     'class' => 'remark-show',
-                                    "text" => $model->remark
+                                    "text" => $text
                             ]) . $script;
                         }
                         return '';
@@ -277,7 +279,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
 <?php \common\widgets\Jsblock::begin() ?>
 <script>
-    
+
     $(".gridview").on("click", function () {
         var keys = $("#grid").yiiGridView("getSelectedRows");
         if (keys.length < 1) {
