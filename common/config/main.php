@@ -11,6 +11,8 @@ return [
             'password' => '12345678',
             'charset' => 'utf8',
             'tablePrefix' => 'yii2_',
+            'enableSchemaCache' => true,
+            'schemaCacheDuration' => 86400
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

@@ -49,8 +49,13 @@ class Config extends \yii\db\ActiveRecord
     }
 
     public static function getConfigs($keyid) {
-        $configs = self::find()->where(['keyid' => $keyid])->asArray()->one();
-        return json_decode($configs['data'], true);
+
+        $cache = Yii::$app->cache;
+        $data = $cache->getOrSet('config', function () use($keyid) {
+            return self::find()->where(['keyid' => $keyid])->asArray()->one();
+        }, 86400);
+
+        return json_decode($data['data'], true);
     }
 
 }

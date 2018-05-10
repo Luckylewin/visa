@@ -8,7 +8,7 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers', //控制器默认命名空间
-    'bootstrap' => ['log'],
+    'bootstrap' => [],
     'modules' => [
         'db-manager' => [
             'class' => 'bs\dbManager\Module',
@@ -51,20 +51,24 @@ return [
             'loginUrl' => ['index/login'], //配置登录url
         ],
         'session' => [
-            'class' => 'yii\web\DbSession',
+            'class' => 'yii\web\CacheSession',
+
             //'db' => 'db',   //数据库连接的应用组件ID,默认为'db'
             //'sessionTable' => '', //session数据表名,默认为'session'
         ],
         //Rbac权限控制
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
+            'cache' => 'yii\caching\FileCache'
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
+
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
+                    'enabled' => false,
                 ],
             ],
         ],
