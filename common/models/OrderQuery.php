@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use app\models\OrderToTransactor;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -115,13 +116,12 @@ class OrderQuery extends Order
 
             //关联表处理
             if (isset($params['OrderQuery']['transactor_id'])) {
-                 $transator = Transator::findOne(['name' => $params['OrderQuery']['transactor_id']]);
+                 $transator = Transator::find()->select('tid')->andFilterWhere(['like', 'name', $params['OrderQuery']['transactor_id']])->asArray()->all();
+                 $transator = ArrayHelper::getColumn($transator, 'tid');
                  $transator_name = $params['OrderQuery']['transactor_id'];
-
                  $ids = 0;
-                 if ($transator) {
-                     $transators = Yii::$app->db->createCommand('SELECT o_id FROM yii2_order_to_transactor WHERE t_id = '. $transator->tid)->queryAll();
-
+                 if (!empty($transator)) {
+                        $transators = OrderToTransactor::find()->where(['in','t_id', $transator])->asArray()->all();
                      if (!empty($transators)) {
                          $ids = ArrayHelper::getColumn($transators, 'o_id');
                          $ids = implode(',', $ids);
