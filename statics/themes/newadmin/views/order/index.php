@@ -172,10 +172,10 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 'attribute' => 'transactor_id',
                 'format' => 'raw',
                 'value' => function($model) {
-                    $transactors = $model->relatedTransactor;
 
                     $str = '';
-                    foreach ($transactors as $transactor) {
+                    foreach ($model->middleTransator as $transactor) {
+                        $transactor = $transactor->transator;
                         $str .= Html::a($transactor['name'], \yii\helpers\Url::to(['transator/view', 'id' => $transactor['tid']])) . "&nbsp;";
                     }
                     return $str;

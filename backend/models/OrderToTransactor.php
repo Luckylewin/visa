@@ -3,6 +3,7 @@
 namespace app\models;
 
 use common\models\Order;
+use common\models\Transator;
 use Yii;
 
 /**
@@ -41,6 +42,16 @@ class OrderToTransactor extends \yii\db\ActiveRecord
             'o_id' => 'O ID',
             't_id' => 'T ID',
         ];
+    }
+
+    public function getOrder()
+    {
+        return $this->hasOne(Order::className(), ['id' => 'o_id']);
+    }
+
+    public function getTransator()
+    {
+        return $this->hasOne(Transator::className(), ['tid' => 't_id']);
     }
 
     public static function clearTransator($id)

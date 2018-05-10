@@ -90,8 +90,16 @@ class Menu extends \yii\db\ActiveRecord
         return self::$displayStyles[$display];
     }
 
-    public static function getMenu() {
-        $menus = static::find()->where(['display' => 1])->orderBy('sort asc')->asArray()->all();
+    public static function getMenu()
+    {
+        $menus = Yii::$app->cache->getOrSet('menus', function() {
+             return static::find()
+                       ->where(['display' => 1])
+                       ->orderBy('sort asc')
+                       ->asArray()
+                       ->all();
+        });
+
         $treeObj = new Tree($menus);
         return $treeObj->getTreeArray();
     }

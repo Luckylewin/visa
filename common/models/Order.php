@@ -310,17 +310,17 @@ class Order extends \yii\db\ActiveRecord
         return $this->hasOne(Servicer::className(), ['id' => 'custom_servicer_id']);
     }
 
-    //办理人
-    public function getTransactor()
-    {
-        return $this->hasMany(Transator::className(), ['order_id' => 'id']);
-    }
 
     //办理人 多对多关系
     public function getRelatedTransactor()
     {
         $sql = "SELECT * FROM yii2_order_to_transactor AS a LEFT JOIN yii2_transator AS b ON  a.t_id = b.tid WHERE a.o_id = " . $this->id;
         return $data = Yii::$app->db->createCommand($sql)->queryAll();
+    }
+
+    public function getMiddleTransator()
+    {
+        return $this->hasMany(OrderToTransactor::className(), ['o_id' => 'id']);
     }
 
     //前端选择框

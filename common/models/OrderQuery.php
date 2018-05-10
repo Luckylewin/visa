@@ -84,7 +84,7 @@ class OrderQuery extends Order
     public function search($params, $all = false)
     {
         //处理没有
-        $query = Order::find();
+        $query = Order::find()->with(['middleTransator.transator','snapshot', 'servicer']);
 
         // add conditions that should always apply here
         if ($all) {
