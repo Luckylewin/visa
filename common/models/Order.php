@@ -246,7 +246,7 @@ class Order extends \yii\db\ActiveRecord
             $snapshot = Snapshot::findOne(['id' => $this->combo_id]);
             if (!is_null($snapshot)) {
                 //查找当前的snapshot是否还有订单在引用
-                $isQuoteExist = self::find()->select('id,snap_combo_id')->where(['combo_id' => $snapshot->id])->asArray()->all();
+                $isQuoteExist = self::find()->select('id,combo_id')->where(['combo_id' => $snapshot->id])->asArray()->all();
                 if (count($isQuoteExist) <= 1 && $isQuoteExist['id'] == $snapshot->id) {
                     if ($isQuoteExist['snap_combo_id'] == 0 || is_null(Combo::findOne(['combo_id' => $isQuoteExist['snap_combo_id']]))) {
                         $snapshot->delete();
