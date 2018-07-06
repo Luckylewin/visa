@@ -42,9 +42,9 @@ class OrderQuery extends Order
     public function rules()
     {
         return [
-            [['id', 'pid',  'combo_id', 'custom_servicer_id', 'total_person'], 'integer'],
+            [['id', 'pid', 'custom_servicer_id'], 'integer'],
             [
-                [   "order_date_start", "order_date_end",
+                [   "order_date_start", "order_date_end", 'combo_id',
                     "deliver_date_start", "deliver_date_end",
                     "entry_date_start", "entry_date_end",
                     "putsign_date_start", "putsign_date_end",
@@ -206,12 +206,25 @@ class OrderQuery extends Order
             }
         }
 
+        //
+        if ($this->combo_id) {
+            $comboArr = explode(',', $this->combo_id);
+
+            $combo_id = Snapshot::find()->select('id')->andFilterWhere(['IN','combo_product', $comboArr])->orFilterWhere(['like', 'combo_product', $this->combo_id])->asArray()->all();
+
+            if (!empty($combo_id)) {
+                $combo_id = ArrayHelper::getColumn($combo_id, 'id');
+                $query->andFilterWhere(['IN', 'combo_id', $combo_id]);
+            } else {
+                Yii::$app->session->setFlash('info', "找不到{$this->combo_id}相关内容");
+            }
+
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-
             'customer_id' => $this->customer_id,
-            'combo_id' => $this->combo_id,
             'custom_servicer_id' => $this->custom_servicer_id,
             'transactor_id' => $this->transactor_id,
             'total_person' => $this->total_person,

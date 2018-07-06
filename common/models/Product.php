@@ -63,6 +63,11 @@ class Product extends \yii\db\ActiveRecord
         return self::find()->select(['id','name'])->asArray()->limit(100)->all();
     }
 
+    public static function getAll()
+    {
+        return self::find()->select('name')->asArray()->all();
+    }
+
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {

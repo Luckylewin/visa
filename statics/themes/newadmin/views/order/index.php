@@ -13,15 +13,11 @@ $this->title = '订单列表';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
 //$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate-v5/laydate.js', ['depends'=>['yii\web\JqueryAsset']]);
-$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset'], 'position' => $this::POS_HEAD]);
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 ?>
 
 <?php \common\widgets\Cssblock::begin() ?>
-<style>
-    td:hover{
-        cursor: pointer;
-    }
-</style>
+
 <?php \common\widgets\Cssblock::end() ?>
 
 <div class="order-index">
@@ -29,11 +25,9 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= $this->render('_search', ['model' => $searchModel]); ?>
-    <?php Pjax::begin(); ?>
+
     <?= GridView::widget([
-         'tableOptions' => [
-                 'class' => 'table table-bordered table-hover'
-         ],
+         'tableOptions' => ['class' => 'table table-hover table-bordered'],
          //分页
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
@@ -212,14 +206,11 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'format' => 'raw',
                     'value' => function($model) {
                         if ($model->remark) {
-                            $text = preg_replace('/\s+/', '', $model->remark );
-                            $id = "#remark-{$model->id}";
-                            $script = '<script>$("' . $id.'").click(function(){'. "layer.tips(" . "'{$text}','{$id}',{time: 3000, tipsMore: true, tips: [1, '#FF9933']}" .");" .'}).click()</script>';
                             return Html::a('<i class="fa fa-bookmark"></i>',null, [
                                     'id' => "remark-" . $model->id,
                                     'class' => 'remark-show',
-                                    "text" => $text
-                            ]) . $script;
+                                    "text" => $model->remark
+                            ]);
                         }
                         return '';
                     }
@@ -258,7 +249,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             // 'audit_status',
         ],
     ]); ?>
-    <?php Pjax::end(); ?>
+
 </div>
 
 
@@ -279,6 +270,22 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
 <?php \common\widgets\Jsblock::begin() ?>
 <script>
+
+    $('.remark-show').click(function() {
+        layer.tips($(this).attr('text'), "#" + $(this).attr('id'),{time: 5000, tipsMore: true, tips: [1, '#FF9933']});
+    });
+
+    $('tr').hover(function () {
+        var td = $(this).find('td').eq(15);
+        var obj = td.find('.remark-show');
+        if (obj) {
+
+        }
+    });
+
+    $(function(){
+       $('.remark-show').click();
+    });
 
     $(".gridview").on("click", function () {
         var keys = $("#grid").yiiGridView("getSelectedRows");

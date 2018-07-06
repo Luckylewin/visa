@@ -9,6 +9,7 @@ use yii\web\IdentityInterface;
 
 class Admin extends ActiveRecord implements IdentityInterface
 {
+    const SUPER_ADMIN = '超级管理员';
 
     public $password;
 

@@ -194,6 +194,16 @@ class Order extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         parent::beforeSave($insert);
+        
+        // 如果更改接待客户 判断用户是否为超级管理员
+        if ($this->isAttributeChanged('custom_servicer_id', false) == true) {
+            $authManager = Yii::$app->authManager;
+            $role = $authManager->getRolesByUser(Yii::$app->user->id);
+            $role = isset(current($role)->name)? current($role)->name : false;
+            if ($role != Admin::SUPER_ADMIN) {
+                unset($this->custom_servicer_id);
+            }
+        }
 
         //插入
         if ($this->isNewRecord) {
@@ -215,8 +225,19 @@ class Order extends \yii\db\ActiveRecord
 
         }
 
-        //记录操作用户
-        $this->mod_operator_id =  $this->operator_id = Yii::$app->getUser()->id;
+        //记录操作用户 在送证日(deliver_date)和入馆日(entry_date)被填写后，除超级管理员外都不能修改
+        if (empty($this->deliver_date) || empty($this->entry_date)) {
+            $this->mod_operator_id =  $this->operator_id = Yii::$app->getUser()->id;
+        } else {
+            $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+            $role = isset(current($role)->name)? current($role)->name : false;
+            if ($role == Admin::SUPER_ADMIN) {
+                $this->mod_operator_id = $this->operator_id = Yii::$app->getUser()->id;
+            } else {
+                $this->mod_operator_id =  Yii::$app->getUser()->id;
+            }
+        }
+
         $this->output_total_person = $this->total_person;
         $status = ['collect_date'=>'2','deliver_date'=>'3','entry_date'=>'4','putsign_date'=>'5'];
 

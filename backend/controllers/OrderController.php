@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use app\models\OrderToTransactor;
+use backend\models\Admin;
 use common\models\ExportSetting;
 use Yii;
 use common\models\Order;
@@ -18,6 +19,23 @@ use yii\web\Response;
  */
 class OrderController extends BaseController
 {
+
+    public function beforeAction($action)
+    {
+        if (in_array($action->id, ['update', 'create']) && Yii::$app->request->isGet) {
+            $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+            $role = isset(current($role)->name)? current($role)->name : false;
+            if ($role == Admin::SUPER_ADMIN) {
+                 $allow = ['custom_servicer_id' => true];
+            } else {
+                $allow = ['custom_servicer_id' => false];
+            }
+
+            Yii::$app->params['allow'] = $allow;
+        }
+
+        return true;
+    }
 
     /**
      * Lists all Order models.

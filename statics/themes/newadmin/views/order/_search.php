@@ -6,6 +6,10 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\OrderQuery */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->registerJsFile('/statics/themes/newadmin/js/plugins/select2/select2.min.js', ['depends' => 'yii\web\JqueryAsset']);
+$this->registerCssFile('/statics/themes/newadmin/js/plugins/select2/select2.min.css');
+
 ?>
 
 <?php \common\widgets\Cssblock::begin() ?>
@@ -324,6 +328,27 @@ use yii\widgets\ActiveForm;
                             ]) ?>
                         </div>
 
+                        <div class="col-md-12">
+                            <label for="js-example-basic-single">
+                                产品名称
+                            </label>
+                            <div class="form-group">
+
+
+
+                                <?php $product = \yii\helpers\ArrayHelper::map(\common\models\Product::getAll(), 'name', 'name'); ?>
+                                <?= $form->field($model, 'total_person')->dropDownList($product, [
+                                    'class' => 'js-example-basic-single',
+                                    'id' => 'js-example-basic-single',
+                                    'style' => 'width:100%;'
+                                ])->label(false) ?>
+
+                                <?= $form->field($model, 'combo_id')->hiddenInput([
+                                    'id' => 'combo_id'
+                                ])->label(false); ?>
+
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -345,6 +370,18 @@ use yii\widgets\ActiveForm;
 </div>
 
 
+<?php
+
+$comboArray = Yii::$app->request->get('OrderQuery');
+if (isset($comboArray)) {
+    $comboArray = $comboArray['combo_id'];
+    $comboArray = explode(',', $comboArray);
+    $comboArray = "'" . implode("','", $comboArray) . "'";
+
+} else {
+    $comboArray = '';
+}
+?>
 
 <?php \common\widgets\Jsblock::begin(); ?>
 
@@ -380,5 +417,21 @@ searcher.change('#orderquery-is_pay input','.is_pay');
 searcher.change('#orderquery-is_shop_receipt input','.is_shop_receipt');
 searcher.change('#orderquery-is_company_receipt input','.is_company_receipt');
 
+$(document).ready(function() {
+    $('.js-example-basic-single').select2({multiple:true});
+    $('.js-example-basic-single').on('select2:opening select2:closing', function( event ) {
+        var $searchfield = $(this).parent().find('.select2-search__field');
+        $searchfield.prop('disabled', true);
+     });
+
+    $('.js-example-basic-single').on('select2:select', function (e) {
+        $('#combo_id').val($('.js-example-basic-single').val());
+    }).on('select2:unselect', function() {
+        $('#combo_id').val($('.js-example-basic-single').val());
+    });
+
+    $(".js-example-basic-single").val([<?= $comboArray ?>]).trigger("change")
+
+});
 
 <?php \common\widgets\Jsblock::end(); ?>

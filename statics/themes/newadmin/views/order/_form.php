@@ -88,7 +88,9 @@ $tranlator = new Transator();
                     }
                 ?>
 
-                <?= $form->field($model, 'custom_servicer_id')->dropDownList($servicer); ?>
+                <?= $form->field($model, 'custom_servicer_id')->dropDownList($servicer, [
+                        'disabled' => Yii::$app->params['allow']['custom_servicer_id'] ? false : true
+                ]); ?>
 
                 <?= $form->field($model, 'order_num')->textInput() ?>
 
