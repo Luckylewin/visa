@@ -18,7 +18,17 @@ return [
                 ],
             ],
         ],
+        //配置数据库
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=visa',
+            'username' => 'root',
+            'password' => '12345678',
+            'charset' => 'utf8',
+            'tablePrefix' => 'yii2_',
+        ],
     ],
+
     'params' => $params,
     'modules' => [
         'db-manager' => [
@@ -27,6 +37,7 @@ return [
             'path' => '@storage/backups',
             // list of registerd db-components
             'dbList' => ['db'],
+
         ],
     ],
 ];
