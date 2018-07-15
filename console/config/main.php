@@ -20,7 +20,7 @@ return [
                 'host' => 'smtp.qq.com',
                 'username' => '',
                 'password' => '',
-                'port' => '25',
+                'port' => '587',
                 'encryption' => 'tls',
             ],
             'messageConfig'=>[
