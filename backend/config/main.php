@@ -51,10 +51,9 @@ return [
             'loginUrl' => ['index/login'], //配置登录url
         ],
         'session' => [
-            'class' => 'yii\web\CacheSession',
-
-            //'db' => 'db',   //数据库连接的应用组件ID,默认为'db'
-            //'sessionTable' => '', //session数据表名,默认为'session'
+            'class' => 'yii\web\DbSession',
+            'db' => 'db',
+            'sessionTable' => 'yii2_session',
         ],
         //Rbac权限控制
         'authManager' => [
