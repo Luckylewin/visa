@@ -81,7 +81,7 @@ $tranlator = new Transator();
                 <?php
                     $servicer = Servicer::findOne(['admin_id' => Yii::$app->user->identity->getId()]);
 
-                    if (is_null($servicer)) {
+                    if (Yii::$app->params['allow']['custom_servicer_id']) {
                         $servicer = ArrayHelper::map(Servicer::find()->all(),'id','name');
                     } else {
                         $servicer = [$servicer->id => $servicer->name];
@@ -89,7 +89,7 @@ $tranlator = new Transator();
                 ?>
 
                 <?= $form->field($model, 'custom_servicer_id')->dropDownList($servicer, [
-                        'disabled' => Yii::$app->params['allow']['custom_servicer_id'] ? false : true
+                        'readonly' => Yii::$app->params['allow']['custom_servicer_id'] ? false : true
                 ]); ?>
 
                 <?= $form->field($model, 'order_num')->textInput() ?>

@@ -22,7 +22,7 @@ class OrderController extends BaseController
 
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['update', 'create']) && Yii::$app->request->isGet) {
+        if (in_array($action->id, ['update', 'create'])) {
             $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
             $role = isset(current($role)->name)? current($role)->name : false;
             if ($role == Admin::SUPER_ADMIN) {

@@ -31,6 +31,11 @@ $this->registerCssFile('/statics/themes/newadmin/js/plugins/select2/select2.min.
                 <span class="my-search" value="hide">
                     条件搜索 <i class="fa fa-angle-double-down"></i>
                             <i class="fa fa-angle-double-up hide"></i>
+
+                           <span style="float: right" id="fixed" >
+                                <i class="fa fa-anchor"><span>固定</span></i>
+                           </span>
+
                 </span>
 
             </h3>
@@ -433,5 +438,29 @@ $(document).ready(function() {
     $(".js-example-basic-single").val([<?= $comboArray ?>]).trigger("change")
 
 });
+
+$('#fixed').click(function() {
+    var flag = localStorage.getItem('fixed');
+
+    if (flag == 1 || flag == 'undefined') {
+        $(this).find('span').text('固定')
+        localStorage.setItem("fixed", 0);
+    } else {
+        $(this).find('span').text('已固定')
+        localStorage.setItem("fixed", 1);
+    }
+
+    return false;
+
+});
+
+$(function() {
+   var flag = localStorage.getItem('fixed')
+
+   if (flag == 1 || flag == 'undefined') {
+        $('.my-search').click();
+        $('#fixed').find('span').text('已固定');
+   }
+})
 
 <?php \common\widgets\Jsblock::end(); ?>

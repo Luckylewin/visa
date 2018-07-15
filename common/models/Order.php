@@ -195,15 +195,6 @@ class Order extends \yii\db\ActiveRecord
     {
         parent::beforeSave($insert);
         
-        // 如果更改接待客户 判断用户是否为超级管理员
-        if ($this->isAttributeChanged('custom_servicer_id', false) == true) {
-            $authManager = Yii::$app->authManager;
-            $role = $authManager->getRolesByUser(Yii::$app->user->id);
-            $role = isset(current($role)->name)? current($role)->name : false;
-            if ($role != Admin::SUPER_ADMIN) {
-                unset($this->custom_servicer_id);
-            }
-        }
 
         //插入
         if ($this->isNewRecord) {
@@ -213,6 +204,17 @@ class Order extends \yii\db\ActiveRecord
         }
         //更新
         if ($this->isNewRecord == false) {
+
+            // 如果更改接待客户 判断用户是否为超级管理员
+            if ($this->isAttributeChanged('custom_servicer_id', false) == true) {
+                $authManager = Yii::$app->authManager;
+                $role = $authManager->getRolesByUser(Yii::$app->user->id);
+                $role = isset(current($role)->name)? current($role)->name : false;
+                if ($role != Admin::SUPER_ADMIN) {
+                    unset($this->custom_servicer_id);
+                }
+            }
+
             //判断是否更改了套餐
             if ($this->getOldAttribute('combo_id') != $this->combo_id) {
 
