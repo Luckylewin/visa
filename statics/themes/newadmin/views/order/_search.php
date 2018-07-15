@@ -437,6 +437,13 @@ $(document).ready(function() {
 
     $(".js-example-basic-single").val([<?= $comboArray ?>]).trigger("change")
 
+    var flag = localStorage.getItem('fixed')
+
+    if (flag == 1 || flag == 'undefined') {
+    $('.my-search').click();
+    $('#fixed').find('span').text('已固定');
+    }
+
 });
 
 $('#fixed').click(function() {
@@ -454,13 +461,5 @@ $('#fixed').click(function() {
 
 });
 
-$(function() {
-   var flag = localStorage.getItem('fixed')
-
-   if (flag == 1 || flag == 'undefined') {
-        $('.my-search').click();
-        $('#fixed').find('span').text('已固定');
-   }
-})
 
 <?php \common\widgets\Jsblock::end(); ?>
