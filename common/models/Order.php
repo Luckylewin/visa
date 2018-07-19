@@ -4,6 +4,7 @@ namespace common\models;
 
 use app\models\OrderToTransactor;
 use backend\models\Admin;
+use backend\models\Operator;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -38,6 +39,7 @@ use yii\db\ActiveRecord;
  * @property string $putsign_date
  * @property string $operator_id
  * @property string $mod_operator_id
+ * @property string $creator_id
  * @property string $back_address
  * @property string $back_addressee
  * @property string $back_telphone
@@ -75,7 +77,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id' ,'total_person', 'single_sum'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person', 'output_total_person'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'mod_operator_id', 'company_receipt_date', 'pay_account','output_total_person','is_pay','is_shop_receipt', 'is_company_receipt'], 'safe'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'mod_operator_id', 'company_receipt_date', 'pay_account','output_total_person','is_pay','is_shop_receipt', 'is_company_receipt', 'creator_id'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum','output_balance_sum', 'output_flushphoto_sum', 'output_carrier_sum'], 'number'],
             [['back_address', 'remark'], 'string','max' => 300],
             [['delivercompany'], 'string', 'max' => 50],
@@ -168,6 +170,7 @@ class Order extends \yii\db\ActiveRecord
             'is_shop_receipt' => '店铺是否已收款',
             'is_company_receipt' => '公司是否已收款',
             'is_pay' => '是否已支付',
+            'creator_id' => '创建人'
         ];
     }
 
@@ -189,58 +192,76 @@ class Order extends \yii\db\ActiveRecord
        ];
     }
 
-
-
     public function beforeSave($insert)
     {
         parent::beforeSave($insert);
-        
 
         //插入
         if ($this->isNewRecord) {
             if (!$this->_setSnapshot()) {
                 return false;
             }
+            // 记录创建者
+            $this->setCreator();
         }
+
         //更新
         if ($this->isNewRecord == false) {
-
             // 如果更改接待客户 判断用户是否为超级管理员
             if ($this->isAttributeChanged('custom_servicer_id', false) == true) {
-                $authManager = Yii::$app->authManager;
-                $role = $authManager->getRolesByUser(Yii::$app->user->id);
-                $role = isset(current($role)->name)? current($role)->name : false;
-                if ($role != Admin::SUPER_ADMIN) {
+                if (Type::isSuperAdmin() == false) {
                     unset($this->custom_servicer_id);
                 }
             }
-
             //判断是否更改了套餐
             if ($this->getOldAttribute('combo_id') != $this->combo_id) {
-
                 if (!$this->_setSnapshot()) {
                     return false;
                 }
             }
             //记录修改用户
             $this->mod_operator_id = Yii::$app->getUser()->id;
-
         }
 
         //记录操作用户 在送证日(deliver_date)和入馆日(entry_date)被填写后，除超级管理员外都不能修改
-        if (empty($this->deliver_date) || empty($this->entry_date)) {
-            $this->mod_operator_id =  $this->operator_id = Yii::$app->getUser()->id;
-        } else {
-            $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
-            $role = isset(current($role)->name)? current($role)->name : false;
-            if ($role == Admin::SUPER_ADMIN) {
-                $this->mod_operator_id = $this->operator_id = Yii::$app->getUser()->id;
-            } else {
-                $this->mod_operator_id =  Yii::$app->getUser()->id;
-            }
+        if (!empty($this->deliver_date) && !empty($this->entry_date) && Type::isSuperAdmin()) {
+            // 修改操作者
+        } elseif (Type::isOperator()) {
+            // 记录操作用户
+            $this->setOperator();
         }
 
+        $this->setDefault();
+        $this->setModifyPerson();
+        $this->setAuditStatus();
+
+        return true;
+    }
+
+    private function setDefault()
+    {
         $this->output_total_person = $this->total_person;
+    }
+
+    private function setCreator()
+    {
+        $this->creator_id = Yii::$app->getUser()->id;
+    }
+
+    private function setOperator()
+    {
+        if (Type::isOperator()) {
+            $this->operator_id = Yii::$app->getUser()->id;
+        }
+    }
+
+    private function setModifyPerson()
+    {
+        $this->mod_operator_id  = Yii::$app->getUser()->id;
+    }
+
+    private function setAuditStatus()
+    {
         $status = ['collect_date'=>'2','deliver_date'=>'3','entry_date'=>'4','putsign_date'=>'5'];
 
         //判断日期 决定审核状态
@@ -256,8 +277,6 @@ class Order extends \yii\db\ActiveRecord
                 $this->audit_status = 1;
             }
         }
-
-        return true;
     }
 
     public function beforeDelete()
@@ -358,6 +377,12 @@ class Order extends \yii\db\ActiveRecord
             return trim($str, ',');
         }
         return "";
+    }
+
+    //操作员
+    public function getCreator()
+    {
+        return $this->hasOne(Admin::className(), ['id' => 'creator_id']);
     }
 
     //操作员

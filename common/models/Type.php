@@ -10,8 +10,11 @@ namespace common\models;
 
 
 use backend\models\Admin;
+use backend\models\Operator;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
+use Yii;
+
 
 class Type
 {
@@ -53,8 +56,14 @@ class Type
     //客服绑定帐号
     public static function getAccount()
     {
-        //除去已经被绑定的
-        $admin_id = array_filter(array_values(ArrayHelper::getColumn(Servicer::find()->all(),'admin_id')));
+        //除去已经被绑定的客服
+        $servicer_admin_id = array_filter(array_values(ArrayHelper::getColumn(Servicer::find()->all(),'admin_id')));
+
+        //除去已经被绑定的操作人员
+        $operator_admin_id = array_filter(array_values(ArrayHelper::getColumn(Operator::find()->all(),'admin_id')));
+
+        $admin_id = $servicer_admin_id + $operator_admin_id;
+
         if (!empty($admin_id)) {
             $data =Admin::find()->where(['not in','id', $admin_id])->all();
         } else {
@@ -62,6 +71,35 @@ class Type
         }
 
         return ArrayHelper::map($data,'id','username');
+    }
+
+    /**
+     * 查询当前用户是否为超级管理员
+     * @return bool
+     */
+    public static function isSuperAdmin()
+    {
+        $authManager = Yii::$app->authManager;
+        $role = $authManager->getRolesByUser(Yii::$app->user->id);
+        $role = isset(current($role)->name)? current($role)->name : false;
+
+        return $role == Admin::SUPER_ADMIN;
+    }
+
+    // 查询当前用户是否为客服
+    public static function isServicer()
+    {
+        $exist = Servicer::find()->where(['admin_id' => Yii::$app->getUser()->id])->exists();
+
+        return $exist;
+    }
+
+    // 查询当前用户是否为操作人员
+    public static function isOperator()
+    {
+        $exist = Operator::find()->where(['admin_id' => Yii::$app->getUser()->id])->exists();
+
+        return $exist;
     }
 
 }

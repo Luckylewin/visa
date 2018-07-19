@@ -33,18 +33,18 @@ $this->params['breadcrumbs'][] = $this->title;
              ],
              [
                      'attribute' => 'phone',
-                     'options' => ['style'=>'width:200px;']
+                     'options' => ['style'=>'width:180px;']
              ],
             'address',
             'identify',
             [
                 'attribute' => 'remark',
-                'options' => ['style'=>'width:250px;']
+                'options' => ['style'=>'width:220px;']
             ],
             [
                     'header' => '操作',
-                    'class' => 'yii\grid\ActionColumn',
-                    'options' => ['style'=>'width:100px;']
+                    'class' => 'common\grid\myActionColumn',
+                    'options' => ['style'=>'width:140px;']
             ],
         ],
     ]); ?>

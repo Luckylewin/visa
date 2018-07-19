@@ -13,6 +13,11 @@ $this->title = '后台菜单管理';
 $this->params['breadcrumbs'][] = '系统设置';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<style>
+    td{vertical-align: middle!important;}
+</style>
+
 <div class="menu-index">
 
     <?=$this->render('_tab_menu');?>
@@ -23,22 +28,43 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'filterPosition' => GridView::FILTER_POS_FOOTER,
         'layout' => '{items}',
+        'tableOptions' => ['class' => 'table table-bordered'],
+        'rowOptions' => function($model) {
+            if($model['pid'] == 0 ) {
+                return [
+                        'class' => 'active'
+                ];
+            }
+        },
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
-
-            //'sort',
             [
                 'attribute' => 'sort',
                 'label' => '排序',
                 'format' => 'raw',
                 'value' => function($data) {
-                    return Html::textInput('sort['.$data['id'].']', $data['sort'], ['class' => 'wd35']);
+                    return Html::textInput('sort['.$data['id'].']', $data['sort'], ['class' => 'wd35 form-control','style'=>'width:50px;']);
+                },
+                'options' => ['style'=>'width:40px;'],
+            ],
+            //'sort',
+            [
+                'attribute' => 'icon_style',
+                'format' => 'raw',
+                'label' => '图标',
+                'options' => ['style'=>'width:50px;'],
+                'value' => function($data) {
+                    if (isset($data['icon_style'])) {
+                        return '<i class="fa '. $data['icon_style'].'"><i>';
+                    }
+                    return '';
                 }
             ],
-            [
+
+           /* [
                 'attribute' => 'id',
                 'label' => 'ID',
-            ],
+            ],*/
             //'pid',
             //'name',
             [
@@ -47,10 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '菜单名称',
             ],
             'url:url',
-            [
-                'attribute' => 'icon_style',
-                'label' => '图标样式',
-            ],
+
             [
                 'attribute' => 'display',
                 'format' => 'raw',

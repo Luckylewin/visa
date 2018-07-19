@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 
-$this->title = '管理员角色';
+$this->title = '当前用户('. $user->username .')';
 $this->params['breadcrumbs'][] = ['label' => '管理员设置', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'filterPosition' => GridView::FILTER_POS_FOOTER,
         'layout' => '{items}{pager}',
-        'caption' => $this->title,
+        'caption' => '<h3>' . $this->title .'</h3>',
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
 
@@ -35,7 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-    <div class="form-group"><?=Html::submitButton('保存', ['class' => 'btn btn-info']) ?></div>
+    <div class="form-group">
+        <?=Html::submitButton('保存', ['class' => 'btn btn-info']) ?>
+        <?= Html::a('返回', ['admin/index'], ['class' => 'btn btn-default']) ?>
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div><!-- index -->

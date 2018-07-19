@@ -79,11 +79,10 @@ $tranlator = new Transator();
                 ]) ?>
 
                 <?php
-                    $servicer = Servicer::findOne(['admin_id' => Yii::$app->user->identity->getId()]);
-
                     if (Yii::$app->params['allow']['custom_servicer_id']) {
                         $servicer = ArrayHelper::map(Servicer::find()->all(),'id','name');
                     } else {
+                        $servicer = Servicer::findOne(['id' => $model->custom_servicer_id]);
                         $servicer = [$servicer->id => $servicer->name];
                     }
                 ?>
@@ -243,6 +242,11 @@ $tranlator = new Transator();
                 ]) ?>
 
                 <?= $form->field($model, 'pay_account')->textInput(); ?>
+
+
+                <?php if(\common\models\Type::isSuperAdmin()): ?>
+                <?= $form->field($model, 'operator_id')->dropDownList(\backend\models\Operator::getAllOperator()); ?>
+                <?php endif; ?>
 
             </div>
         </div>

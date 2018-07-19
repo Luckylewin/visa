@@ -57,7 +57,8 @@ class AdminController extends BaseController
         $model->scenario = 'create';
         $model->status = Admin::STATUS_ACTIVE;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            Yii::$app->session->setFlash('info', '请赋予帐号角色');
+            return $this->redirect(['admin/auth', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -101,6 +102,7 @@ class AdminController extends BaseController
     {
         $authManager = Yii::$app->authManager;
         $adminModel = $this->findModel($id);
+
         if(Yii::$app->request->isPost) {
             $roleName = Yii::$app->request->post('roleName', '');
             //删除用户所在的用户组
@@ -119,6 +121,7 @@ class AdminController extends BaseController
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'adminGroups' => $adminGroups,
+            'user' => $adminModel
         ]);
     }
 

@@ -10,8 +10,10 @@ use common\libs\Tree;
  * @property integer $id
  * @property integer $pid
  * @property string $name
+ * @property string $icon_style
  * @property string $url
  * @property string $group
+
  * @property integer $hide
  * @property integer $sort
  */
@@ -27,11 +29,12 @@ class Menu extends \yii\db\ActiveRecord
     ];
 
     public static $displayStyles = [
-        self::HIDE => 'label-warning',
+        self::HIDE => 'label-default',
         self::DISPLAY => 'label-info',
     ];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->display = self::DISPLAY;
     }
 
@@ -49,6 +52,7 @@ class Menu extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name', 'url'], 'required'],
             [['pid', 'display', 'sort'], 'integer'],
             [['name', 'icon_style'], 'string', 'max' => 50],
             [['url'], 'string', 'max' => 60],
@@ -65,41 +69,37 @@ class Menu extends \yii\db\ActiveRecord
             'id' => 'ID',
             'pid' => '上级菜单',
             'name' => '菜单名称',
-            'url' => 'URL',
+            'url' => '路由',
             'icon_style' => '图标样式',
             'display' => '是否显示',
             'sort' => '排序',
         ];
     }
 
-    public function getDisplays() {
+    public function getDisplays()
+    {
         return self::$displays;
     }
 
     /**
      * 获取菜单状态
      */
-    public static function getDisplayText($display) {
+    public static function getDisplayText($display)
+    {
         return self::$displays[$display];
     }
 
     /**
      * 获取菜单状态样式
      */
-    public static function getDisplayStyle($display) {
+    public static function getDisplayStyle($display)
+    {
         return self::$displayStyles[$display];
     }
 
     public static function getMenu()
     {
-        $menus = Yii::$app->cache->getOrSet('menus', function() {
-             return static::find()
-                       ->where(['display' => 1])
-                       ->orderBy('sort asc')
-                       ->asArray()
-                       ->all();
-        });
-
+        $menus = static::find()->where(['display' => 1])->orderBy('sort asc')->asArray()->all();
         $treeObj = new Tree($menus);
         return $treeObj->getTreeArray();
     }
@@ -107,26 +107,23 @@ class Menu extends \yii\db\ActiveRecord
     public static function getActualMenu()
     {
         $allMenus = self::getMenu();
-       /* */
-       $username = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
-       if (isset(array_keys($username)[0])) {
-            $rolename = array_keys($username)[0];
-       }
 
-       foreach ($allMenus as $key => $menus) {
-            foreach ($menus['_child'] as $_key => $menu) {
-               if (!isset($rolename) || $rolename != '超级管理员') {
+        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->username != 'admin') {
+            foreach ($allMenus as $key => $menus) {
+                foreach ($menus['_child'] as $_key => $menu) {
                     if (!\Yii::$app->user->can($menu['url'])) {
                         unset($allMenus[$key]['_child'][$_key]);
                     }
                 }
-            }
-            if (!isset($allMenus[$key]['_child']) || count($allMenus[$key]['_child']) <= 0) {
-                unset($allMenus[$key]);
+                if (count($allMenus[$key]['_child']) <= 0) {
+                    unset($allMenus[$key]);
+                }
             }
         }
 
         return $allMenus;
     }
+
+
 
 }

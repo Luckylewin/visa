@@ -5,6 +5,7 @@ namespace backend\controllers;
 use app\models\OrderToTransactor;
 use backend\models\Admin;
 use common\models\ExportSetting;
+use common\models\Type;
 use Yii;
 use common\models\Order;
 use common\models\OrderQuery;
@@ -23,12 +24,11 @@ class OrderController extends BaseController
     public function beforeAction($action)
     {
         if (in_array($action->id, ['update', 'create'])) {
-            $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
-            $role = isset(current($role)->name)? current($role)->name : false;
-            if ($role == Admin::SUPER_ADMIN) {
+
+            if (Type::isSuperAdmin() == true) {
                  $allow = ['custom_servicer_id' => true];
             } else {
-                $allow = ['custom_servicer_id' => false];
+                 $allow = ['custom_servicer_id' => false];
             }
 
             Yii::$app->params['allow'] = $allow;
@@ -84,6 +84,12 @@ class OrderController extends BaseController
     {
         $model = new Order();
         $data = Yii::$app->request->post();
+
+        if (Yii::$app->request->isGet && Type::isOperator()) {
+            // 判断是否为操作者
+            Yii::$app->session->setFlash('info', '没有新增订单权限');
+            return $this->redirect(['order/index']);
+        }
 
         if ($model->load($data) && ($order_id = $model->save())) {
             Transator::appendToOrder($data[$model->formName()]['transactor_id'], $model->id ,$model->isNewRecord);

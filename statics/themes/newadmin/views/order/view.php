@@ -320,6 +320,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
             ],
 
+
+
+            [
+                'attribute' => 'creator_id',
+                'value' => $model->creator->username
+            ],
+
             [
                 'attribute' => 'mod_operator_id',
                 'value' => $model->mOperator->username
@@ -327,7 +334,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'operator_id',
-                'value' => $model->operator->username
+                'value' => function($model) {
+                    $user = $model->operator;
+                    if ($user) {
+                        return $user->username;
+                    }
+                    return null;
+                }
             ],
 
         ],
