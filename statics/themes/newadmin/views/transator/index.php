@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                     'header' => '操作',
-                    'class' => 'common\grid\myActionColumn',
+                    'class' => 'yii\grid\ActionColumn',
                     'options' => ['style'=>'width:140px;']
             ],
         ],
