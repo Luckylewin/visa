@@ -246,6 +246,11 @@ $tranlator = new Transator();
 
                 <?php if(\common\models\Type::isSuperAdmin()): ?>
                 <?= $form->field($model, 'operator_id')->dropDownList(\backend\models\Operator::getAllOperator()); ?>
+                <?php elseif (\common\models\Type::isOperator()): ?>
+                    <?= $form->field($model, 'operator_id')->dropDownList(\backend\models\Operator::getCurrentOperator(), [
+                            'disabled' => true,
+                            'readonly' => true
+                    ]); ?>
                 <?php endif; ?>
 
             </div>

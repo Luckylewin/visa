@@ -56,4 +56,11 @@ class Operator extends \yii\db\ActiveRecord
         $data = self::find()->where(['>', 'admin_id', 0])->asArray()->all();
         return ArrayHelper::map($data, 'admin_id', 'name');
     }
+
+    public static function getCurrentOperator()
+    {
+        $data = self::find()->where(['admin_id' => Yii::$app->user->getId()])->asArray()->all();
+        return ArrayHelper::map($data, 'admin_id', 'name');
+
+    }
 }
