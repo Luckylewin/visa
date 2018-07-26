@@ -147,7 +147,8 @@ class AdminController extends BaseController
         $form = new ResetPasswordForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->resetPassword()) {
-            $this->success();
+            Yii::$app->session->setFlash('success', '密码修改成功');
+            return $this->redirect(['index/index']);
         }
 
         return $this->render('change-password', [
