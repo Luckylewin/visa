@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\Servicer;
 use common\models\Transator;
+use \backend\models\Operator;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Order */
@@ -245,11 +246,16 @@ $tranlator = new Transator();
 
 
                 <?php if(\common\models\Type::isSuperAdmin()): ?>
-                <?= $form->field($model, 'operator_id')->dropDownList(\backend\models\Operator::getAllOperator()); ?>
+                <?= $form->field($model, 'operator_id')->dropDownList(Operator::getAllOperator()); ?>
                 <?php elseif (\common\models\Type::isOperator()): ?>
-                    <?= $form->field($model, 'operator_id')->dropDownList(\backend\models\Operator::getCurrentOperator(), [
+                    <?= $form->field($model, 'operator_id')->dropDownList(Operator::getCurrentOperator(Yii::$app->user->getId()), [
                             'disabled' => true,
                             'readonly' => true
+                    ]); ?>
+                <?php else: ?>
+                    <?= $form->field($model, 'operator_id')->dropDownList(Operator::getCurrentOperator($model->operator_id), [
+                        'disabled' => true,
+                        'readonly' => true
                     ]); ?>
                 <?php endif; ?>
 
