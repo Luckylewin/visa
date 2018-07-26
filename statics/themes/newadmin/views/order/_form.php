@@ -83,7 +83,11 @@ $tranlator = new Transator();
                     if (Yii::$app->params['allow']['custom_servicer_id']) {
                         $servicer = ArrayHelper::map(Servicer::find()->all(),'id','name');
                     } else {
-                        $servicer = Servicer::findOne(['id' => $model->custom_servicer_id]);
+                        if ($model->isNewRecord) {
+                            $servicer = Servicer::findOne(['id' => $model->custom_servicer_id]);
+                        } else {
+                            $servicer = Servicer::findOne(['id' => Yii::$app->user->getId()]);
+                        }
                         $servicer = [$servicer->id => $servicer->name];
                     }
                 ?>
