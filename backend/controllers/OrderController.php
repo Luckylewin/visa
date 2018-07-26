@@ -90,7 +90,7 @@ class OrderController extends BaseController
             if (Type::isOperator()) {
                 Yii::$app->session->setFlash('info', '没有新增订单权限');
                 return $this->redirect(['order/index']);
-            } else if (!Type::isServicer() || !Type::isSuperAdmin()) {
+            } else if (!Type::isServicer() && !Type::isSuperAdmin()) {
                 Yii::$app->session->setFlash('info', '请联系管理员，绑定帐号');
                 return $this->redirect(['order/index']);
             }
