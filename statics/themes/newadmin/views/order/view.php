@@ -324,12 +324,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'creator_id',
-                'value' => $model->creator->username
+                'value' => function($model) {
+                    $creator = $model->creator;
+                    if (!empty($creator)) {
+                        return $creator->username;
+                    }
+                    return "(已被删除的帐号)";
+                }
             ],
 
             [
                 'attribute' => 'mod_operator_id',
-                'value' => $model->mOperator->username
+                'value' => function($model) {
+                    $operator = $model->mOperator;
+                    if ($operator) {
+                        return $operator->username;
+                    }
+                    return "(已被删除的帐号)";
+                }
             ],
 
             [
@@ -339,7 +351,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($user) {
                         return $user->username;
                     }
-                    return null;
+                    return "(已被删除的帐号)";
                 }
             ],
 
