@@ -351,7 +351,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($user) {
                         return $user->username;
                     }
-                    return "(已被删除的帐号)";
+                    return "待操作员处理";
                 }
             ],
 
