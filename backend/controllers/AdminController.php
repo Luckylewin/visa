@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\form\ResetPasswordForm;
 use Yii;
 use backend\models\Admin;
 use backend\models\search\AdminSearch;
@@ -140,4 +141,19 @@ class AdminController extends BaseController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionChangePassword()
+    {
+        $form = new ResetPasswordForm();
+
+        if ($form->load(Yii::$app->request->post()) && $form->resetPassword()) {
+            $this->success();
+        }
+
+        return $this->render('change-password', [
+            'model' => $form
+        ]);
+
+    }
+
 }

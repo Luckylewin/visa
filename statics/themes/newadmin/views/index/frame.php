@@ -62,6 +62,7 @@ $allMenus = Menu::getActualMenu();
                             </li>-->
 
                             <li class="divider"></li>
+                            <li><a href="<?= Url::to(['admin/change-password']) ?>">修改密码</a>
                             <li><a href="<?= Url::to(['index/logout']) ?>">安全退出</a>
                             </li>
                         </ul>
