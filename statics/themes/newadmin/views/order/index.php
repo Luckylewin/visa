@@ -261,13 +261,11 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
 <p>
     <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
-
+    <?= Html::button('导出excel', ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
     <?= Html::a("批量删除", "javascript:void(0);", ["class" => "btn btn-danger gridview"]) ?>
 
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-
     <?= Html::a('导入excel', \yii\helpers\Url::to(['excel/import']), ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
-    <?= Html::button('导出excel', ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
 </p>
 
 <?php \common\widgets\Jsblock::begin() ?>
