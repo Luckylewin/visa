@@ -817,8 +817,13 @@ class ExcelController extends BaseController
                         break;
 
                     case 'operator':
-                        $operator = $object->operator->username;
-                        $cellValue = $operator ? $operator : '已删除';
+                        $operator = $object->operator;
+                        if (!is_null($operator)) {
+                            $cellValue = $operator->username;
+                        } else {
+                            $cellValue = '已删除';
+                        }
+
                         break;
 
                     case 'combo_cost':
