@@ -57,4 +57,10 @@ class BackupController extends Controller
 
 
     }
+
+    public function actionHello()
+    {
+        echo 'OK';
+        exit;
+    }
 }

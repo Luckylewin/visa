@@ -63,10 +63,11 @@ class CrontabController extends Controller
 
         $pool = [];
         $startExectime = $this->getCurrentTime();
+        $php = Yii::$app->params['php'];
 
         foreach ($tasks as $task) {
 
-            $pool[] = proc_open("php yii $task->route", [], $pipe);
+            $pool[] = proc_open("{$php} yii $task->route", [], $pipe);
         }
 
         // 回收子进程
