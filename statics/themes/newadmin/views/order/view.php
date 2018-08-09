@@ -319,6 +319,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                     'attribute' => 'audit_status',
+                    'captionOptions' => ['class' => 'info'],
                     'value' => function($model) {
                         $status = \common\models\Type::getStatus();
                         return $status[$model->audit_status];
@@ -367,15 +368,9 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <p>
+
+
         <?= Html::a('编辑', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('删除', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-        &nbsp;&nbsp;
 
         <?php if (preg_match('/(create|update|view)/',Yii::$app->request->referrer)) { ?>
             <?= Html::a('返回',Url::to(['order/index']), [
@@ -389,5 +384,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ])?>
 
         <?php } ?>
+
+
+
+
     </p>
 </div>
