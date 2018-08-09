@@ -104,13 +104,23 @@ class ServicerController extends BaseController
             $model->admin_id = Yii::$app->request->post('admin_id');
             $model->save();
             Yii::$app->session->setFlash('success','帐号绑定成功');
-            return $this->redirect(['servicer/index'
-            ]);
+            return $this->redirect(['servicer/index']);
         }
 
         return $this->render('grant', [
             'model' => $model
         ]);
+    }
+
+    public function actionUnbind($id)
+    {
+        $model = $this->findModel($id);
+        if ($model) {
+            $model->admin_id = '';
+            $model->save(false);
+            Yii::$app->session->setFlash('info','帐号解除绑定成功');
+            return $this->redirect(['servicer/index']);
+        }
     }
 
     /**
