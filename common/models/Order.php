@@ -226,7 +226,7 @@ class Order extends \yii\db\ActiveRecord
         //记录操作用户 在送证日(deliver_date)和入馆日(entry_date)被填写后，除超级管理员外都不能修改
         if (!empty($this->deliver_date) && !empty($this->entry_date) && Type::isSuperAdmin()) {
             // 修改操作者
-        } elseif (Type::isOperator()) {
+        } elseif (Type::isOperator() && empty($this->operator_id)) {
             // 记录操作用户
             $this->setOperator();
         }
