@@ -228,6 +228,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
+                'attribute' => 'operator_id',
+                'captionOptions' => ['class' => 'success'],
+                'value' => function($model) {
+                    $user = $model->operator;
+                    if ($user) {
+                        return $user->username;
+                    }
+                    return "待操作员处理";
+                }
+            ],
+
+            [
                 'attribute' => 'putsign_date',
                 'value' => function($model) {
                     if ($model->putsign_date ) {
@@ -349,17 +361,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-            [
-                'attribute' => 'operator_id',
-                'captionOptions' => ['class' => 'success'],
-                'value' => function($model) {
-                    $user = $model->operator;
-                    if ($user) {
-                        return $user->username;
-                    }
-                    return "待操作员处理";
-                }
-            ],
+
 
         ],
     ]) ?>
