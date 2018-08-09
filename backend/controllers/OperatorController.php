@@ -116,4 +116,15 @@ class OperatorController extends Controller
         ]);
     }
 
+    public function actionUnbind($id)
+    {
+        $model = $this->findModel($id);
+        if ($model) {
+            $model->admin_id = '';
+            $model->save(false);
+            Yii::$app->session->setFlash('info','帐号解除绑定成功');
+            return $this->redirect(['operator/index']);
+        }
+    }
+
 }

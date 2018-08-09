@@ -36,10 +36,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'btn btn-info btn-xs'
                         ]);
                     }
-                    return Html::a($account->username,\yii\helpers\Url::to(['admin/view','id'=>$account->id]));
+                    return Html::button($account->username, ['class' => 'btn btn-default btn-xs'])
+                        . ' ' .
+                        Html::a('解除绑定', \yii\helpers\Url::to(['operator/unbind', 'id' => $model->id]), [
+                            'class' => 'btn btn-warning btn-xs'
+                        ]);
                 },
                 'options' => [
-                    'style' => 'width:150px;'
+                    'style' => 'width:250px;'
                 ],
             ],
 
