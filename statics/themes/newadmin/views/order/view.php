@@ -196,6 +196,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                'attribute' => 'collect_date',
+                'captionOptions' => ['class' => 'info'],
                'value' => function($model) {
                    if ($model->collect_date ) {
                         return $model->collect_date;
@@ -206,6 +207,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'deliver_date',
+                'captionOptions' => ['class' => 'info'],
                 'value' => function($model) {
                     if ($model->deliver_date ) {
                         return $model->deliver_date;
@@ -216,6 +218,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'entry_date',
+                'captionOptions' => ['class' => 'info'],
                 'value' => function($model) {
                     if ($model->entry_date ) {
                         return $model->entry_date;
@@ -271,6 +274,8 @@ $this->params['breadcrumbs'][] = $this->title;
                  }
             ],
             [
+
+
                 'attribute' => 'receipt_date',
                 'value' => function($model) {
                     if ($model->receipt_date ) {
@@ -346,6 +351,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'operator_id',
+                'captionOptions' => ['class' => 'success'],
                 'value' => function($model) {
                     $user = $model->operator;
                     if ($user) {
