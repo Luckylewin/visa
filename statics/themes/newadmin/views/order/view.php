@@ -299,8 +299,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'company_receipt_date',
                 'value' => function($model) {
-                    if ($model->receipt_date ) {
-                        return $model->receipt_date;
+                    if ($model->company_receipt_date ) {
+                        return $model->company_receipt_date;
                     }
                     return '-';
                 }
