@@ -250,7 +250,9 @@ $tranlator = new Transator();
 
 
                 <?php if(\common\models\Type::isSuperAdmin()): ?>
-                <?= $form->field($model, 'operator_id')->dropDownList(Operator::getAllOperator()); ?>
+                <?= $form->field($model, 'operator_id')->dropDownList(Operator::getAllOperator(), [
+                        'prompt' => '请选择操作员'
+                    ]); ?>
                 <?php elseif (\common\models\Type::isOperator()): ?>
                     <?= $form->field($model, 'operator_id')->dropDownList(Operator::getCurrentOperator(Yii::$app->user->getId()), [
                             'disabled' => true,
