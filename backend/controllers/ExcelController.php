@@ -143,6 +143,8 @@ class ExcelController extends BaseController
 
             //创建order对象
             $order = new Order();
+            $order->scenario = 'importFromExcel';
+
             $snapshot = new Snapshot();
             $servicer = new Servicer();
             $existTransactor = [];
@@ -202,6 +204,7 @@ class ExcelController extends BaseController
 
                            case 'servicer':
                                 //查找系统 有没有此客服
+
                                 $servicerData = Servicer::findOne(['name' => trim($data)]);
                                 if (!is_null($servicerData)) {
                                     $servicer->name = trim($data);
@@ -352,15 +355,18 @@ class ExcelController extends BaseController
                         continue;
                    }
                 */
-                // echo "<hr/>";
-                // var_dump($existTransactor);
-                // var_dump($notExistTransactorName);
-                // echo "<hr/>";
 
-                // print_r($snapshot);
-                // echo "<hr/>";
-                // print_r($servicer); ok 保存之前检查name
-                // echo "<hr/>";
+               /*  echo "<hr/>";
+                 var_dump($existTransactor);
+                 var_dump($notExistTransactorName);
+                 echo "<hr/>";
+
+                 print_r($snapshot);
+                 echo "<hr/>";
+                 print_r($servicer); //ok 保存之前检查name
+                 echo "<hr/>";
+
+                 exit;*/
 
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
@@ -371,7 +377,6 @@ class ExcelController extends BaseController
                     $order->transactor_id = "0";
                     $order->combo_id = $snapshot->id;
                     $order->back_addressee = empty($order->back_addressee)? "-" : $order->back_addressee;
-
                     $order->output_balance_sum = empty($order->output_balance_sum) ? '0.00' : $order->output_balance_sum;
                     $orderResult = $order->save();
 
@@ -393,16 +398,16 @@ class ExcelController extends BaseController
                         $orderToTran->save();
                     }
 
+                    //var_dump(!$orderResult || !$snapshotResult || (isset($transactorResult) && !$transactorResult));  exit;
+
                     if (!$orderResult || !$snapshotResult || (isset($transactorResult) && !$transactorResult)) {
 
                         $snapshotError = array_values($snapshot->getFirstErrors());
                         $orderError = array_values($order->getFirstErrors());
 
                         if (!empty($snapshotError)) {
-
                             $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg'=>$snapshotError[0]];
                         } else if (!empty($orderError)) {
-
                             $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg'=>$orderError[0]];
                         } else if (isset($newTransactor)) {
                             $newTransactorError = $newTransactor->getFirstErrors();
@@ -410,12 +415,14 @@ class ExcelController extends BaseController
                                 $errorMsg[$row->getRowIndex()] = ['row'=>$row->getRowIndex(),'msg' => $newTransactorError[0]];
                             }
                         }
+
                         throw new \Exception('导入保存发生错误');
                     }
 
                     $transaction->commit();
                     $importTotal++;
                 } catch (\Exception $e) {
+                    
                     $transaction->rollBack();
                 }
             }

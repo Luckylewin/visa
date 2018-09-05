@@ -108,6 +108,15 @@ class Order extends \yii\db\ActiveRecord
                 'collect_date','deliver_date','entry_date','putsign_date', 'delivergood_date', 'receipt_date', 'company_receipt_date', 'pay_date',
                 'back_address','back_addressee','back_telphone','deliver_order','delivercompany','remark','pay_account'
             ],
+            'importFromExcel' => [
+                'delivercompany', 'deliver_order',
+                'balance_order', 'flushphoto_order', 'carrier_order',
+                'balance_order', 'balance_sum', 'output_balance_sum',
+                'flushphoto_order', 'flushphoto_sum', 'output_flushphoto_sum',
+                'carrier_order', 'carrier_sum', 'output_carrier_sum',
+                'collect_date','deliver_date','entry_date','putsign_date', 'delivergood_date', 'receipt_date', 'company_receipt_date', 'pay_date',
+                'back_address','back_addressee','back_telphone','deliver_order','delivercompany','remark','pay_account'
+            ],
             'create' => [
                 'order_num'
             ]
@@ -194,8 +203,9 @@ class Order extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-        parent::beforeSave($insert);
-
+        if ($this->scenario == 'importFromExcel') {
+            return parent::beforeSave($insert);
+        }
         //插入
         if ($this->isNewRecord) {
             if (!$this->_setSnapshot()) {
@@ -235,7 +245,7 @@ class Order extends \yii\db\ActiveRecord
         $this->setModifyPerson();
         $this->setAuditStatus();
 
-        return true;
+        return parent::beforeSave($insert);
     }
 
     private function setDefault()
