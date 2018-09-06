@@ -164,8 +164,9 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 'label' => '客服',
                 'format' => 'raw',
                 'value' => function($model){
-                    $servicer = $model->servicer;
-                    return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
+                     if ($servicer = $model->servicer) {
+                         return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
+                     }
                 },
                 'options' => ['style'=>'width:50px;']
             ],
@@ -224,7 +225,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                     'class' => 'common\grid\MyActionColumn',
                     'header' => '操作',
-                    'options' => ['style'=>'width:250px;'],
+                    'options' => ['style'=>'width:250px;']
             ],
             // 'id',
             //'pid',
