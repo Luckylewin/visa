@@ -893,12 +893,12 @@ class ExcelController extends BaseController
                                     $object->carrier_sum +
                                     $object->balance_sum) * ( $charge > 0 ? $charge : 1);
 
-                            $cost = $object->output_total_person * $cost +
+                            $costValue = $object->output_total_person * $cost +
                                 $object->output_flushphoto_sum +
                                 $object->output_carrier_sum +
                                 $object->output_balance_sum;
 
-                            $cellValue = $income - $cost;
+                            $cellValue = $income - $costValue;
                         }
                         break;
 
