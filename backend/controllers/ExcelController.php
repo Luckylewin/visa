@@ -835,8 +835,11 @@ class ExcelController extends BaseController
 
                     case 'combo_cost':
                         if ($showFlag) {
-                            $cost = $object->snapshot;
-                            $cellValue = $cost ? $cost->combo_cost : '数据丢失';
+                            if ($cost = $object->snapshot) {
+                                $cellValue = $cost ? $cost->combo_cost : '数据丢失';
+                                $cost = $cost->combo_cost;
+                            }
+
                         }
                         break;
 
