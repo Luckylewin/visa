@@ -809,8 +809,8 @@ class ExcelController extends BaseController
                         break;
 
                     case 'combo_product':
-                        $product = $object->snapshot->combo_product;
-                        $cellValue = $product ? $product : '已删除';
+                        $product = $object->snapshot;
+                        $cellValue = $product ? $product->combo_product : '已删除';
                         break;
 
                     case 'combo_type':
@@ -819,8 +819,8 @@ class ExcelController extends BaseController
                         break;
 
                     case 'service_name':
-                        $servicer = $object->servicer->name;
-                        $cellValue = $servicer ? $servicer : '已删除';
+                        $servicer = $object->servicer;
+                        $cellValue = $servicer ? $servicer->name : '已删除';
                         break;
 
                     case 'operator':
@@ -835,8 +835,8 @@ class ExcelController extends BaseController
 
                     case 'combo_cost':
                         if ($showFlag) {
-                            $cost = $object->snapshot->combo_cost;
-                            $cellValue = $cost ? $cost : '数据丢失';
+                            $cost = $object->snapshot;
+                            $cellValue = $cost ? $cost->combo_cost : '数据丢失';
                         }
                         break;
 
@@ -846,8 +846,8 @@ class ExcelController extends BaseController
                         break;
 
                     case 'combo_name':
-                        $combo = $object->snapshot->combo_name;
-                        $cellValue = $combo ? $combo : "丢失数据";
+                        $combo = $object->snapshot;
+                        $cellValue = $combo ? $combo->combo_name : "丢失数据";
                         break;
 
                     case 'total_person':
