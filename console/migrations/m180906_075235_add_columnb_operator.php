@@ -13,7 +13,7 @@ class m180906_075235_add_columnb_operator extends Migration
     {
         echo "m180906_075235_add_columnb_operator cannot be reverted.\n";
 
-        return false;
+        return true;
     }
 
     /*
