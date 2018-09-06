@@ -12,6 +12,7 @@ use Yii;
  * @property string $name
  * @property string $tb_servicer_id
  * @property integer $admin_id
+ * @property string $is_del
  */
 class Servicer extends \yii\db\ActiveRecord
 {
@@ -33,6 +34,7 @@ class Servicer extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 50],
             [['tb_servicer_id'], 'string', 'max' => 30],
             [['admin_id'], 'safe'],
+            ['is_del', 'default', 'value' => 0]
         ];
     }
 
@@ -52,6 +54,11 @@ class Servicer extends \yii\db\ActiveRecord
     public function getAccount()
     {
         return $this->hasOne(Admin::className(),['id' => 'admin_id']);
+    }
+
+    public static function getValidPerson()
+    {
+        return self::find()->where(['is_del' => 0])->all();
     }
 
 }

@@ -15,15 +15,18 @@ class Admin extends ActiveRecord implements IdentityInterface
 
     const STATUS_DELETE = 0;
     const STATUS_ACTIVE = 1;
+    const STATUS_SOFT_DELETE = 2;
 
     public static $statusTexts = [
         self::STATUS_DELETE => '禁用',
         self::STATUS_ACTIVE => '启用',
+        self::STATUS_SOFT_DELETE => '软删除',
     ];
 
     public static $statusStyles = [
         self::STATUS_DELETE => 'label-warning',
         self::STATUS_ACTIVE => 'label-info',
+        self::STATUS_SOFT_DELETE => 'label-default',
     ];
 
     public static function tableName() {

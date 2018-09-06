@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
  * @property integer $id
  * @property string $name
  * @property integer $admin_id
+ * @property string $is_del
  */
 class Operator extends \yii\db\ActiveRecord
 {
@@ -31,6 +32,7 @@ class Operator extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['admin_id'], 'integer'],
             [['name'], 'string', 'max' => 50],
+            [['is_del'], 'default', 'value' => 1],
         ];
     }
 
@@ -53,7 +55,7 @@ class Operator extends \yii\db\ActiveRecord
 
     public static function getAllOperator()
     {
-        $data = self::find()->where(['>', 'admin_id', 0])->asArray()->all();
+        $data = self::find()->where(['>', 'admin_id', 0])->andWhere(['is_del' => 0])->asArray()->all();
         return ArrayHelper::map($data, 'admin_id', 'name');
     }
 
@@ -62,6 +64,5 @@ class Operator extends \yii\db\ActiveRecord
         $data = self::find()->where(['admin_id' => $id])->asArray()->all();
         return ArrayHelper::map($data, 'admin_id', 'name');
     }
-
 
 }

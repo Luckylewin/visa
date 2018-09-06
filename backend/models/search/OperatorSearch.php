@@ -41,7 +41,7 @@ class OperatorSearch extends Operator
      */
     public function search($params)
     {
-        $query = Operator::find();
+        $query = Operator::find()->where(['is_del' => 0]);
 
         // add conditions that should always apply here
 

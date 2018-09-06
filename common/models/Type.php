@@ -57,7 +57,7 @@ class Type
     public static function getAccount()
     {
         //除去已经被绑定的客服
-        $servicer_admin_id = array_filter(array_values(ArrayHelper::getColumn(Servicer::find()->all(),'admin_id')));
+        $servicer_admin_id = array_filter(array_values(ArrayHelper::getColumn(Servicer::getValidPerson(),'admin_id')));
 
         //除去已经被绑定的操作人员
         $operator_admin_id = array_filter(array_values(ArrayHelper::getColumn(Operator::find()->all(),'admin_id')));

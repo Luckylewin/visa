@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\Admin;
 use Yii;
 use common\models\Servicer;
 use yii\data\ActiveDataProvider;
@@ -21,7 +22,7 @@ class ServicerController extends BaseController
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Servicer::find(),
+            'query' => Servicer::find()->where(['is_del' => 0]),
         ]);
 
         return $this->render('index', [
@@ -29,11 +30,7 @@ class ServicerController extends BaseController
         ]);
     }
 
-    /**
-     * Displays a single Servicer model.
-     * @param integer $id
-     * @return mixed
-     */
+
     public function actionView($id)
     {
         return $this->render('view', [
@@ -61,12 +58,7 @@ class ServicerController extends BaseController
         }
     }
 
-    /**
-     * Updates an existing Servicer model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
+
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -82,15 +74,17 @@ class ServicerController extends BaseController
         }
     }
 
-    /**
-     * Deletes an existing Servicer model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
+
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->is_del = 1;
+        $model->save(false);
+
+        if ($account = $model->account) {
+            $account->status = Admin::STATUS_SOFT_DELETE;
+            $account->save(false);
+        }
 
         Yii::$app->session->setFlash('success', '操作成功');
         return $this->redirect(['index']);

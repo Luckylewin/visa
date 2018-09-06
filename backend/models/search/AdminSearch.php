@@ -41,7 +41,7 @@ class AdminSearch extends Admin
      */
     public function search($params)
     {
-        $query = Admin::find();
+        $query = Admin::find()->where(['in', 'status', [Admin::STATUS_DELETE, Admin::STATUS_ACTIVE]]);
 
         // add conditions that should always apply here
 
