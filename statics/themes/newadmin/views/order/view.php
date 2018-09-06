@@ -74,8 +74,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'custom_servicer_id',
                     'format' => 'raw',
                     'value' => function($model){
-                        $servicer = $model->servicer;
-                        return Html::a($servicer->name, Url::to(['servicer/view', 'id' => $servicer->id]));
+                        if ($servicer = $model->servicer) {
+                            return Html::a($servicer->name, Url::to(['servicer/view', 'id' => $servicer->id]));
+                        }
                     },
             ],
             [
