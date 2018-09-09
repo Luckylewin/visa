@@ -55,7 +55,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                     'attribute' => 'customer_id',
                     'label' => '客户ID',
-                    'options' => ['style'=>'width:100px;']
+                    'options' => ['style'=>'width:98px;']
             ],
             //淘宝订单号
             [
@@ -132,7 +132,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return str_replace('-','/', substr($model->entry_date, 2));
                     }
                 },
-                'options' => ['style'=>'width:75px;']
+                'options' => ['style'=>'width:70px;']
             ],
             [
                 'attribute' => 'combo_id',
@@ -146,7 +146,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return '<i class="fa fa-trash"></i>已被删除';
                     }
                 },
-                'options' => ['style'=>'width:120px;']
+                'options' => ['style'=>'width:100px;']
             ],
             //分类
             [
@@ -156,7 +156,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     $type = Type::getComboType();
                     return $type[$model->order_type];
                  },
-                'options' => ['style'=>'width:54px;']
+                'options' => ['style'=>'width:30px;']
             ],
             //接待销售
             [
@@ -168,7 +168,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                          return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
                      }
                 },
-                'options' => ['style'=>'width:50px;']
+                'options' => ['style'=>'width:55px;']
             ],
             //办理人
             [
@@ -183,7 +183,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     }
                     return $str;
                 },
-                'options' => ['style'=>'width:125px;']
+                'options' => ['style'=>'min-width:125px;']
             ],
             //套餐类型
             [
@@ -225,7 +225,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                     'class' => 'common\grid\MyActionColumn',
                     'header' => '操作',
-                    'options' => ['style'=>'width:250px;']
+                    'options' => ['style'=>'width:260px;']
             ],
             // 'id',
             //'pid',

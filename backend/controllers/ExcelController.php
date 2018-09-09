@@ -141,6 +141,7 @@ class ExcelController extends BaseController
 
         foreach ($sheet->getRowIterator() as $row) {  //逐行处理
 
+
             //创建order对象
             $order = new Order();
             $order->scenario = 'importFromExcel';
@@ -152,11 +153,11 @@ class ExcelController extends BaseController
 
             $currentRow = $row->getRowIndex();
 
-            if ($currentRow > 1 && $currentRow != $highestRow) {  //确定从哪一行开始读取
+            if ($currentRow > 1) {  //确定从哪一行开始读取
 
                 $column = 1;
 
-                foreach ($row->getCellIterator() as $cell) { //逐列读取
+                foreach ($row->getCellIterator() as $columnIndex => $cell) { //逐列读取
 
                     if (!isset($indexToColumn[$column])) {
                         continue;
@@ -180,11 +181,15 @@ class ExcelController extends BaseController
 
                     if ($field) {
                         //获取cell中数据
-
                         $data = $cell->getValue();
-
                         if (is_object($data)) {
-                            $data= $data->__toString();
+                            $data = $data->__toString();
+                        }
+
+                        // 如果最后一行的第一个单元是是空的 那么将会当成统计行 不作统计处理
+                        if ($currentRow == $highestRow && $columnIndex == 'A' && empty($data)) {
+                            echo "INDEX: {$columnIndex} {$field} {$data} <br/>";
+                            break;
                         }
 
                         switch ($field)
@@ -211,13 +216,16 @@ class ExcelController extends BaseController
                                     $order->custom_servicer_id = $servicerData->id;
                                 }
                                 break;
-
+                            // 操作者 不再支持由excel 导入改变，除非当前用户为超级管理员
                             case 'operator_id':
                                 //查找操作用户
-                                $uid = Admin::findOne(['username' => trim($data)]);
-                                if ($uid) {
-                                    $order->$field = $uid->id;
+                                if (Type::isSuperAdmin()) {
+                                    $uid = Admin::findOne(['username' => trim($data)]);
+                                    if ($uid) {
+                                        $order->$field = $uid->id;
+                                    }
                                 }
+
                                 break;
 
                             case 'transator_id':
@@ -427,6 +435,7 @@ class ExcelController extends BaseController
                 }
             }
         }
+
 
         if ($importTotal > 0) {
             \Yii::$app->session->setFlash('success', "本次成功导入{$importTotal}条订单数据");
