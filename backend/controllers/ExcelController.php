@@ -837,7 +837,7 @@ class ExcelController extends BaseController
                         if (!is_null($operator)) {
                             $cellValue = $operator->username;
                         } else {
-                            $cellValue = '已删除';
+                            $cellValue = ' ';
                         }
 
                         break;
@@ -933,8 +933,7 @@ class ExcelController extends BaseController
 
                         //设置批注
                         if ($object->remark) {
-                            $commentAuthor = $object->operator->username;
-                            $commentAuthor = !empty($commentAuthor) ? $commentAuthor : "PHPExcel";
+                            $commentAuthor = !empty($object->operator->username) ? $object->operator->username : "PHPExcel";
                             $sheet->getComment( $_column . $row)->setAuthor($commentAuthor);     //设置作者
                             $objCommentRichText = $sheet->getComment($_column . $row )->getText()->createTextRun($commentAuthor . " :");  //添加批注
                             $objCommentRichText->getFont()->setBold( true);  //将现有批注加粗
