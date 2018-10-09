@@ -55,7 +55,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             [
                     'attribute' => 'customer_id',
                     'label' => '客户ID',
-                    'options' => ['style'=>'width:98px;font-size:2px;']
+                    'options' => ['style'=>'width:98px;'],
+                    'contentOptions' => ['style'=>'font-size:8px;'],
             ],
             //淘宝订单号
             [
@@ -68,6 +69,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         }
                         return $model->order_num;
                     },
+                    'contentOptions' => ['style'=>'font-size:8px;'],
             ],
             //订单日期
             [
@@ -146,7 +148,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return '<i class="fa fa-trash"></i>已被删除';
                     }
                 },
-                'options' => ['style'=>'width:100px;']
+                'options' => ['style'=>'width:100px;'],
+                'contentOptions' => ['style'=>'font-size:9px;'],
             ],
             //分类
             [
@@ -168,7 +171,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                          return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
                      }
                 },
-                'options' => ['style'=>'width:55px;']
+                'options' => ['style'=>'width:55px;'],
             ],
             //办理人
             [
@@ -197,6 +200,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         return '<i class="fa fa-trash"></i>已被删除';
                     }
                 },
+
             ],
             [
                     'attribute' => 'single_sum',
