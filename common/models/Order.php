@@ -317,7 +317,7 @@ class Order extends \yii\db\ActiveRecord
     private function _setSnapshot()
     {
         //记录快照
-        $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id)]);
+        $snapShot = Snapshot::findOne(['snap_combo_id' => (int)($this->combo_id), 'is_valid' => 1]);
 
         if (!is_null($snapShot)) {
             $this->order_classify = $snapShot->combo_classify;
