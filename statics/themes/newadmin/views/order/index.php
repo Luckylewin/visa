@@ -58,10 +58,9 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 [
                     'attribute' => 'customer_id',
                     'label' => '客户ID',
-                    'options' => ['style'=>'width:98px;'],
+                    'options' => ['style'=>'width:108px;'],
                     'contentOptions' => [
                            'style'=>'font-size:8px;word-wrap:break-word;word-break:break-all;',
-
                     ],
                 ],
                 //淘宝订单号
@@ -79,6 +78,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 ],
                 //订单日期
                 [
+                    'label' => '日期',
                     'attribute' => 'order_date',
                     'value' => function($model) {
                         if ($model->order_date ) {
@@ -88,12 +88,13 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         }
 
                     },
-                    'options' => ['style'=>'width:80px;'],
-
+                    'options' => ['style'=>'width:70px;'],
+                    'contentOptions' => ['style'=>'font-size:12px;'],
                 ],
 
                 //订单分类
                 [
+                    'label' => '分类',
                     'attribute' => 'order_classify',
                     'format' => 'raw',
                     'value' => function($model) {
@@ -123,7 +124,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         }
 
                     },
-                    'options' => ['style'=>'width:75px;'],
+                    'options' => ['style'=>'width:85px;'],
                     'contentOptions' => ['style'=>'font-size:12px;'],
                 ],
 
@@ -171,8 +172,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '<i class="fa fa-trash"></i>已被删除';
                         }
                     },
-                    'options' => ['style'=>'width:100px;'],
-                    'contentOptions' => ['style'=>'font-size:9px;'],
+                    'options' => ['style'=>'width:80px;'],
+                    'contentOptions' => ['style'=>'font-size:5px;'],
                 ],
                 //分类
                 [
@@ -217,6 +218,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 //套餐类型
                 [
                     'attribute' => 'combo_id',
+                    'label' => '套餐',
                     'format' => 'raw',
                     'value' => function($model) {
                         try {
@@ -226,6 +228,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '<i class="fa fa-trash"></i>已被删除';
                         }
                     },
+                    'contentOptions' => ['style' => 'font-size:8px;']
 
                 ],
                 [
