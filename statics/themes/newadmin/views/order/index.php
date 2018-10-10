@@ -16,9 +16,9 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', ['depends'=>['yii\web\JqueryAsset']]);
 ?>
 
-<?php \common\widgets\Cssblock::begin() ?>
-
-<?php \common\widgets\Cssblock::end() ?>
+    <style>
+        .btn-xs{margin-bottom:6px;}
+    </style>
 
 <div class="order-index">
 
@@ -102,7 +102,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             $classify = Type::getComboClassify();
                             $classifyIndex = $model->snapshot->combo_classify;
                             $classify = isset($classify[$classifyIndex]) ? $classify[$classifyIndex] : '未设置';
-                            return Html::button(substr($classify,0,3), [
+                            return Html::button(substr($classify,0,6), [
                                 'class' => 'btn btn-info btn-xs'
                             ]);
                         }catch (\Exception $e) {
@@ -179,9 +179,23 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 [
                     'attribute' => 'order_type',
                     'filter' => Type::getComboType(),
+                    'format' => 'raw',
                     'value' => function($model) {
                         $type = Type::getComboType();
-                        return $type[$model->order_type];
+                        if ($model->order_type == 1) {
+                            return Html::button('正常', [
+                                'class' => 'btn btn-default btn-xs'
+                            ]);
+                        } else if($model->order_type == 2) {
+                            return Html::button('加急', [
+                                'class' => 'btn btn-warning btn-xs'
+                            ]);
+                        } else {
+                            return Html::button('特急', [
+                                'class' => 'btn btn-danger btn-xs'
+                            ]);
+                        }
+
                     },
                     'options' => ['style'=>'width:30px;']
                 ],
@@ -205,14 +219,25 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'format' => 'raw',
                     'value' => function($model) {
 
-                        $str = '';
-                        foreach ($model->middleTransator as $transactor) {
+                        $str = '<div>';
+                        foreach ($model->middleTransator as $key => $transactor) {
                             $transactor = $transactor->transator;
-                            $str .= Html::a($transactor['name'], \yii\helpers\Url::to(['transator/view', 'id' => $transactor['tid']])) . "&nbsp;";
+                            $str .=  Html::a($transactor['name'], \yii\helpers\Url::to(['transator/view', 'id' => $transactor['tid']]), [
+                                    'class' => 'label label-default label-xs',
+                            ]);
+
+                            if ($key!= 0 && ($key + 1) % 3 == 0) {
+                                $str .= '</div><br/><div>';
+                            } else {
+                                $str .= '&nbsp;';
+                            }
                         }
+
+                        $str .= '</div>';
+
                         return $str;
                     },
-                    'options' => ['style'=>'min-width:135px;'],
+
                     'contentOptions' => ['style' => 'font-size:2px;']
                 ],
                 //套餐类型
@@ -261,7 +286,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 [
                     'class' => 'common\grid\MyActionColumn',
                     'header' => '操作',
-                    'options' => ['style'=>'width:260px;']
+                    'options' => ['style'=>'width:160px;']
                 ],
                 // 'id',
                 //'pid',
