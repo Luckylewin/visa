@@ -59,7 +59,10 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'attribute' => 'customer_id',
                     'label' => '客户ID',
                     'options' => ['style'=>'width:98px;'],
-                    'contentOptions' => ['style'=>'font-size:8px;'],
+                    'contentOptions' => [
+                           'style'=>'font-size:8px;word-wrap:break-word;word-break:break-all;',
+                            
+                    ],
                 ],
                 //淘宝订单号
                 [
