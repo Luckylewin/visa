@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use common\models\Type;
 use yii\widgets\Pjax;
-
+use \yii\bootstrap\Modal;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\OrderQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -26,65 +26,71 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-         'tableOptions' => ['class' => 'table table-hover table-bordered'],
-         //分页
-        'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
-        'options' => [
+    <?php
+
+    try {
+        echo GridView::widget([
+            'tableOptions' => ['class' => 'table table-hover table-bordered'],
+            //分页
+            'dataProvider' => $dataProvider,
+            //'filterModel' => $searchModel,
+            'options' => [
                 "class" => "grid-view",
                 "style" =>"overflow:auto",
                 "id" => "grid"
-        ],
-        'pager'=>[
-             'class' => 'common\widgets\goPager',
-              'go' => true,
-            //'options'=>['class'=>'hidden']//关闭自带分页
-              'firstPageLabel'=>"第一页",
-              'prevPageLabel'=>'上一页',
-              'nextPageLabel'=>'下一页',
-              'lastPageLabel'=>'最后一页',
-        ],
-        'columns' => [
-            [
-                "class" => "yii\grid\CheckboxColumn",
-                "name" => "id",
             ],
-            ['class' => 'yii\grid\SerialColumn'],
-            //客人ID
-            [
+            'pager'=>[
+                'class' => 'common\widgets\goPager',
+                'go' => true,
+                //'options'=>['class'=>'hidden']//关闭自带分页
+                'firstPageLabel'=>"第一页",
+                'prevPageLabel'=>'上一页',
+                'nextPageLabel'=>'下一页',
+                'lastPageLabel'=>'最后一页',
+            ],
+            'columns' => [
+                [
+                    "class" => "yii\grid\CheckboxColumn",
+                    "name" => "id",
+                ],
+                ['class' => 'yii\grid\SerialColumn'],
+                //客人ID
+                [
                     'attribute' => 'customer_id',
                     'label' => '客户ID',
                     'options' => ['style'=>'width:98px;'],
                     'contentOptions' => ['style'=>'font-size:8px;'],
-            ],
-            //淘宝订单号
-            [
+                ],
+                //淘宝订单号
+                [
                     'attribute' => 'order_num',
                     'format' => 'raw',
                     'label' => '淘宝订单',
                     'value' => function($model) {
                         if (strpos($model->order_num,',')) {
-                          return str_replace(',','<br/>', $model->order_num);
+                            return str_replace(',','<br/>', $model->order_num);
                         }
                         return $model->order_num;
                     },
                     'contentOptions' => ['style'=>'font-size:8px;'],
-            ],
-            //订单日期
-            [
-                'attribute' => 'order_date',
-                'value' => function($model) {
-                    if ($model->order_date ) {
-                        return str_replace('-','/', substr($model->order_date, 2));
-                    }
+                ],
+                //订单日期
+                [
+                    'attribute' => 'order_date',
+                    'value' => function($model) {
+                        if ($model->order_date ) {
+                            return str_replace('-','/', substr($model->order_date, 2));
+                        } else {
+                            return '-';
+                        }
 
-                },
-                'options' => ['style'=>'width:80px;']
-            ],
+                    },
+                    'options' => ['style'=>'width:80px;'],
+                    'contentOptions' => ['style' => 'font-size:12px;']
+                ],
 
-            //订单分类
-            [
+                //订单分类
+                [
                     'attribute' => 'order_classify',
                     'format' => 'raw',
                     'value' => function($model) {
@@ -96,164 +102,189 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                                 'class' => 'btn btn-info btn-xs'
                             ]);
                         }catch (\Exception $e) {
-                            return "未设置";
+                            return "-";
                         }
                     },
                     'filter' => Type::getComboClassify(),
                     'options' => ['style'=>'width:34px;']
-            ],
+                ],
 
-            //收资料日
-            [
-                'attribute' => 'collect_date',
-                'value' => function($model) {
-                    if ($model->collect_date ) {
-                        return str_replace('-','/', substr($model->collect_date, 2));
-                    }
+                //收资料日
+                [
+                    'attribute' => 'collect_date',
+                    'value' => function($model) {
+                        if ($model->collect_date ) {
+                            return str_replace('-','/', substr($model->collect_date, 2));
+                        } else {
+                            return '-';
+                        }
 
-                },
-                'options' => ['style'=>'width:75px;']
-            ],
+                    },
+                    'options' => ['style'=>'width:75px;'],
+                    'contentOptions' => ['style'=>'font-size:12px;'],
+                ],
 
-            //送证日
-            [
-                'attribute' => 'deliver_date',
-                'value' => function($model) {
-                    if ($model->deliver_date) {
-                        return str_replace('-','/', substr($model->deliver_date, 2));
-                    }
-                },
-                'options' => ['style'=>'width:70px;']
-            ],
+                //送证日
+                [
+                    'attribute' => 'deliver_date',
+                    'value' => function($model) {
+                        if ($model->deliver_date) {
+                            return str_replace('-','/', substr($model->deliver_date, 2));
+                        } else {
+                            return '-';
+                        }
+                    },
+                    'options' => ['style'=>'width:70px;'],
+                    'contentOptions' => ['style'=>'font-size:12px;'],
+                ],
 
-            //入管日
-            [
-                'attribute' => 'entry_date',
-                'value' => function($model) {
-                    if ($model->entry_date ) {
-                        return str_replace('-','/', substr($model->entry_date, 2));
-                    }
-                },
-                'options' => ['style'=>'width:70px;']
-            ],
-            [
-                'attribute' => 'combo_id',
-                'format' => 'raw',
-                'label' => '产品名称',
-                'value' => function($model) {
-                    try {
-                        $combo = $model->snapshot;
-                        return Html::a($combo->combo_product, \yii\helpers\Url::to(['snapshot/view','id' => $combo->id]));
-                    }catch (\Exception $e) {
-                        return '<i class="fa fa-trash"></i>已被删除';
-                    }
-                },
-                'options' => ['style'=>'width:100px;'],
-                'contentOptions' => ['style'=>'font-size:9px;'],
-            ],
-            //分类
-            [
-                 'attribute' => 'order_type',
-                 'filter' => Type::getComboType(),
-                 'value' => function($model) {
-                    $type = Type::getComboType();
-                    return $type[$model->order_type];
-                 },
-                'options' => ['style'=>'width:30px;']
-            ],
-            //接待销售
-            [
-                'attribute' => 'custom_servicer_id',
-                'label' => '客服',
-                'format' => 'raw',
-                'value' => function($model){
-                     if ($servicer = $model->servicer) {
-                         return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
-                     }
-                },
-                'options' => ['style'=>'width:55px;'],
-            ],
-            //办理人
-            [
-                'attribute' => 'transactor_id',
-                'format' => 'raw',
-                'value' => function($model) {
+                //入管日
+                [
+                    'attribute' => 'entry_date',
+                    'value' => function($model) {
+                        if ($model->entry_date ) {
+                            return str_replace('-','/', substr($model->entry_date, 2));
+                        } else {
+                            return '-';
+                        }
+                    },
+                    'options' => ['style'=>'width:70px;'],
+                    'contentOptions' => ['style'=>'font-size:12px;'],
+                ],
+                [
+                    'attribute' => 'combo_id',
+                    'format' => 'raw',
+                    'label' => '产品名称',
+                    'value' => function($model) {
+                        try {
+                            $combo = $model->snapshot;
+                            return Html::button($combo->combo_product, [
+                                'class' => 'btn btn-default btn-xs combo-view',
+                                'data-toggle' => 'modal',
+                                'data-target' => '#show-modal',
+                                'data-id' => $combo->id
+                            ]);
+                        }catch (\Exception $e) {
+                            return '<i class="fa fa-trash"></i>已被删除';
+                        }
+                    },
+                    'options' => ['style'=>'width:100px;'],
+                    'contentOptions' => ['style'=>'font-size:9px;'],
+                ],
+                //分类
+                [
+                    'attribute' => 'order_type',
+                    'filter' => Type::getComboType(),
+                    'value' => function($model) {
+                        $type = Type::getComboType();
+                        return $type[$model->order_type];
+                    },
+                    'options' => ['style'=>'width:30px;']
+                ],
+                //接待销售
+                [
+                    'attribute' => 'custom_servicer_id',
+                    'label' => '客服',
+                    'format' => 'raw',
+                    'value' => function($model){
+                        if ($servicer = $model->servicer) {
+                            return Html::a($servicer->name, \yii\helpers\Url::to(['servicer/view', 'id' => $servicer->id]));
+                        } else {
+                            return '-';
+                        }
+                    },
+                    'options' => ['style'=>'width:55px;'],
+                ],
+                //办理人
+                [
+                    'attribute' => 'transactor_id',
+                    'format' => 'raw',
+                    'value' => function($model) {
 
-                    $str = '';
-                    foreach ($model->middleTransator as $transactor) {
-                        $transactor = $transactor->transator;
-                        $str .= Html::a($transactor['name'], \yii\helpers\Url::to(['transator/view', 'id' => $transactor['tid']])) . "&nbsp;";
-                    }
-                    return $str;
-                },
-                'options' => ['style'=>'min-width:125px;']
-            ],
-            //套餐类型
-            [
-                'attribute' => 'combo_id',
-                'format' => 'raw',
-                'value' => function($model) {
-                    try {
-                        $combo = $model->snapshot;
-                        return Html::a($combo->combo_name, \yii\helpers\Url::to(['snapshot/view','id' => $combo->id]));
-                    }catch (\Exception $e) {
-                        return '<i class="fa fa-trash"></i>已被删除';
-                    }
-                },
+                        $str = '';
+                        foreach ($model->middleTransator as $transactor) {
+                            $transactor = $transactor->transator;
+                            $str .= Html::a($transactor['name'], \yii\helpers\Url::to(['transator/view', 'id' => $transactor['tid']])) . "&nbsp;";
+                        }
+                        return $str;
+                    },
+                    'options' => ['style'=>'min-width:125px;'],
+                    'contentOptions' => ['style' => 'font-size:1px;']
+                ],
+                //套餐类型
+                [
+                    'attribute' => 'combo_id',
+                    'format' => 'raw',
+                    'value' => function($model) {
+                        try {
+                            $combo = $model->snapshot;
+                            return Html::a($combo->combo_name, \yii\helpers\Url::to(['snapshot/view','id' => $combo->id]));
+                        }catch (\Exception $e) {
+                            return '<i class="fa fa-trash"></i>已被删除';
+                        }
+                    },
 
-            ],
-            [
+                ],
+                [
                     'attribute' => 'single_sum',
+                    'value' => function($model) {
+                        return (int) $model->single_sum;
+                    },
                     'label' => '单项实收'
-            ],
-            [
+                ],
+                [
                     'attribute' => 'remark',
                     'format' => 'raw',
                     'value' => function($model) {
                         if ($model->remark) {
                             return Html::a('<i class="fa fa-bookmark"></i>',null, [
-                                    'id' => "remark-" . $model->id,
-                                    'class' => 'remark-show',
-                                    "text" => $model->remark
+                                'id' => "remark-" . $model->id,
+                                'class' => 'remark-show',
+                                "text" => $model->remark
                             ]);
                         }
                         return '';
                     }
-            ],
-            //'entry_date',
-            //'putsign_date',
-            //'delivergood_date',
-            //'back_addressee',
-            //'back_telphone',
-            //'deliver_order',
-            [
+                ],
+                //'entry_date',
+                //'putsign_date',
+                //'delivergood_date',
+                //'back_addressee',
+                //'back_telphone',
+                //'deliver_order',
+                [
                     'class' => 'common\grid\MyActionColumn',
                     'header' => '操作',
                     'options' => ['style'=>'width:260px;']
+                ],
+                // 'id',
+                //'pid',
+                // 'order_type',
+                // 'combo_id',
+                // 'custom_servicer_id',
+                // 'transactor_id',
+                // 'single_sum',
+                // 'total_person',
+                // 'balance_order',
+                // 'balance_sum',
+                // 'flushphoto_order',
+                // 'flushphoto_sum',
+                // 'carrier_order',
+                // 'carrier_sum',
+                // 'operator',
+                // 'back_address:ntext',
+                // 'delivercompany_id',
+                // 'remark:ntext',
+                // 'receipt_date',
+                // 'pay_date',
+                // 'audit_status',
             ],
-            // 'id',
-            //'pid',
-            // 'order_type',
-            // 'combo_id',
-            // 'custom_servicer_id',
-            // 'transactor_id',
-            // 'single_sum',
-            // 'total_person',
-            // 'balance_order',
-            // 'balance_sum',
-            // 'flushphoto_order',
-            // 'flushphoto_sum',
-            // 'carrier_order',
-            // 'carrier_sum',
-            // 'operator',
-            // 'back_address:ntext',
-            // 'delivercompany_id',
-            // 'remark:ntext',
-            // 'receipt_date',
-            // 'pay_date',
-            // 'audit_status',
-        ],
-    ]); ?>
+        ]);
+    }catch (\Exception $e) {
+        echo "发生错误";
+    }
+
+    ?>
 
 </div>
 
@@ -351,5 +382,25 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 <?php \common\widgets\Jsblock::end(); ?>
 
 
-
+<?php
+Modal::begin([
+    'id' => 'show-modal',
+    'size' => Modal::SIZE_DEFAULT,
+    'header' => '<h4 class="modal-title">套餐详情</h4>',
+    'footer' => '<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a>',
+]);
+$requestUrl = \yii\helpers\Url::to(['snapshot/view']);
+$requestJs=<<<JS
+     $(document).on('click', '.combo-view', function() {
+                var id = $(this).attr('data-id');
+            
+                $.get('{$requestUrl}', {'id':id},
+                    function (data) {
+                        $('.modal-body').css('min-height', '200px').html(data);
+                    }
+                )
+            })
+JS;
+$this->registerJs($requestJs);
+Modal::end();
 

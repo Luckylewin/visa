@@ -15,20 +15,7 @@ use yii\filters\VerbFilter;
  */
 class SnapshotController extends BaseController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+
 
     /**
      * Lists all Snapshot models.
@@ -53,9 +40,14 @@ class SnapshotController extends BaseController
      */
     public function actionView($id)
     {
-
         //查询权限
         $isShow = ExportSetting::getShowSetting();
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('view', [
+                'model' => $this->findModel($id),
+                'isShow' => $isShow
+            ]);
+        }
 
         return $this->render('view', [
             'model' => $this->findModel($id),

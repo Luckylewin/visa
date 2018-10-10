@@ -50,7 +50,9 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <p>
+        <?php if(Yii::$app->request->isAjax == false): ?>
         <?= Html::a('返回', Yii::$app->request->referrer, ['class' => 'btn btn-default']) ?>
+        <?php endif; ?>
     </p>
 
 </div>
