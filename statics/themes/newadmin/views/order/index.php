@@ -61,7 +61,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                     'options' => ['style'=>'width:98px;'],
                     'contentOptions' => [
                            'style'=>'font-size:8px;word-wrap:break-word;word-break:break-all;',
-                            
+
                     ],
                 ],
                 //淘宝订单号
@@ -89,7 +89,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
                     },
                     'options' => ['style'=>'width:80px;'],
-                    'contentOptions' => ['style' => 'font-size:12px;']
+
                 ],
 
                 //订单分类
@@ -137,7 +137,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '-';
                         }
                     },
-                    'options' => ['style'=>'width:70px;'],
+                    'options' => ['style'=>'width:60px;'],
                     'contentOptions' => ['style'=>'font-size:12px;'],
                 ],
 
@@ -151,7 +151,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '-';
                         }
                     },
-                    'options' => ['style'=>'width:70px;'],
+                    'options' => ['style'=>'width:60px;'],
                     'contentOptions' => ['style'=>'font-size:12px;'],
                 ],
                 [
@@ -211,8 +211,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         }
                         return $str;
                     },
-                    'options' => ['style'=>'min-width:125px;'],
-                    'contentOptions' => ['style' => 'font-size:1px;']
+                    'options' => ['style'=>'min-width:135px;'],
+                    'contentOptions' => ['style' => 'font-size:2px;']
                 ],
                 //套餐类型
                 [
