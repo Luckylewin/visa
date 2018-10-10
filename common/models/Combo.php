@@ -101,6 +101,7 @@ class Combo extends ActiveRecord
 
     public function beforeSave($insert)
     {
+        $this->combo_charge = (float) $this->combo_charge;
         if (parent::beforeSave($insert)) {
             if ($insert) {
                 $this->uid = Yii::$app->getUser()->id;
@@ -119,6 +120,7 @@ class Combo extends ActiveRecord
             return true;
         }else {
             unset($changedAttributes['updated_at']);
+
             if (!empty($changedAttributes)) {
                 //更新快照
                 Snapshot::updateAll(['is_valid' => 0], ['snap_combo_id' => $this->combo_id]);
