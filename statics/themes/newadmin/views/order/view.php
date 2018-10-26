@@ -17,12 +17,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1>订单详情</h1>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-       //     'id',
+    <?php
+
+    try {
+        echo DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                //     'id',
 //            'pid',
-            [
+                [
                     'attribute' => 'order_classify',
                     'value' => function($model) {
                         try {
@@ -35,30 +38,30 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
 
                     }
-            ],
-            [
-                'attribute' => 'order_type',
-                'value' => function($model) {
-                    $type = Type::getComboType();
-                    return isset($type[$model->order_type]) ? $type[$model->order_type] : '未设置';
-                }
-            ],
-            'order_num',
-            'order_date',
-            'customer_id',
-            [
+                ],
+                [
+                    'attribute' => 'order_type',
+                    'value' => function($model) {
+                        $type = Type::getComboType();
+                        return isset($type[$model->order_type]) ? $type[$model->order_type] : '未设置';
+                    }
+                ],
+                'order_num',
+                'order_date',
+                'customer_id',
+                [
                     'attribute' => 'combo_id',
                     'format' => 'raw',
                     'value' => function($model) {
-                           try {
-                                $combo = $model->snapshot;
-                                return Html::a($combo->combo_product ."|".Type::getComboType()[$combo->combo_type] . "|" .  $combo->combo_name, Url::to(['snapshot/view','id' => $combo->id]));
-                           }catch (\Exception $e) {
-                               return '<i class="fa fa-trash"></i>已被删除';
-                           }
+                        try {
+                            $combo = $model->snapshot;
+                            return Html::a($combo->combo_product ."|".Type::getComboType()[$combo->combo_type] . "|" .  $combo->combo_name, Url::to(['snapshot/view','id' => $combo->id]));
+                        }catch (\Exception $e) {
+                            return '<i class="fa fa-trash"></i>已被删除';
+                        }
                     },
-            ],
-            [
+                ],
+                [
                     'attribute' => 'combo_id',
                     'format' =>'raw',
                     'value' => function($model) use ($showCost) {
@@ -69,8 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     },
                     'label' => '支出成本'
-            ],
-            [
+                ],
+                [
                     'attribute' => 'custom_servicer_id',
                     'format' => 'raw',
                     'value' => function($model){
@@ -78,295 +81,314 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a($servicer->name, Url::to(['servicer/view', 'id' => $servicer->id]));
                         }
                     },
-            ],
-            [
-                'attribute' => 'transactor_id',
-                'format' => 'raw',
-                'value' => function($model) {
-                    $str = '';
-                    $transactor = $model->relatedTransactor;
-                    if (!empty($transactor)) {
-                        foreach ($transactor as $_transactor) {
-                            $str .= Html::a($_transactor['name'], \yii\helpers\Url::to(['transator/view','id' => $_transactor['tid']])) . "&nbsp;";
+                ],
+                [
+                    'attribute' => 'transactor_id',
+                    'format' => 'raw',
+                    'value' => function($model) {
+                        $str = '';
+                        $transactor = $model->relatedTransactor;
+                        if (!empty($transactor)) {
+                            foreach ($transactor as $_transactor) {
+                                $str .= Html::a($_transactor['name'], \yii\helpers\Url::to(['transator/view','id' => $_transactor['tid']])) . "&nbsp;";
+                            }
                         }
+                        return $str;
                     }
-                    return $str;
-                }
-            ],
-            [
+                ],
+                [
                     'attribute' => 'single_sum',
                     'value' => $model->single_sum . "元"
-            ],
-            [
-                'attribute' => 'total_person',
-                'value' => $model->total_person . "人"
-            ],
+                ],
+                [
+                    'attribute' => 'total_person',
+                    'value' => $model->total_person . "人"
+                ],
 
-            [
-                 'attribute' => 'balance_order',
-                 'format' => 'raw',
-                 'value' => function($model) {
-                    if (!empty($model->balance_order)) {
-                        return $model->balance_order;
+                [
+                    'attribute' => 'balance_order',
+                    'format' => 'raw',
+                    'value' => function($model) {
+                        if (!empty($model->balance_order)) {
+                            return $model->balance_order;
+                        }
+                        return '-';
                     }
-                    return '-';
-                 }
-            ],
-            [
-                'attribute' => 'balance_sum',
-                'value' => function($model) {
-                    if ($model->balance_sum != '0.000') {
-                        return $model->balance_sum . "元";
+                ],
+                [
+                    'attribute' => 'balance_sum',
+                    'value' => function($model) {
+                        if ($model->balance_sum != '0.000') {
+                            return $model->balance_sum . "元";
+                        }
+                        return "-";
                     }
-                    return "-";
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'output_balance_sum',
-                'value' => function($model) {
-                    if ($model->output_balance_sum != '0.000') {
-                        return $model->output_balance_sum . "元";
+                [
+                    'attribute' => 'output_balance_sum',
+                    'value' => function($model) {
+                        if ($model->output_balance_sum != '0.000') {
+                            return $model->output_balance_sum . "元";
+                        }
+                        return "-";
                     }
-                    return "-";
-                }
-            ],
+                ],
 
 
 
-            [
-                'attribute' => 'flushphoto_order',
-                'value' => function($model) {
-                    if ($model->flushphoto_order) {
-                        return $model->flushphoto_order;
+                [
+                    'attribute' => 'flushphoto_order',
+                    'value' => function($model) {
+                        if ($model->flushphoto_order) {
+                            return $model->flushphoto_order;
+                        }
+                        return "-";
                     }
-                    return "-";
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'flushphoto_sum',
-                'value' => function($model) {
-                    if ($model->flushphoto_sum != '0.00') {
-                        return $model->flushphoto_sum . "元";
+                [
+                    'attribute' => 'flushphoto_sum',
+                    'value' => function($model) {
+                        if ($model->flushphoto_sum != '0.00') {
+                            return $model->flushphoto_sum . "元";
+                        }
+                        return "-";
                     }
-                    return "-";
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'output_flushphoto_sum',
-                'value' => function($model) {
-                    if ($model->output_flushphoto_sum != '0.00') {
-                        return $model->output_flushphoto_sum . "元";
+                [
+                    'attribute' => 'output_flushphoto_sum',
+                    'value' => function($model) {
+                        if ($model->output_flushphoto_sum != '0.00') {
+                            return $model->output_flushphoto_sum . "元";
+                        }
+                        return "-";
                     }
-                    return "-";
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'carrier_order',
-                'value' => function($model) {
-                    if ($model->carrier_order) {
-                        return $model->carrier_order;
+                [
+                    'attribute' => 'carrier_order',
+                    'value' => function($model) {
+                        if ($model->carrier_order) {
+                            return $model->carrier_order;
+                        }
+                        return "-";
                     }
-                    return "-";
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'carrier_sum',
-                'value' => function($model) {
-                    if ($model->carrier_sum != '0.00') {
-                        return $model->carrier_sum . "元";
+                [
+                    'attribute' => 'carrier_sum',
+                    'value' => function($model) {
+                        if ($model->carrier_sum != '0.00') {
+                            return $model->carrier_sum . "元";
+                        }
+                        return "-";
                     }
-                    return "-";
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'output_carrier_sum',
-                'value' => function($model) {
-                    if ($model->output_carrier_sum != '0.00') {
-                        return $model->output_carrier_sum . "元";
+                [
+                    'attribute' => 'output_carrier_sum',
+                    'value' => function($model) {
+                        if ($model->output_carrier_sum != '0.00') {
+                            return $model->output_carrier_sum . "元";
+                        }
+                        return "-";
                     }
-                    return "-";
-                }
-            ],
+                ],
 
 
-            [
-               'attribute' => 'collect_date',
-                'captionOptions' => ['class' => 'info'],
-               'value' => function($model) {
-                   if ($model->collect_date ) {
-                        return $model->collect_date;
-                   }
-                   return '-';
-                },
+                [
+                    'attribute' => 'collect_date',
+                    'captionOptions' => ['class' => 'info'],
+                    'value' => function($model) {
+                        if ($model->collect_date ) {
+                            return $model->collect_date;
+                        }
+                        return '-';
+                    },
 
-            ],
-            [
-                'attribute' => 'deliver_date',
-                'captionOptions' => ['class' => 'info'],
-                'value' => function($model) {
-                    if ($model->deliver_date ) {
-                        return $model->deliver_date;
+                ],
+                [
+                    'attribute' => 'deliver_date',
+                    'captionOptions' => ['class' => 'info'],
+                    'value' => function($model) {
+                        if ($model->deliver_date ) {
+                            return $model->deliver_date;
+                        }
+                        return '-';
                     }
-                    return '-';
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'entry_date',
-                'captionOptions' => ['class' => 'info'],
-                'value' => function($model) {
-                    if ($model->entry_date ) {
-                        return $model->entry_date;
+                [
+                    'attribute' => 'entry_date',
+                    'captionOptions' => ['class' => 'info'],
+                    'value' => function($model) {
+                        if ($model->entry_date ) {
+                            return $model->entry_date;
+                        }
+                        return '-';
                     }
-                    return '-';
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'operator_id',
-                'captionOptions' => ['class' => 'success'],
-                'value' => function($model) {
-                    $user = $model->operator;
-                    if ($user) {
-                        return $user->username;
+                [
+                    'attribute' => 'operator_id',
+                    'captionOptions' => ['class' => 'success'],
+                    'value' => function($model) {
+                        $user = $model->operator;
+                        if ($user) {
+                            return $user->username;
+                        }
+                        return "待操作员处理";
                     }
-                    return "待操作员处理";
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'putsign_date',
-                'value' => function($model) {
-                    if ($model->putsign_date ) {
-                        return $model->putsign_date;
+                [
+                    'attribute' => 'putsign_date',
+                    'value' => function($model) {
+                        if ($model->putsign_date ) {
+                            return $model->putsign_date;
+                        }
+                        return '-';
                     }
-                    return '-';
-                }
-            ],
+                ],
 
 
-            'back_addressee',
-            'back_telphone',
-            [
-                'attribute' => 'back_address',
-                'format' => 'ntext',
-                'value' => function($model) {
-                    if ($model->back_address ) {
-                        return $model->back_address;
+                'back_addressee',
+                'back_telphone',
+                [
+                    'attribute' => 'back_address',
+                    'format' => 'ntext',
+                    'value' => function($model) {
+                        if ($model->back_address ) {
+                            return $model->back_address;
+                        }
+                        return '-';
                     }
-                    return '-';
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'delivergood_date',
-                'value' => function($model) {
-                    if ($model->delivergood_date ) {
-                        return $model->delivergood_date;
+                [
+                    'attribute' => 'delivergood_date',
+                    'value' => function($model) {
+                        if ($model->delivergood_date ) {
+                            return $model->delivergood_date;
+                        }
+                        return '-';
                     }
-                    return '-';
-                }
-            ],
-            'deliver_order',
+                ],
+                'deliver_order',
 //            'delivercompany_id',
-            'delivercompany',
-            [
-                 'attribute' => 'remark',
-                 'format' => 'ntext',
-                 'value' => function($model) {
-                    if ($model->remark) {
-                        return $model->remark;
+                'delivercompany',
+                [
+                    'attribute' => 'remark',
+                    'format' => 'ntext',
+                    'value' => function($model) {
+                        if ($model->remark) {
+                            return $model->remark;
+                        }
+                        return "-";
                     }
-                    return "-";
-                 }
-            ],
-            [
+                ],
+                [
 
 
-                'attribute' => 'receipt_date',
-                'value' => function($model) {
-                    if ($model->receipt_date ) {
-                        return $model->receipt_date;
+                    'attribute' => 'receipt_date',
+                    'value' => function($model) {
+                        if ($model->receipt_date ) {
+                            return $model->receipt_date;
+                        }
+                        return '-';
                     }
-                    return '-';
-                }
-            ],
-            [
-                'attribute' => 'company_receipt_date',
-                'value' => function($model) {
-                    if ($model->company_receipt_date ) {
-                        return $model->company_receipt_date;
+                ],
+                [
+                    'attribute' => 'company_receipt_date',
+                    'value' => function($model) {
+                        if ($model->company_receipt_date ) {
+                            return $model->company_receipt_date;
+                        }
+                        return '-';
                     }
-                    return '-';
-                }
-            ],
+                ],
 
-            'pay_account',
+                'pay_account',
 
-            [
-                'attribute' => 'pay_date',
-                'value' => function($model) {
-                    if ($model->pay_date ) {
-                        return $model->pay_date;
+                [
+                    'attribute' => 'draw_bill_status',
+                    'value' => function($model) {
+                       return Type::getYesOrNo()[$model->draw_bill_status];
                     }
-                    return '-';
-                }
-            ],
-            [
+                ],
+
+                [
+                    'attribute' => 'refund_status',
+                    'value' => function($model) {
+                        return Type::getRefundStatus()[$model->refund_status];
+                    }
+                ],
+
+                [
+                    'attribute' => 'pay_date',
+                    'value' => function($model) {
+                        if ($model->pay_date ) {
+                            return $model->pay_date;
+                        }
+                        return '-';
+                    }
+                ],
+                [
                     'attribute' => 'audit_status',
                     'captionOptions' => ['class' => 'info'],
                     'value' => function($model) {
                         $status = \common\models\Type::getStatus();
                         return $status[$model->audit_status];
                     }
-            ],
-            [
+                ],
+                [
                     'attribute' => 'created_at',
                     'value' => function($model) {
                         return date('Y-m-d H:i:s', $model->created_at);
                     }
-            ],
-            [
-                'attribute' => 'updated_at',
-                'value' => function($model) {
-                    return date('Y-m-d H:i:s', $model->updated_at);
+                ],
+                [
+                    'attribute' => 'updated_at',
+                    'value' => function($model) {
+                        return date('Y-m-d H:i:s', $model->updated_at);
                     }
-            ],
+                ],
 
 
 
-            [
-                'attribute' => 'creator_id',
-                'value' => function($model) {
-                    $creator = $model->creator;
-                    if (!empty($creator)) {
-                        return $creator->username;
+                [
+                    'attribute' => 'creator_id',
+                    'value' => function($model) {
+                        $creator = $model->creator;
+                        if (!empty($creator)) {
+                            return $creator->username;
+                        }
+                        return "(已被删除的帐号)";
                     }
-                    return "(已被删除的帐号)";
-                }
-            ],
+                ],
 
-            [
-                'attribute' => 'mod_operator_id',
-                'value' => function($model) {
-                    $operator = $model->mOperator;
-                    if ($operator) {
-                        return $operator->username;
+                [
+                    'attribute' => 'mod_operator_id',
+                    'value' => function($model) {
+                        $operator = $model->mOperator;
+                        if ($operator) {
+                            return $operator->username;
+                        }
+                        return "(已被删除的帐号)";
                     }
-                    return "(已被删除的帐号)";
-                }
+                ],
+
+
+
             ],
+        ]);
+    }catch (\Exception $e) {
+        echo ":( 发生了错误";
+    }
 
-
-
-        ],
-    ]) ?>
+    ?>
 
     <p>
 

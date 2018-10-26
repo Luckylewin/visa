@@ -105,6 +105,11 @@ class OrderController extends BaseController
                 $error = isset($model->getErrors()[0]) ? $model->getErrors()[0] : '未知错误,请通知开发者';
                 Yii::$app->session->setFlash('error', $error);
             }
+
+            // 默认值载入
+            $model->refund_status    = Order::REFUND_STATUS_PENDING;
+            $model->draw_bill_status = Order::STATUS_NO;
+
             return $this->render('create', [
                 'model' => $model,
             ]);

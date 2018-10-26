@@ -11,7 +11,6 @@ namespace common\models;
 
 use backend\models\Admin;
 use backend\models\Operator;
-use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use Yii;
 
@@ -19,9 +18,33 @@ use Yii;
 class Type
 {
 
+    public static function getYesOrNo()
+    {
+        return [
+            Order::STATUS_YES => '是',
+            Order::STATUS_NO  => '否',
+        ];
+    }
+
+    public static function getRefundStatus()
+    {
+        return [
+            Order::REFUND_STATUS_PENDING    => '未退款',
+            Order::REFUND_STATUS_NO_HANDLED => '未办理退款',
+            Order::REFUND_STATUS_DENIED     => '拒签退款'
+        ];
+    }
+
     public static function getStatus()
     {
-        return ['1'=>'未审核','2'=>'已收到','3'=>'已审核','4'=>'已送签','5'=>'已通过', '6' => '已拒签'];
+        return [
+            Order::AUDIT_STATUS_UNCHECKED => '未审核',
+            Order::AUDIT_STATUS_RECEIVED  => '已收到',
+            Order::AUDIT_STATUS_CHECKED   => '已审核',
+            Order::AUDIT_STATUS_SEND      =>'已送签',
+            Order::AUDIT_STATUS_PASS      =>'已通过',
+            Order::AUDIT_STATUS_DENIED    => '已拒签'
+        ];
     }
 
     public static function getSex()
@@ -31,26 +54,38 @@ class Type
 
     public static function getComboType()
     {
-        return ['1'=>'正常','2'=>'加急','3' => '特急'];
+        return [
+            Order::TYPE_STATUS_NORMAL  => '正常',
+            Order::TYPE_STATUS_ANXIOUS => '加急',
+            Order::TYPE_STATUS_URGENT  => '特急'
+        ];
     }
 
     public static function getComboClassify()
     {
-        return ['1'=>'网店','2'=>'直客','3'=>'同业'];
+        return [
+            Order::CLASSIFY_STATUS_SHOP     => '网店',
+            Order::CLASSIFY_STATUS_CLIENT   => '直客',
+            Order::CLASSIFY_STATUS_BUSINESS => '同业'
+        ];
     }
 
     public static function getExportSetting()
     {
-        return ['0'=>'不显示','1'=>'显示'];
+        return [
+                Order::DISPLAY_STATUS_HIDE => '不显示',
+                Order::DISPLAY_STATUS_SHOW => '显示'
+        ];
     }
 
     public static function getGroup($combos)
     {
-        $rowspan = ['1'=>['status'=>true,'rowspan'=>0],'2'=>['status'=>true,'rowspan'=>0], '3'=>['status'=>true,'rowspan'=>0] ];
+        $rowSpan = ['1'=>['status'=>true,'rowspan'=>0],'2'=>['status'=>true,'rowspan'=>0], '3'=>['status'=>true,'rowspan'=>0] ];
         foreach ($combos as $combo) {
-             $rowspan[$combo->combo_classify]['rowspan']++;
+             $rowSpan[$combo->combo_classify]['rowspan']++;
         }
-        return $rowspan;
+
+        return $rowSpan;
     }
 
     //客服绑定帐号

@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 use common\models\Servicer;
 use common\models\Transator;
 use \backend\models\Operator;
-
+use \common\models\Type;
 /* @var $this yii\web\View */
 /* @var $model common\models\Order */
 /* @var $form yii\widgets\ActiveForm */
@@ -98,13 +98,13 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'order_num')->textInput() ?>
 
-                <?= $form->field($model, 'pid')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Product::find()->orderBy('id desc')->all(), 'id' ,'name'),[
+                <?= $form->field($model, 'pid')->dropDownList(ArrayHelper::map(\common\models\Product::find()->orderBy('id desc')->all(), 'id' ,'name'),[
                     'disabled' => $model->isNewRecord ? false : false,
                     'prompt' => '请选择产品',
                     'prompt_val' => '0',
                 ])->label('产品'); ?>
 
-                <?= $form->field($model, 'order_type')->dropDownList(\common\models\Type::getComboType(), [
+                <?= $form->field($model, 'order_type')->dropDownList(Type::getComboType(), [
                     'prompt' => '请选择分类',
                     'prompt_val' => '0',
                     'disabled' => $model->isNewRecord ? false : false
@@ -114,7 +114,7 @@ $tranlator = new Transator();
                 <?php if($model->isNewRecord): ?>
                     <?= $form->field($model, 'combo_id')->dropDownList([], ['prompt' => '请选择套餐'])->label('套餐'); ?>
                 <?php else: ?>
-                    <?= $form->field($model, 'combo_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Snapshot::findAll(['id'=>$model->combo_id]),'id','combo_name'), [
+                    <?= $form->field($model, 'combo_id')->dropDownList(ArrayHelper::map(\common\models\Snapshot::findAll(['id'=>$model->combo_id]),'id','combo_name'), [
                         'disabled' => $model->isNewRecord ? false : false
                     ])->label('当前套餐'); ?>
                 <?php endif; ?>
@@ -220,7 +220,7 @@ $tranlator = new Transator();
             </div>
             <div class="col-md-3">
 
-                <?= $form->field($model, 'audit_status')->dropDownList(\common\models\Type::getStatus(), [
+                <?= $form->field($model, 'audit_status')->dropDownList(Type::getStatus(), [
                     'style' => 'max-width:350px;',
                     'readonly' => true
                 ]) ?>
@@ -248,6 +248,9 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'pay_account')->textInput(); ?>
 
+                <?= $form->field($model, 'refund_status')->radioList(Type::getRefundStatus()); ?>
+
+                <?= $form->field($model, 'draw_bill_status')->radioList(Type::getYesOrNo()); ?>
 
                 <?php if(\common\models\Type::isSuperAdmin()): ?>
                 <?= $form->field($model, 'operator_id')->dropDownList(Operator::getAllOperator(), [

@@ -52,9 +52,36 @@ use yii\db\ActiveRecord;
  * @property string $pay_account
  * @property string $pay_date
  * @property string $audit_status
+ * @property string $draw_bill_status
+ * @property string $refund_status
  */
 class Order extends \yii\db\ActiveRecord
 {
+    const REFUND_STATUS_PENDING    = 'pending';
+    const REFUND_STATUS_NO_HANDLED = 'no handled';
+    const REFUND_STATUS_DENIED     = 'denied';
+
+    const STATUS_YES = 1;
+    const STATUS_NO  = 0;
+
+    const AUDIT_STATUS_UNCHECKED = 1;
+    const AUDIT_STATUS_RECEIVED  = 2;
+    const AUDIT_STATUS_CHECKED   = 3;
+    const AUDIT_STATUS_SEND      = 4;
+    const AUDIT_STATUS_PASS      = 5;
+    const AUDIT_STATUS_DENIED    = 6;
+
+    const TYPE_STATUS_NORMAL  = 1;
+    const TYPE_STATUS_ANXIOUS = 2;
+    const TYPE_STATUS_URGENT  = 3;
+
+    const CLASSIFY_STATUS_SHOP     = 1;
+    const CLASSIFY_STATUS_CLIENT   = 2;
+    const CLASSIFY_STATUS_BUSINESS = 3;
+
+    const DISPLAY_STATUS_HIDE = 0;
+    const DISPLAY_STATUS_SHOW = 1;
+
     public $transactor_id;
     public $custom_servicer;
     public $is_pay;
@@ -89,6 +116,8 @@ class Order extends \yii\db\ActiveRecord
             [['order_date','collect_date','deliver_date','entry_date','putsign_date','delivergood_date','pay_date','receipt_date'],'default','value' => ''],
             [['single_sum'],'default','value' => '0.00'],
             [['total_person'],'default','value' => '1'],
+            ['refund_status', 'default', 'value' => self::REFUND_STATUS_PENDING],
+            ['draw_bill_status', 'default', 'value' => self::STATUS_NO],
             [['back_telphone','back_address','remark','pay_account'],'default','value' => ''],
             ['order_num', 'unique', 'on' => 'create', 'message' => '已有{attribute}{value},请勿重复']
         ];
@@ -179,7 +208,9 @@ class Order extends \yii\db\ActiveRecord
             'is_shop_receipt' => '店铺是否已收款',
             'is_company_receipt' => '公司是否已收款',
             'is_pay' => '是否已支付',
-            'creator_id' => '创建人'
+            'creator_id' => '创建人',
+            'draw_bill_status' => '是否开票',
+            'refund_status' => '是否退款'
         ];
     }
 
