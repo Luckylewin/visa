@@ -21,10 +21,11 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
     </style>
 
 <div class="order-index">
-
+    
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= $this->render('_search', ['model' => $searchModel]); ?>
+        
 
     <?php
 

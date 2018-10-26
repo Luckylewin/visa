@@ -53,7 +53,6 @@ class ExcelController extends BaseController
         return $this->_exportExcel($data, $file_name);
     }
 
-
     public function actionImport()
     {
         set_time_limit(0);
@@ -132,7 +131,7 @@ class ExcelController extends BaseController
             'AP' => 'remark',
             'AQ' => 'balance_order',
             'AR' => 'flushphoto_order',
-            'As' => 'carrier_order',
+            'AS' => 'carrier_order',
         ];
 
         $importTotal = 0;
@@ -188,7 +187,7 @@ class ExcelController extends BaseController
 
                         // 如果最后一行的第一个单元是是空的 那么将会当成统计行 不作统计处理
                         if ($currentRow == $highestRow && $columnIndex == 'A' && empty($data)) {
-                            echo "INDEX: {$columnIndex} {$field} {$data} <br/>";
+                            //echo "INDEX: {$columnIndex} {$field} {$data} <br/>";
                             break;
                         }
 
@@ -227,7 +226,20 @@ class ExcelController extends BaseController
                                 }
 
                                 break;
+                            case 'refund_status':
+                                $refundStatus = Type::getRefundStatus();
+                                    if (in_array($data, $refundStatus)) {
+                                        $order->$field = array_search($data, $refundStatus);
+                                    }
+                                break;
 
+                            case 'draw_bill_status';
+                                $drawStatus = Type::getYesOrNo();
+                                if (in_array($data, $drawStatus)) {
+                                    $order->$field = array_search($data, $drawStatus);
+                                }
+
+                                break;
                             case 'transator_id':
 
                                 //过滤字符串
@@ -462,9 +474,9 @@ class ExcelController extends BaseController
             'flushphoto_order', 'flushphoto_sum', 'output_flushphoto_sum',
             'carrier_order', 'carrier_sum', 'output_carrier_sum',
             'collect_date','deliver_date','entry_date','putsign_date', 'delivergood_date', 'receipt_date', 'company_receipt_date', 'pay_date',
-            'back_address','back_addressee','back_telphone','deliver_order','delivercompany','remark','pay_account'
+            'back_address','back_addressee','back_telphone','deliver_order','delivercompany','remark','pay_account', 'refund_status', 'draw_bill_status'
         ];
-
+        
         $isNewRecord = false;
 
         foreach ($checkFields as $field) {
