@@ -7,6 +7,14 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
+/**
+ * This is the model class for table "yii2_admin".
+ *
+ * @property integer $id
+ * @property string $username
+ * @property string $password
+ * @property string $status
+ */
 class Admin extends ActiveRecord implements IdentityInterface
 {
     const SUPER_ADMIN = '超级管理员';

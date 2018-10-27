@@ -23,7 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         ]) ?>
 
-        <?= $form->field($model, 'file')->fileInput()->label('excel文件'); ?>
+        <?= $form->field($model, 'file')->fileInput([
+                'accept' => '.xlsx,.xls'
+        ])->label('excel文件'); ?>
 
         <div class="form-group">
             <?= Html::submitButton('导入', ['class' => 'btn btn-primary']) ?>
