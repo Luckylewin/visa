@@ -6,7 +6,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\form\StaticsForm */
 /* @var $form yii\widgets\ActiveForm */
-
+$this->title = '订单统计';
+$this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate.js', ['depends'=>['yii\web\JqueryAsset']])
 ?>
 
@@ -24,7 +25,6 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
     ]); ?>
 
     <div class="panel panel-primary">
-
 
         <div class="panel-body search-body">
             <div class="col-md-12">

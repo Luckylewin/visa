@@ -36,7 +36,7 @@ class StaticsForm extends  Model
     {
         return [
             [['dateOneStart'], 'required'],
-            [['dateOneStart', 'dateOneEnd', 'dateTwoStart', 'dateTwoEnd'], 'date'],
+           // [['dateOneStart', 'dateOneEnd', 'dateTwoStart', 'dateTwoEnd'], 'date'],
             ['dateTwoStart', 'required',
                 'when' => function($model) {
                             return !empty($model->dateTwoEnd);
@@ -44,6 +44,16 @@ class StaticsForm extends  Model
                 'whenClient' => "function(attribute, value){
                     return $('#staticsform-datetwoend').val() != ''
                 }"
+            ],
+            [
+                'dateOneEnd',
+                'biggerThan1',
+                'skipOnEmpty' => false
+            ],
+            [
+                'dateTwoEnd',
+                'biggerThan2',
+                'skipOnEmpty' => false
             ],
             [
                 ['dateTwoEnd'],
@@ -58,6 +68,25 @@ class StaticsForm extends  Model
         ];
     }
 
+    public function biggerThan1($attribute, $params)
+    {
+        if ($this->dateOneEnd < $this->dateOneStart) {
+           $this->addError($attribute, "结束 须大于开始");
+        }
+
+        return true;
+    }
+
+    public function biggerThan2($attribute, $params)
+    {
+        if ($this->dateTwoEnd < $this->dateTwoStart) {
+
+            $this->addError($attribute, "结束 须大于开始");
+        }
+
+        return true;
+    }
+
     public function attributeLabels()
     {
         return [
@@ -70,6 +99,11 @@ class StaticsForm extends  Model
 
     public function statics()
     {
+        $this->validate();
+
+        if ($this->hasErrors()) {
+            return [];
+        }
         $this->filterCondition();
         $data = [];
 
