@@ -16,6 +16,7 @@ use common\models\Type;
 use common\models\Order;
 use common\models\Snapshot;
 use PHPExcel_Worksheet_Row;
+use common\models\ExportSetting;
 
 class Excel
 {
@@ -95,6 +96,542 @@ class Excel
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+
+    /**
+     * @param $statics
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    public static function exportStatics($statics)
+    {
+        //初始化实例
+        $objPHPExcel = new \PHPExcel();
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+
+        //设置表头
+        $headStyle = Excel::getHeaderStyle();
+        $sheet = $objPHPExcel->getActiveSheet();
+
+        $columns = ['A1','B1','C1','D1','E1','F1','G1'];
+
+        foreach ($columns as $column) {
+            //设置自动换行
+            $sheet->getStyle($column)->getAlignment()->setWrapText(true);
+            //设置原谅色
+            $sheet->getStyle($column)->applyFromArray($headStyle);
+        }
+
+        $sheet->getRowDimension('1')->setRowHeight(15);
+
+        //设置宽度
+        $sheet->getColumnDimension('A')->setWidth(25);
+        $sheet->getColumnDimension('E')->setWidth(20);
+
+        $headOne = ['A1:D1', 'E1:G1'];
+        foreach ($headOne as $head) {
+            $sheet->mergeCells($head);
+        }
+
+        $sheet->setCellValue('A1',  $statics[0]['title']);
+        $sheet->setCellValue('E1',  $statics[1]['title']);
+        $sheet->setCellValue('A2', '');
+        $sheet->setCellValue('B2', '销售总额');
+        $sheet->setCellValue('C2', '订单总数');
+        $sheet->setCellValue('D2', '毛利');
+        $sheet->setCellValue('E2', '销售总额');
+        $sheet->setCellValue('F2', '订单总数');
+        $sheet->setCellValue('G2', '毛利');
+
+        //设置边框
+        self::setBorder($sheet, 2, 'A', 'G');
+
+        // $items
+        $items = array_keys($statics[0]['data']);
+
+        $columnFieldMap = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+        $row = 3;
+        foreach ($items as $item) {
+            self::setBorder($sheet, $row, 'A', 'G');
+            foreach ($columnFieldMap as $_column) {
+                switch ($_column)
+                {
+                    case 'A':
+                        $sheet->setCellValue($_column . $row, $item);
+                        break;
+
+                    case 'B':
+                        $sheet->setCellValue($_column . $row, $statics[0]['data'][$item]['sale_total']);
+                        break;
+                    case 'C':
+                        $sheet->setCellValue($_column . $row, $statics[0]['data'][$item]['total_person']);
+                        break;
+                    case 'D':
+                        $sheet->setCellValue($_column . $row, $statics[0]['data'][$item]['sale_total'] - $statics[0]['data'][$item]['cost_total']);
+                        break;
+                    case 'E':
+                        $sheet->setCellValue($_column . $row, isset($statics[1]['data'][$item]) ? $statics[1]['data'][$item]['sale_total'] : '0');
+                        break;
+                    case 'F':
+                        $sheet->setCellValue($_column . $row, isset($statics[1]['data'][$item]) ? $statics[1]['data'][$item]['total_person'] : 0);
+                        break;
+                    case 'G':
+                        $sheet->setCellValue($_column . $row, isset($statics[1]['data'][$item]) ? $statics[1]['data'][$item]['sale_total'] - $statics[1]['data'][$item]['cost_total'] : 0);
+                        break;
+                }
+
+                $sheet->freezePane($_column . $row);
+            }
+
+            $row++;
+        }
+
+        //设置文件名称
+        $file_name = !empty($file_name)? $file_name : "订单统计" . date('Ymd_His');
+        self::setDownloadHeader($file_name);
+
+        $objWriter->save('php://output');
+    }
+
+    /**
+     * @param \PHPExcel_Worksheet $sheet
+     * @param $row
+     * @param $startRow
+     * @param $endRow
+     * @throws \PHPExcel_Exception
+     */
+    protected static function setBorder(\PHPExcel_Worksheet $sheet, $row, $startRow, $endRow)
+    {
+        $sheet->getStyle("{$startRow}{$row}:{$endRow}{$row}")->applyFromArray([
+            'borders' => [
+                'allborders' => [
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,//细边框
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @param $data
+     * @param $file_name
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    public static function excelExport($data, $file_name)
+    {
+        $cacheObject = Yii::$app->cache;
+        $uid = Yii::$app->user->getId();
+        $cacheObject->set($uid, 0, 3600);
+
+        //权限判断
+        $showFlag = ExportSetting::getShowSetting();
+        $cacheMethod = \PHPExcel_CachedObjectStorageFactory::cache_to_discISAM;
+        $cacheSettings = array('memoryCacheSize'=>'512MB');
+        \PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
+        //初始化实例
+        $objPHPExcel = new \PHPExcel();
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+
+        //设置表头
+        $headStyle = Excel::getHeaderStyle();
+
+        $sheet = $objPHPExcel->getActiveSheet();
+
+        $columns = [
+            ['A1','B1','C1','D1','E1','F1','G1','H1','I1','J1','K1','L1','M1','N1','O1','P1','Q1','R1','S1','T1','U1','V1','W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1','AJ1','AK1','AL1','AM1','AN1','AO1','AP1',"AQ1", "AR1", "AS1"],
+            ['A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2','O2','P2','Q2','R2','S2','T2','U2','V2','W2','X2','Y2','Z2','AA2','AB2','AC2','AD2','AE2','AF2','AG2','AH2','AI2','AJ2','AK2','AL2','AM2','AN2','AO2','AP2',"AQ2", "AR2", "AS2"]
+        ];
+
+        foreach ($columns as $lines) {
+            foreach ($lines as $column) {
+                //设置自动换行
+                $sheet->getStyle($column)->getAlignment()->setWrapText(true);
+                //设置原谅色
+                $sheet->getStyle($column)->applyFromArray($headStyle);
+            }
+        }
+
+        //设置行高
+        $sheet->getRowDimension('1')->setRowHeight(25);
+        $sheet->getRowDimension('2')->setRowHeight(35);
+
+        //设置宽度
+        $sheet->getColumnDimension('A')->setWidth(22);
+        $sheet->getColumnDimension('B')->setWidth(22);
+        $sheet->getColumnDimension('C')->setWidth(16);
+        $sheet->getColumnDimension('D')->setWidth(16);
+        $sheet->getColumnDimension('E')->setWidth(16);
+        $sheet->getColumnDimension('U')->setWidth(20);
+        $sheet->getColumnDimension('F')->setWidth(16);
+        $sheet->getColumnDimension('G')->setWidth(20);
+        $sheet->getColumnDimension('H')->setWidth(10);
+        $sheet->getColumnDimension('I')->setWidth(10);
+        $sheet->getColumnDimension('K')->setWidth(35);
+        $sheet->getColumnDimension('J')->setWidth(25);
+        $sheet->getColumnDimension('M')->setWidth(10);
+        $sheet->getColumnDimension('AB')->setWidth(15);
+        $sheet->getColumnDimension('AC')->setWidth(15);
+        $sheet->getColumnDimension('AD')->setWidth(15);
+        $sheet->getColumnDimension('AE')->setWidth(15);
+        $sheet->getColumnDimension('AF')->setWidth(15);
+        $sheet->getColumnDimension('AG')->setWidth(45);
+        $sheet->getColumnDimension('AH')->setWidth(16);
+        $sheet->getColumnDimension('AI')->setWidth(16);
+        $sheet->getColumnDimension('AJ')->setWidth(16);
+        $sheet->getColumnDimension('AK')->setWidth(16);
+        $sheet->getColumnDimension('AL')->setWidth(20);
+        $sheet->getColumnDimension('AM')->setWidth(16);
+        $sheet->getColumnDimension('AN')->setWidth(16);
+
+        $sheet->getColumnDimension('AO')->setWidth(20);
+        $sheet->getColumnDimension('AP')->setWidth(25);
+        $sheet->getColumnDimension('AQ')->setWidth(25);
+        $sheet->getColumnDimension('AR')->setWidth(25);
+        $sheet->getColumnDimension('AS')->setWidth(25);
+
+
+        $fieldAttribute = Excel::setMergeName() + Excel::setThName();
+        foreach ($fieldAttribute as $column_x => $field) {
+            $sheet->setCellValue($column_x,  $field);
+        }
+
+        $headOne = ['A1:M1', 'N1:U1', 'V1:AD1', 'AE1:AK1', 'AL1:AO1','AQ1:AS1'];
+        foreach ($headOne as $head) {
+            $sheet->mergeCells($head);
+        }
+
+        //填充内容
+        $columnFieldMap = [
+            'A' => 'customer_id',
+            'B' => 'order_num',
+            'C' => 'order_date',//order_date
+            'D' => 'collect_date',
+            'E' => 'deliver_date',
+            'F' => 'entry_date',
+            'G' => 'combo_product',
+            'H' => 'combo_classify',
+            'I' => 'service_name',
+            'J' => 'operator',//操作人员
+            'K' => 'transactor',//办理人名称
+            'L' => 'combo_type',//套餐类型
+            'M' => 'combo_name',//套餐名称
+
+            'N' => 'single_sum',
+            'O' => 'total_person',
+            'P' => 'balance_sum',//补差收入
+            'Q' => 'flushphoto_sum',//冲洗照片补差收入
+            'R' => 'carrier_sum',//快递补差收入
+            'S' => 'cal_charge',//合计
+            'T' => 'charge',//手续费
+            'U' => 'total_charge',//实收
+
+            'V' => 'combo_cost',//单项实付合计
+            'W' => 'total_person',//数量
+            'X' => 'output_balance_sum',//补差
+            'Y' => 'output_flushphoto_sum',//照片
+            'Z' => 'output_carrier_sum',//快递
+            'AA' => 'total_pay',//实付合计
+            'AB' => 'fee',//利润
+
+            'AC' => 'draw_bill_status',
+            'AD' => 'refund_status',
+            'AE' => 'back_addressee',
+            'AF' => 'back_telphone',
+            'AG' => 'back_address',
+            'AH' => 'putsign_date',
+            'AI' => 'delivergood_date',
+            'AJ' => 'delivercompany',
+            'AK' => 'deliver_order',//寄回客人单号
+
+            'AL' => 'pay_date', //店铺收款日
+            'AM' => 'receipt_date',
+            'AN' => 'company_receipt_date',
+            'AO' => 'pay_account',
+
+            'AP' => 'remark',
+
+            'AQ' => 'balance_order',
+            'AR' => 'flushphoto_order',
+            'AS' => 'carrier_order',
+        ];
+
+        $startColumn = 'A';
+        $endColumn = "AS";
+        $row = 3;
+
+        //设置默认字体 大小 颜色
+        $objPHPExcel->getDefaultStyle()->getFont()->setName( '宋体');
+        $objPHPExcel->getDefaultStyle()->getFont()->setSize(9);
+        $objPHPExcel->getDefaultStyle()->getFont()->setColor(new \PHPExcel_Style_Color(\PHPExcel_Style_Color::COLOR_RED));
+
+        //统计
+        $total_person_sum = 0;
+        $totalData = count($data);
+
+        foreach ($data as $key => $object) {
+
+            $cacheObject->set($uid, floor(($key+1)*100/$totalData), 3600);
+
+            //数据准备
+            try {
+                $charge = $object->snapshot->combo_charge;
+                $cost = $object->snapshot->combo_cost;
+            } catch (\Exception $e) {
+                //$object->id
+                continue;
+            }
+
+            foreach ($columnFieldMap as $_column => $_field) {
+                //自动换行
+                $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
+
+                //设置行高
+                $sheet->getRowDimension($row)->setRowHeight(23);
+
+                //设置边框
+                self::setBorder($sheet, $row, $startColumn, $endColumn);
+
+                //设置水平竖直居中
+                $sheet->getStyle($_column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $sheet->getStyle($_column . $row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+                //设置自动换行
+                $sheet->getStyle($_column)->getAlignment()->setWrapText(true);
+
+                //填充数据
+                $cellValue = false;
+
+                switch ($_field)
+                {
+                    case 'order_num':
+                        $cellValue = "'" . str_replace([',','，'],"  ", $object->order_num);
+                        $sheet->getStyle($_column . $row)->getAlignment()->setWrapText(true);
+                        $sheet->getStyle($_column . $row)->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+                        break;
+
+                    case 'combo_product':
+                        $product = $object->snapshot;
+                        $cellValue = $product ? $product->combo_product : '已删除';
+                        break;
+
+                    case 'combo_type':
+                        $type = Type::getComboType();
+                        $cellValue = isset($type[$object->order_type]) ? $type[$object->order_type] : '已删除';
+                        break;
+
+                    case 'service_name':
+                        $servicer = $object->servicer;
+                        $cellValue = $servicer ? $servicer->name : '已删除';
+                        break;
+
+                    case 'operator':
+                        $operator = $object->operator;
+                        if (!is_null($operator)) {
+                            $cellValue = $operator->username;
+                        } else {
+                            $cellValue = ' ';
+                        }
+
+                        break;
+
+                    case 'combo_cost':
+                        if ($showFlag) {
+                            if ($cost = $object->snapshot) {
+                                $cellValue = $cost ? $cost->combo_cost : '数据丢失';
+                                $cost = $cost->combo_cost;
+                            }
+
+                        }
+                        break;
+                    case 'draw_bill_status':
+                        $statuses = Type::getYesOrNo();
+                        $cellValue = $statuses[$object->draw_bill_status];
+                        break;
+                    case 'refund_status':
+                        $refundStatus = Type::getRefundStatus();
+                        $cellValue =  $refundStatus[$object->refund_status];
+                        break;
+                    case 'combo_classify':
+                        $classify = Type::getComboClassify();
+                        $cellValue = $classify[$object->snapshot->combo_classify];
+                        break;
+
+                    case 'combo_name':
+                        $combo = $object->snapshot;
+                        $cellValue = $combo ? $combo->combo_name : "丢失数据";
+                        break;
+
+                    case 'total_person':
+                        $cellValue = $object->total_person;
+                        $total_person_sum += $cellValue;
+                        break;
+
+                    case 'charge': //手续费率
+                        $cellValue = $charge;
+                        break;
+
+                    case 'cal_charge':
+                        $cellValue = $object->total_person * $object->single_sum +
+                            $object->flushphoto_sum +
+                            $object->carrier_sum +
+                            $object->balance_sum;
+                        break;
+
+                    case 'total_charge': //累加处理
+                        $income = $object->total_person * $object->single_sum +
+                            $object->flushphoto_sum +
+                            $object->carrier_sum +
+                            $object->balance_sum;
+
+                        $cellValue = $income * ( $charge > 0 ? $charge : 1);
+                        break;
+
+                    case 'total_pay':
+                        //累加处理
+                        if ($showFlag) {
+                            $cellValue = $object->output_total_person * $cost +
+                                $object->output_flushphoto_sum +
+                                $object->output_carrier_sum +
+                                $object->output_balance_sum;
+                        }
+                        break;
+
+                    case 'fee':
+                        //收入减支出
+                        if ($showFlag) {
+                            $income = ($object->total_person * $object->single_sum +
+                                    $object->flushphoto_sum +
+                                    $object->carrier_sum +
+                                    $object->balance_sum) * ( $charge > 0 ? $charge : 1);
+
+                            $costValue = $object->output_total_person * $cost +
+                                $object->output_flushphoto_sum +
+                                $object->output_carrier_sum +
+                                $object->output_balance_sum;
+
+                            $cellValue = $income - $costValue;
+                        }
+                        break;
+
+                    case 'balance_order':
+                    case 'flushphoto_order':
+                    case 'carrier_order':
+                    case 'deliver_order':
+                        if ($object->$_field) {
+                            $cellValue = "'" . $object->$_field;
+                        }
+                        break;
+
+                    case 'transactor':
+                        $transactors = $object->relatedTransactor;
+                        $str = "";
+                        foreach ($transactors as $transator) {
+                            $str .= $transator['name'] . " ";
+                        }
+                        $cellValue = $str ? $str : '已删除';
+
+                        //设置批注
+                        if ($object->remark) {
+                            $commentAuthor = !empty($object->operator->username) ? $object->operator->username : "PHPExcel";
+                            $sheet->getComment( $_column . $row)->setAuthor($commentAuthor);     //设置作者
+                            $objCommentRichText = $sheet->getComment($_column . $row )->getText()->createTextRun($commentAuthor . " :");  //添加批注
+                            $objCommentRichText->getFont()->setBold( true);  //将现有批注加粗
+                            $sheet->getComment( $_column . $row)->getText()->createTextRun("\r\n" );      //添加更多批注
+                            $sheet->getComment( $_column . $row)->getText()->createTextRun($object->remark);
+                            $sheet->getComment( $_column . $row)->setWidth('100pt' );      //设置批注显示的宽高 ，在office中有效在wps中无效
+                            $sheet->getComment( $_column . $row)->setHeight('100pt' );
+                            $sheet->getComment( $_column . $row)->setMarginLeft('150pt' );
+                            $sheet->getComment( $_column . $row)->getFillColor()->setRGB('FFFFD8' );      //设置背景色 ，在office中有效在wps中无效
+                        }
+                        break;
+
+                    default:
+                        $cellValue = "";
+                        if ($object->$_field) {
+                            if (strpos($_field, 'date') !== false ) {
+                                $cellValue = date('Y年n月j日', strtotime($object->$_field));
+                            } else {
+                                $cellValue = !empty($object->$_field) ? $object->$_field : '';
+                            }
+                        }
+                        break;
+                }
+
+                if ($cellValue) {
+                    $sheet->setCellValue($_column . $row, $cellValue);
+                }
+            }
+            $row++;
+        }
+
+        $sheet->getRowDimension($row)->setRowHeight(23);
+
+
+        //设置边框
+        self::setBorder($sheet, $row, $startColumn, $endColumn);
+        //填充统计数据颜色
+        $hoverColumn = ['O'=>'ffff00','S'=>'ff0000','U'=>'ff0000','V'=>'ff0000','P'=>'','Q'=>'','R'=>'','W'=>'','X'=>'','Y'=>'','Z'=>'','AA'=>'','AB'=>'','N'=>''];
+        foreach ($hoverColumn as $column => $colorCode) {
+            //居中
+            $sheet->getStyle( $column . $row)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY);
+            $sheet->getStyle(  $column . $row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            //设置字体
+            $sheet->getStyle( $column . $row)->getFont()->setSize(11);
+            $sheet->getStyle( $column . $row)->getFont()->setBold(true);
+            $sheet->getStyle( $column . $row)->getFont()->getColor()->setARGB(\PHPExcel_Style_Color::COLOR_BLACK);
+            //设置颜色
+            if ($colorCode) {
+                $sheet->getStyle( $column . $row)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+                $sheet->getStyle($column . $row)->getFill()->getStartColor()->setRGB($colorCode);
+            }
+        }
+
+        //填充统计数据
+        $calculate = ['N','O','P','Q','R','S','U','V','W','X','Y','Z','AA','AB'];
+        foreach ($calculate as $col) {
+            $sheet->setCellValue($col . $row, self::getSumString($col,3,$row-1));
+        }
+
+        //设置文件名称
+        $file_name = !empty($file_name)? $file_name : "阳光假日报表" . date('Ymd_His');
+        self::setDownloadHeader($file_name);
+
+        $objWriter->save('php://output');
+    }
+
+
+
+    private static function setDownloadHeader($file_name)
+    {
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type:application/force-download");
+        header("Content-Type:application/vnd.ms-execl");
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+        header("Content-Type:application/octet-stream");
+        header("Content-Type:application/download");;
+        header('Content-Disposition:attachment;filename='.$file_name.'.xlsx');
+        header("Content-Transfer-Encoding:binary");
+    }
+
+    /**
+     * 统计表头字符串
+     * @param $col
+     * @param $start
+     * @param $end
+     * @return string
+     */
+    private static function getSumString($col,$start,$end)
+    {
+        $str = $col . $start . ':' . $col . $end;
+        $str = trim($str, ':');
+        $str = "=SUM(" . $str . ")";
+        return $str;
     }
 
 
