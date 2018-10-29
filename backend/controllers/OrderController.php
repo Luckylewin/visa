@@ -208,7 +208,6 @@ class OrderController extends BaseController
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post())) {
                 $data = $model->statics();
-
             }
         }
 
