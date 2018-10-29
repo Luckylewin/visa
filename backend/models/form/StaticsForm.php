@@ -48,12 +48,12 @@ class StaticsForm extends  Model
             [
                 'dateOneEnd',
                 'biggerThan1',
-                'skipOnEmpty' => false
+                'skipOnEmpty' => true
             ],
             [
                 'dateTwoEnd',
                 'biggerThan2',
-                'skipOnEmpty' => false
+                'skipOnEmpty' => true
             ],
             [
                 ['dateTwoEnd'],
