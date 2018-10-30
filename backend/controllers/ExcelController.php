@@ -47,8 +47,8 @@ class ExcelController extends BaseController
         }
 
         Excel::excelExport($data, $file_name);
+        exit;
 
-        return true;
     }
 
     public function actionImport()

@@ -235,6 +235,8 @@ class Order extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if ($this->scenario == 'importFromExcel') {
+            //记录修改用户
+            $this->mod_operator_id = Yii::$app->getUser()->id;
             return parent::beforeSave($insert);
         }
         //插入
