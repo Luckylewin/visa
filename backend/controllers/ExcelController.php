@@ -8,6 +8,7 @@ use Yii;
 use common\models\OrderQuery;
 use common\models\Type;
 use common\models\UploadForm;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 class ExcelController extends BaseController
@@ -56,8 +57,15 @@ class ExcelController extends BaseController
         $model = new UploadForm();
 
         if (Yii::$app->request->isPost) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
             $uploadFile = UploadedFile::getInstance($model,'file');
-            Excel::ExcelReader($uploadFile->tempName);
+            $result = Excel::ExcelReader($uploadFile->tempName);
+            if ($result['status'] == false) {
+                Yii::$app->response->statusCode = 400;
+                return ['error' => $result['msg']];
+            }
+
+            return $result;
         }
 
         return $this->render('import', [

@@ -78,7 +78,7 @@ class Excel
     /**
      * EXCEL 导入更新处理
      * @param $excelFilename
-     * @return bool
+     * @return array
      */
     public static function ExcelReader($excelFilename)
     {
@@ -94,7 +94,7 @@ class Excel
             return self::sheetReader($sheet, $highestRow);
 
         } catch (\Exception $e) {
-            return false;
+            return ['status' => false, 'msg' => '导入过程发生错误'];
         }
     }
 
@@ -653,7 +653,7 @@ class Excel
      * sheet读取器
      * @param \PHPExcel_Worksheet $sheet
      * @param $highestRow
-     * @return bool
+     * @return array
      * @throws \yii\db\Exception
      */
     private static function sheetReader(\PHPExcel_Worksheet $sheet, $highestRow)
@@ -661,11 +661,12 @@ class Excel
         //逐行处理
         foreach ($sheet->getRowIterator() as $row) {
             $currentRow = $row->getRowIndex();
-            if ($currentRow > 1) {  //确定从哪一行开始读取
+            //确定从哪一行开始读取
+            if ($currentRow > 1) {
                 //对象收集数据
                 $object   = Excel::rowReader($row, $highestRow);
                 if ($object == false) {
-                    return false;
+                    return ['status' => false, 'msg' => '格式错误'];
                 }
                 if ($currentRow == 2) {
                     continue;
@@ -712,22 +713,17 @@ class Excel
 
         if (self::$importTotal > 0) {
             $total = self::$importTotal;
-            \Yii::$app->session->setFlash('success', "本次成功导入{$total}条订单数据");
-            return true;
+            return ['status' => true, 'msg' => "本次成功导入{$total}条订单数据"];
         } else if(self::$updatedTotal > 0 ){
             $updateTotal = self::$updatedTotal;
-            \Yii::$app->session->setFlash('success', "本次导入更新了{$updateTotal}条订单数据");
-            return true;
+            return ['status' => true, 'msg' => "本次导入更新了{$updateTotal}条订单数据"];
         }
-
 
         if (!empty(self::$errorMsg)) {
-            \Yii::$app->session->setFlash('error', json_encode(self::$errorMsg));
-        } else {
-            \Yii::$app->session->setFlash('warning', "没有找到需要更新的订单");
+            return ['status' => false, 'msg' => self::$errorMsg];
         }
 
-        return false;
+        return ['status' => false, 'msg' => "没有找到需要更新的订单"];
     }
 
     private static function updateByExcel(Order $order, $excelOrder)
