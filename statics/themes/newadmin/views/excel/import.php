@@ -56,6 +56,7 @@ $js =<<<JS
                 maxFilesize:10,
                 filesizeBase: 1024,
                 dictFallbackMessage:"当前浏览器不支持拖拽上传，推荐您使用chrome浏览器",
+                dictInvalidFileType:"请选择excel文件上传",
                 headers: {'X-CSRF-Token':csrf},
                 paramName: "UploadForm[file]",
                 sending: function(file, xhr, formData) {
@@ -67,8 +68,13 @@ $js =<<<JS
                     layer.alert(response.msg, {icon: 1});
                 },
                 error: function (file, response, e) {
+                    if (typeof response === 'object') {
+                        layer.alert(response.error, {icon: 5});
+                    }  else {
+                        layer.alert(response, {icon: 5});
+                    }
                     $(file.previewTemplate).children('.dz-error-mark').css('opacity', '1');
-                    layer.alert(response.error, {icon: 5});
+                    
                 }
             });
 JS;
