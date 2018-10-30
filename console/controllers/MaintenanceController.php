@@ -16,6 +16,19 @@ class MaintenanceController extends Controller
 {
     public function actionWork()
     {
+        // 查询所有快照
+        $snapshots = Snapshot::find()->all();
+        foreach ($snapshots as $snapshot) {
+            Order::updateAll(['cost' => $snapshot->combo_cost], [
+               'combo_id' => $snapshot->id
+            ]);
+        }
+
+        echo "完成";
+    }
+
+    public function delSnapshot()
+    {
         // 查询所有订单
         $combo_id = Order::find()->select('combo_id')->column();
 
@@ -26,6 +39,6 @@ class MaintenanceController extends Controller
                 $snapshot->delete();
             }
         }
-        
+
     }
 }

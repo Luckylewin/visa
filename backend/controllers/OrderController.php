@@ -211,7 +211,6 @@ class OrderController extends BaseController
             }
         }
 
-
         return $this->render('statics', [
             'model' => $model,
             'data'  => $data,

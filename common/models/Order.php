@@ -54,7 +54,9 @@ use yii\db\ActiveRecord;
  * @property string $audit_status
  * @property string $draw_bill_status
  * @property string $refund_status
+ * @property string $cost
  */
+
 class Order extends \yii\db\ActiveRecord
 {
     const REFUND_STATUS_PENDING    = 'pending';
@@ -104,7 +106,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['order_num', 'order_classify', 'customer_id', 'combo_id', 'custom_servicer_id', 'transactor_id' ,'total_person', 'single_sum'], 'required'],
             [['pid', 'combo_id', 'custom_servicer_id',  'total_person', 'output_total_person'], 'integer'],
-            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'mod_operator_id', 'company_receipt_date', 'pay_account','output_total_person','is_pay','is_shop_receipt', 'is_company_receipt', 'creator_id'], 'safe'],
+            [['order_date', 'collect_date', 'deliver_date', 'entry_date', 'putsign_date', 'delivergood_date', 'receipt_date', 'pay_date','cid', 'transactor_id', 'operator_id', 'mod_operator_id', 'company_receipt_date', 'pay_account','output_total_person','is_pay','is_shop_receipt', 'is_company_receipt', 'creator_id', 'cost'], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum','output_balance_sum', 'output_flushphoto_sum', 'output_carrier_sum'], 'number'],
             [['back_address', 'remark'], 'string','max' => 300],
             [['delivercompany'], 'string', 'max' => 50],
@@ -210,7 +212,8 @@ class Order extends \yii\db\ActiveRecord
             'is_pay' => '是否已支付',
             'creator_id' => '创建人',
             'draw_bill_status' => '是否开票',
-            'refund_status' => '是否退款'
+            'refund_status' => '是否退款',
+            'cost' => '实际支出成本'
         ];
     }
 
@@ -264,6 +267,8 @@ class Order extends \yii\db\ActiveRecord
             }
             //记录修改用户
             $this->mod_operator_id = Yii::$app->getUser()->id;
+            // 退款状态监听
+            $this->listenRefundStatus();
         }
 
         //记录操作用户 在送证日(deliver_date)和入馆日(entry_date)被填写后，除超级管理员外都不能修改
@@ -279,6 +284,23 @@ class Order extends \yii\db\ActiveRecord
         $this->setAuditStatus();
 
         return parent::beforeSave($insert);
+    }
+
+    protected function listenRefundStatus()
+    {
+        // 只支持从1到 2 3状态的变化
+        if ($this->getOldAttribute('refund_status') == self::REFUND_STATUS_PENDING &&
+            $this->getOldAttribute('refund_status') !== $this->refund_status
+        ) {
+            if ($this->refund_status == self::REFUND_STATUS_NO_HANDLED) {
+                // 直接删除掉收款 和 成本这个订单的最终金额为0
+                $this->single_sum = 0;
+                $this->cost       = 0;
+            } else if($this->refund_status == self::REFUND_STATUS_DENIED) {
+                // 直接删除掉收款，这个订单的最终金额为亏成本
+                $this->single_sum = 0;
+            }
+        }
     }
 
     private function setDefault()
@@ -354,12 +376,13 @@ class Order extends \yii\db\ActiveRecord
 
         if (!is_null($snapShot)) {
             $this->order_classify = $snapShot->combo_classify;
-            $this->combo_id = $snapShot->id;
+            $this->combo_id       = $snapShot->id;
         } else {
 
             $combo = Combo::findOne(['combo_id' => (int)$this->combo_id]);
             if (!is_null($combo)) {
-                $this->combo_id = Snapshot::duplicateOne($combo);
+                $this->combo_id        = Snapshot::duplicateOne($combo);
+                $this->cost            = $combo->combo_cost;
                 $this->order_classify  = $combo->combo_classify;
                 if ($this->combo_id) {
                     return true;

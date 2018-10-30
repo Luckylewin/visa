@@ -143,7 +143,7 @@ class StaticsForm extends  Model
                 'sale_total'   => 0,
                 'total_person' => 0,
             ];
-            $status = Order::find()->select("combo_id,sum(combo_cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
+            $status = Order::find()->select("combo_id,sum(cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
                                     ->joinWith('snapshot',false, 'LEFT JOIN')
                                     ->where(['>=', 'order_date', $start])
                                     ->andWhere(['<=', 'order_date', $end ])
@@ -173,7 +173,7 @@ class StaticsForm extends  Model
 
         if (!empty($products)) {
             foreach ($products as $product) {
-                $order = Order::find()->select("combo_id,sum(combo_cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
+                $order = Order::find()->select("combo_id,sum(cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
                                     ->joinWith('snapshot',false, 'Left JOIN')
                                     ->where(['>=', 'order_date', $start])
                                     ->andWhere(['<=', 'order_date', $end ])

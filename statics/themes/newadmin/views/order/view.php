@@ -66,7 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' =>'raw',
                     'value' => function($model) use ($showCost) {
                         try {
-                            return $showCost? $model->snapshot->combo_cost . "元" : "-";
+
+                            return $showCost? $model->cost . "元" : "-";
                         }catch (\Exception $e) {
                             return '<i class="fa fa-trash"></i>已被删除';
                         }
@@ -321,6 +322,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'attribute' => 'refund_status',
+                    'captionOptions' => ['class' => 'info'],
                     'value' => function($model) {
                         return Type::getRefundStatus()[$model->refund_status];
                     }

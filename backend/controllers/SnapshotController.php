@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\ExportSetting;
+use common\models\Order;
 use Yii;
 use common\models\Snapshot;
 use yii\data\ActiveDataProvider;
@@ -38,19 +39,26 @@ class SnapshotController extends BaseController
      * @return mixed
      * @throws
      */
-    public function actionView($id)
+    public function actionView($id, $oid = null)
     {
+        $model = $this->findModel($id);
         //查询权限
         $isShow = ExportSetting::getShowSetting();
+        if ($oid) {
+            $order = Order::findOne($oid);
+            if ($order->cost != $model->combo_cost) {
+                $model->combo_cost = $order->cost;
+            }
+        }
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('view', [
-                'model' => $this->findModel($id),
+                'model' => $model,
                 'isShow' => $isShow
             ]);
         }
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'isShow' => $isShow
         ]);
     }

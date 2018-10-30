@@ -5,10 +5,10 @@
         <p></p>
         <p>
             <a class="btn btn-primary btn-lg" href="<?= \yii\helpers\Url::to(['order/create']) ?>" role="button">
-                录入订单
+               <i class="fa-plus-square-o fa"></i> 录入订单
             </a>
             <a class="btn btn-info btn-lg" href="<?= \yii\helpers\Url::to(['excel/import']) ?>" role="button">
-                导入Excel
+               <i class="fa-file-excel-o fa"></i> 导入Excel
             </a>
         </p>
     </div>

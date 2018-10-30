@@ -167,7 +167,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                                 'class' => 'btn btn-default btn-xs combo-view',
                                 'data-toggle' => 'modal',
                                 'data-target' => '#show-modal',
-                                'data-id' => $combo->id
+                                'data-id'     => $combo->id,
+                                'data-oid'    => $model->id
                             ]);
                         }catch (\Exception $e) {
                             return '<i class="fa fa-trash"></i>已被删除';
@@ -424,9 +425,10 @@ Modal::begin([
 $requestUrl = \yii\helpers\Url::to(['snapshot/view']);
 $requestJs=<<<JS
      $(document).on('click', '.combo-view', function() {
-                var id = $(this).attr('data-id');
-            
-                $.get('{$requestUrl}', {'id':id},
+                var id = $(this).data('id');
+                var oid = $(this).data('oid');
+                
+                $.get('{$requestUrl}', {'id':id, 'oid':oid},
                     function (data) {
                         $('.modal-body').css('min-height', '200px').html(data);
                     }
