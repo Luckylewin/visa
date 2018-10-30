@@ -642,7 +642,6 @@ class Excel
         $data = self::getCellValue($cell); //获取cell中数据
 
         if (str_replace(["\n"," "],["",""], $th[$currentColumn-1]) != str_replace(["\n"," "],["",""], $data)) {
-            \Yii::$app->session->setFlash('error', ":(  Excel表格式错误,请检查");
             return false;
         }
 
