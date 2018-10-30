@@ -62,7 +62,14 @@ class ExcelController extends BaseController
             $result = Excel::ExcelReader($uploadFile->tempName);
             if ($result['status'] == false) {
                 Yii::$app->response->statusCode = 400;
-                return ['error' => $result['msg']];
+                $error = '';
+                if (is_array($result['msg'])) {
+                    foreach ($result['msg'] as $row => $msg) {
+                        $error .= "第{$row}行 {$msg}<br/>";
+                    }
+                }
+
+                return ['error' => $error];
             }
 
             return $result;
