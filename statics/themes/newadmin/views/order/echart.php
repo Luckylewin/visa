@@ -99,6 +99,9 @@ option = {
          option.title.text = type + field + ' 数据对比'; 
          var today = item[field]['今天']
          var yesterday = item[field]['昨天']
+         
+         
+         option.series[0].name = field
          option.series[0].data = [today, yesterday]
          myChart.setOption(option)
          index++;

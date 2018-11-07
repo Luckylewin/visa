@@ -283,6 +283,9 @@ class OrderController extends BaseController
         $chartData = [];
         $types = Type::getComboClassify();
         foreach ($types as $type) {
+            $earningToday    = $data[0]['data'][$type]['sale_total'] - $data[0]['data'][$type]['cost_total'];
+            $earningYeserday = $data[1]['data'][$type]['sale_total'] - $data[1]['data'][$type]['cost_total'];
+
             $chartData[$type] = [
                 '销售额' => [
                     '今天' => empty($data[0]['data'][$type]['sale_total']) ? 0 : $data[0]['data'][$type]['sale_total'],
@@ -293,8 +296,8 @@ class OrderController extends BaseController
                     '昨天' => empty($data[1]['data'][$type]['total_person']) ? 0 : $data[1]['data'][$type]['total_person'] ,
                 ],
                 '毛利' => [
-                    '今天' => empty($data[0]['data'][$type]['total_person']) ? 0 : $data[0]['data'][$type]['total_person'],
-                    '昨天' => empty($data[1]['data'][$type]['total_person']) ? 0 : $data[1]['data'][$type]['total_person'] ,
+                    '今天' => empty($earningToday)    ? 0 : $earningToday,
+                    '昨天' => empty($earningYeserday) ? 0 : $earningYeserday ,
                 ]
             ];
         }
