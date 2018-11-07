@@ -29,8 +29,8 @@ class Type
     public static function getRefundStatus()
     {
         return [
-            Order::REFUND_STATUS_PENDING    => '未退款',
-            Order::REFUND_STATUS_NO_HANDLED => '未办理退款',
+            Order::REFUND_STATUS_PENDING    => '未办理退款',
+            Order::REFUND_STATUS_NO_HANDLED => '已退款',
             Order::REFUND_STATUS_DENIED     => '拒签退款'
         ];
     }

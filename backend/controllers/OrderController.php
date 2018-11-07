@@ -233,7 +233,7 @@ class OrderController extends BaseController
             ];
 
         }
-        
+
         $fields = array_keys($data[0]['data']);
 
         foreach ($fields as $field) {
@@ -250,6 +250,57 @@ class OrderController extends BaseController
         }
 
         return $this->render('report', ['data' => $data]);
+    }
+
+    public function actionChart()
+    {
+
+        // 今天 昨天 这个月 上个月 的统计
+        $during = [
+            [
+                'start' => date('Y-m-d'),
+                'end'   => date('Y-m-d'),
+                'title' => '今天'
+            ],
+            [
+                'start' => date('Y-m-d', strtotime('yesterday')),
+                'end'   => date('Y-m-d', strtotime('yesterday')),
+                'title' => '昨天'
+            ]
+        ];
+
+        $data = [];
+
+        foreach ($during as $key => $during) {
+            $data[] = [
+                'start' => $during['start'],
+                'end'   => $during['end'],
+                'title' => $during['title'],
+                'data'  => Statics::getTypeStatics($during['start'], $during['end'])
+            ];
+        }
+
+        $chartData = [];
+        $types = Type::getComboClassify();
+        foreach ($types as $type) {
+            $chartData[$type] = [
+                '销售额' => [
+                    '今天' => empty($data[0]['data'][$type]['sale_total']) ? 0 : $data[0]['data'][$type]['sale_total'],
+                    '昨天' => empty($data[1]['data'][$type]['sale_total']) ? 0 : $data[1]['data'][$type]['sale_total'],
+                ],
+                '订单人数' => [
+                    '今天' => empty($data[0]['data'][$type]['total_person']) ? 0 : $data[0]['data'][$type]['total_person'],
+                    '昨天' => empty($data[1]['data'][$type]['total_person']) ? 0 : $data[1]['data'][$type]['total_person'] ,
+                ],
+                '毛利' => [
+                    '今天' => empty($data[0]['data'][$type]['total_person']) ? 0 : $data[0]['data'][$type]['total_person'],
+                    '昨天' => empty($data[1]['data'][$type]['total_person']) ? 0 : $data[1]['data'][$type]['total_person'] ,
+                ]
+            ];
+        }
+
+       return $this->render('echart', ['data' => $chartData]);
+
     }
 
     public function actionStatics()

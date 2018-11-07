@@ -7,6 +7,8 @@ use common\models\Servicer;
 use common\models\Transator;
 use \backend\models\Operator;
 use \common\models\Type;
+
+
 /* @var $this yii\web\View */
 /* @var $model common\models\Order */
 /* @var $form yii\widgets\ActiveForm */
@@ -248,9 +250,14 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'pay_account')->textInput(); ?>
 
-                <?= $form->field($model, 'refund_status')->radioList(Type::getRefundStatus()); ?>
+                <?php if(Type::isSuperAdmin()): ?>
+                    <?= $form->field($model, 'refund_status')->radioList(Type::getRefundStatus()); ?>
+                    <?= $form->field($model, 'draw_bill_status')->radioList(Type::getYesOrNo()); ?>
+                <?php else: ?>
+                    <?= $form->field($model, 'refund_status')->radioList(Type::getRefundStatus(), ['itemOptions' => ['disabled' => true]]); ?>
+                    <?= $form->field($model, 'draw_bill_status')->radioList(Type::getYesOrNo(),  ['itemOptions' => ['disabled' => true]]); ?>
+                <?php endif ?>
 
-                <?= $form->field($model, 'draw_bill_status')->radioList(Type::getYesOrNo()); ?>
 
                 <?php if(\common\models\Type::isSuperAdmin()): ?>
                 <?= $form->field($model, 'operator_id')->dropDownList(Operator::getAllOperator(), [

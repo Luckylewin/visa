@@ -14,7 +14,8 @@ use yii\helpers\ArrayHelper;
 
 class Statics
 {
-    public static function work($start, $end)
+
+    public static function getTypeStatics($start, $end)
     {
         $data = [];
 
@@ -36,32 +37,37 @@ class Statics
 
             if ($start == $end) {
                 $query = Order::find()->select("combo_id,sum(cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
-                                      ->joinWith('snapshot',false, 'LEFT JOIN')
-                                      ->where(['=', 'order_date', $start]);
+                    ->joinWith('snapshot',false, 'LEFT JOIN')
+                    ->where(['=', 'order_date', $start]);
             } else {
                 $query = Order::find()->select("combo_id,sum(cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
-                                      ->joinWith('snapshot',false, 'LEFT JOIN')
-                                      ->where(['>=', 'order_date', $start])
-                                      ->andWhere(['<=', 'order_date', $end ]);
+                    ->joinWith('snapshot',false, 'LEFT JOIN')
+                    ->where(['>=', 'order_date', $start])
+                    ->andWhere(['<=', 'order_date', $end ]);
             }
 
-                $status = $query->andWhere(['>', 'combo_id', 0 ])
-                                ->andWhere(['=', 'order_classify', $key])
-                                ->asArray()
-                                ->limit(1)
-                                ->one();
+            $status = $query->andWhere(['>', 'combo_id', 0 ])
+                ->andWhere(['=', 'order_classify', $key])
+                ->asArray()
+                ->limit(1)
+                ->one();
 
             $data[$classifies[$key]] = $status ? $status : $classify_data;
-
         }
 
+        return $data;
+    }
+
+    public static function getProductStatics($start, $end)
+    {
+        $data = [];
         // 产品列表中的数据
         $productsDB = Product::find()->select('name')->asArray()->column();
 
         // 快照中每个产品分别统计
         $query = Order::find()->select("combo_product,combo_id,count(*)")
-                              ->joinWith('snapshot')
-                              ->groupBy('combo_product');
+            ->joinWith('snapshot')
+            ->groupBy('combo_product');
 
         if ($start == $end) {
             $query->andWhere(['=', 'order_date', $start]);
@@ -77,7 +83,7 @@ class Statics
         if (!empty($products)) {
             foreach ($products as $product) {
                 $query = Order::find()->select("combo_id,sum(cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
-                                      ->joinWith('snapshot',false, 'Left JOIN');
+                    ->joinWith('snapshot',false, 'Left JOIN');
 
                 if ($start == $end) {
                     $query->where(['=', 'order_date', $start]);
@@ -87,14 +93,22 @@ class Statics
                 }
 
                 $order = $query->andwhere(['=', 'combo_product', $product])
-                               ->asArray()
-                               ->limit(1)
-                               ->one();
+                    ->asArray()
+                    ->limit(1)
+                    ->one();
 
                 $data[$product] = $order;
             }
         }
 
         return $data;
+    }
+
+    public static function work($start, $end)
+    {
+        $types    = self::getTypeStatics($start, $end);
+        $products = self::getProductStatics($start, $end);
+
+        return array_merge($types, $products);
     }
 }
