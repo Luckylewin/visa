@@ -9,6 +9,7 @@
 namespace backend\models\form;
 
 
+use backend\models\Statics;
 use common\models\Order;
 use common\models\Product;
 use common\models\Type;
@@ -112,7 +113,7 @@ class StaticsForm extends  Model
                 'start' => $during['start'],
                 'end'   => $during['end'],
                 'title' => $during['title'],
-                'data'  => $this->work($during['start'], $during['end'])
+                'data'  => Statics::work($during['start'], $during['end'])
             ];
 
         }
@@ -197,7 +198,7 @@ class StaticsForm extends  Model
             $during[] = [
                 'start' => $this->dateOneStart,
                 'end'   => $this->dateOneEnd,
-                'title' => $this->dateOneStart. '到' . $this->dateOneEnd . '数据'
+                'title' => $this->dateOneStart. ' 到 ' . $this->dateOneEnd . '数据'
             ];
 
             // 如果时间1，时间2全部参数都填写了，正常显示
@@ -205,7 +206,7 @@ class StaticsForm extends  Model
                 $during[] = [
                     'start' => $this->dateTwoStart,
                     'end'   => $this->dateTwoEnd,
-                    'title' => $this->dateTwoStart. '到' . $this->dateTwoEnd . '数据'
+                    'title' => $this->dateTwoStart. ' 到 ' . $this->dateTwoEnd . '数据'
                 ];
             } else {
                 // 如果只填时间1段，就显示时间1段，就显示时间段1和时间1段上个月的数据
@@ -214,7 +215,7 @@ class StaticsForm extends  Model
                 $during[] = [
                     'start' => $start,
                     'end'   => $end,
-                    'title' => $start. '到' . $end . '数据'
+                    'title' => $start. ' 到 ' . $end . '数据'
                 ];
 
             }

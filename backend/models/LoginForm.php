@@ -29,8 +29,25 @@ class LoginForm extends Model
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
+            ['password', 'errorTime'],
             ['password', 'validatePassword'],
         ];
+    }
+
+    /**
+     * 验证密码
+     */
+    public function errorTime($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $ip = Yii::$app->request->getUserIP();
+            $cache = Yii::$app->cache;
+            $loginFail = $cache->get($ip);
+
+            if ($loginFail && $loginFail > 6) {
+                $this->addError($attribute, '错误次数过多，请半小时后重试');
+            }
+        }
     }
 
     /**
@@ -52,6 +69,7 @@ class LoginForm extends Model
      */
     public function login()
     {
+
         if ($this->validate())
         {
             $model = $this->getUser();
@@ -64,6 +82,14 @@ class LoginForm extends Model
             }
             return $isLogin;
         } else {
+            $ip = Yii::$app->request->getUserIP();
+            $cache = Yii::$app->cache;
+            if ($cache->exists($ip)) {
+                $cache->set($ip, $cache->get($ip) + 1,1800);
+            } else {
+                $cache->set($ip, 1, 1800);
+            }
+
             return false;
         }
     }

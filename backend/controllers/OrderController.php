@@ -6,6 +6,7 @@ use app\models\OrderToTransactor;
 use backend\components\Excel;
 use backend\models\Admin;
 use backend\models\form\StaticsForm;
+use backend\models\Statics;
 use common\models\ExportSetting;
 use common\models\Type;
 use Yii;
@@ -193,6 +194,47 @@ class OrderController extends BaseController
         }
 
 
+    }
+
+    public function actionReport()
+    {
+        // 今天 昨天 这个月 上个月 的统计
+        $during = [
+            [
+                'start' => date('Y-m-d'),
+                'end'   => date('Y-m-d'),
+                'title' => '今天'
+            ],
+            [
+                'start' => date('Y-m-d', strtotime('yesterday')),
+                'end'   => date('Y-m-d', strtotime('yesterday')),
+                'title' => '昨天'
+            ],
+            [
+                'start' => date('Y-m-d', strtotime('first day of this month')),
+                'end'   => date('Y-m-d', strtotime('last day of this month')),
+                'title' => '本月'
+            ],
+            [
+                'start' => date('Y-m-d', strtotime('first day of last month')),
+                'end'   => date('Y-m-d', strtotime('last day of last month')),
+                'title' => '上月'
+            ]
+        ];
+
+        $data = [];
+
+        foreach ($during as $key => $during) {
+            $data[] = [
+                'start' => $during['start'],
+                'end'   => $during['end'],
+                'title' => $during['title'],
+                'data'  => Statics::work($during['start'], $during['end'])
+            ];
+
+        }
+
+        return $this->render('report', ['data' => $data]);
     }
 
     public function actionStatics()
