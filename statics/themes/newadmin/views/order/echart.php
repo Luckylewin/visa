@@ -37,7 +37,7 @@ $this->registerJsFile('https://cdn.bootcss.com/echarts/4.1.0-release/echarts.com
 
 
 <div class="col-md-12 text-center">
-   
+
 </div>
 
 <?php

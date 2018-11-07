@@ -16,7 +16,9 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
 
 </style>
 
-<div class="col-md-12 text-left">
+<div class="col-md-12 text-center">
+    <?php echo Html::a('<i class="fa fa-hand-o-right"></i>昨日数据对比', ['order/chart'], ['class' => 'btn btn-link']) ?>
+    &nbsp;
     <?php echo Html::a('<i class="fa fa-hand-o-right"></i>指定日期统计', ['order/statics'], ['class' => 'btn btn-link']) ?>
 </div>
 
