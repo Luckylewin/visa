@@ -233,6 +233,21 @@ class OrderController extends BaseController
             ];
 
         }
+        
+        $fields = array_keys($data[0]['data']);
+
+        foreach ($fields as $field) {
+            $flag = false;
+            for ($i=0; $i<=3; $i++) {
+                if (!empty($data[$i]['data'][$field]['cost_total']) || !empty($data[$i]['data'][$field]['sale_total'])) {
+                    $flag = true;
+                }
+            }
+
+            if ($flag == false) {
+                unset($data[0]['data'][$field], $data[1]['data'][$field], $data[2]['data'][$field], $data[3]['data'][$field]);
+            }
+        }
 
         return $this->render('report', ['data' => $data]);
     }
