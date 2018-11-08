@@ -12,12 +12,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
 ?>
 
 
-<style>
-
-</style>
-
-
-<div class="col-md-10 col-md-offset-1">
+<div style="margin: 0 auto;width: 90%;">
     <?php if($data): ?>
         <table class="table table-bordered table-striped table-condensed">
 

@@ -17,6 +17,42 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 ?>
 
     <style>
+        /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+        ::-webkit-scrollbar
+        {
+            width: 6px;
+            height: 19px;
+            background-color: #F5F5F5;
+        }
+
+        /*定义滚动条轨道 内阴影+圆角*/
+        ::-webkit-scrollbar-track
+        {
+            -webkit-box-shadow: inset 0 0 12px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            background-color: #FFF;
+        }
+
+        /*定义滑块 内阴影+圆角*/
+        ::-webkit-scrollbar-thumb
+        {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #0d8ddb;
+            background-image: -webkit-linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, .2) 25%,
+                    transparent 25%,
+
+                    transparent 50%,
+                    rgba(255, 255, 255, .2) 50%,
+
+                    rgba(255, 255, 255, .2) 75%,
+                    transparent 75%,
+                    transparent
+            );
+        }
+
         .btn-xs{margin-bottom:6px;}
     </style>
 
@@ -31,7 +67,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 
     try {
         echo GridView::widget([
-            'tableOptions' => ['class' => 'table table-hover table-bordered'],
+                'layout' => '{summary}{items}{pager}<div class="scrollbar"></div>',
+            'tableOptions' => ['class' => 'innerbox table text-nowrap table-hover table-bordered table-responsive'],
             //分页
             'dataProvider' => $dataProvider,
             //'filterModel' => $searchModel,
@@ -75,7 +112,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         }
                         return $model->order_num;
                     },
-                    'contentOptions' => ['style'=>'font-size:8px;'],
+
                 ],
                 //订单日期
                 [
@@ -89,8 +126,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         }
 
                     },
-                    'options' => ['style'=>'width:70px;'],
-                    'contentOptions' => ['style'=>'font-size:12px;'],
+                    //'options' => ['style'=>'width:70px;'],
+
                 ],
 
                 //订单分类
@@ -111,7 +148,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         }
                     },
                     'filter' => Type::getComboClassify(),
-                    'options' => ['style'=>'width:34px;']
+                    //'options' => ['style'=>'width:34px;']
                 ],
 
                 //收资料日
@@ -125,8 +162,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         }
 
                     },
-                    'options' => ['style'=>'width:85px;'],
-                    'contentOptions' => ['style'=>'font-size:12px;'],
+                   // 'options' => ['style'=>'width:85px;'],
+
                 ],
 
                 //送证日
@@ -139,8 +176,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '-';
                         }
                     },
-                    'options' => ['style'=>'width:60px;'],
-                    'contentOptions' => ['style'=>'font-size:12px;'],
+                   // 'options' => ['style'=>'width:60px;'],
+
                 ],
 
                 //入管日
@@ -153,7 +190,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '-';
                         }
                     },
-                    'options' => ['style'=>'width:60px;'],
+                    //'options' => ['style'=>'width:60px;'],
                     'contentOptions' => ['style'=>'font-size:12px;'],
                 ],
                 [
@@ -174,8 +211,8 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '<i class="fa fa-trash"></i>已被删除';
                         }
                     },
-                    'options' => ['style'=>'width:80px;'],
-                    'contentOptions' => ['style'=>'font-size:5px;'],
+                   // 'options' => ['style'=>'width:80px;'],
+
                 ],
                 //分类
                 [
@@ -199,7 +236,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                         }
 
                     },
-                    'options' => ['style'=>'width:30px;']
+                   // 'options' => ['style'=>'width:30px;']
                 ],
                 //接待销售
                 [
@@ -213,7 +250,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '-';
                         }
                     },
-                    'options' => ['style'=>'width:55px;'],
+                   // 'options' => ['style'=>'width:55px;'],
                 ],
                 //办理人
                 [
@@ -255,7 +292,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '<i class="fa fa-trash"></i>已被删除';
                         }
                     },
-                    'contentOptions' => ['style' => 'font-size:8px;']
+
 
                 ],
                 [
@@ -288,7 +325,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                 [
                     'class' => 'common\grid\MyActionColumn',
                     'header' => '操作',
-                    'options' => ['style'=>'width:160px;']
+
                 ],
                 // 'id',
                 //'pid',
@@ -328,14 +365,14 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
     </div>
 </div>
 
-<p>
+<div style="margin-top: 30px;">
     <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
     <?= Html::button('导出excel', ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
     <?= Html::a("批量删除", "javascript:void(0);", ["class" => "btn btn-danger gridview"]) ?>
 
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
     <?= Html::a('导入excel', \yii\helpers\Url::to(['excel/import']), ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
-</p>
+</div>
 
 <?php \common\widgets\Jsblock::begin() ?>
 <script>

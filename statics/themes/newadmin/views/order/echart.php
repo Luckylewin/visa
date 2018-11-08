@@ -13,9 +13,13 @@ $this->registerJsFile('https://cdn.bootcss.com/echarts/4.1.0-release/echarts.com
 <style>
     .item
     {
-        width: 350px;height:250px;float: left;margin: 20px;background: #F6F6F6;
+        width: 350px;height:250px;float: left;margin: 20px;
     }
 </style>
+
+<div class="col-md-12 text-center">
+    <?= \yii\helpers\Html::a(\yii\helpers\Html::tag('i',' 返回', ['class'=>'fa fa-chevron-left']), ['order/report'], ['class' => 'btn btn-default col-md-12', 'style' => 'background:#eee']) ?>
+</div>
 
 <div>
     <div id="main1" class="item"></div>
@@ -37,7 +41,7 @@ $this->registerJsFile('https://cdn.bootcss.com/echarts/4.1.0-release/echarts.com
 
 
 <div class="col-md-12 text-center">
-
+    <?= \yii\helpers\Html::a(\yii\helpers\Html::tag('i',' 返回', ['class'=>'fa fa-chevron-left']), ['order/report'], ['class' => 'btn btn-default col-md-12', 'style' => 'background:#eee']) ?>
 </div>
 
 <?php
@@ -90,6 +94,12 @@ option = {
             }
         },
             type:'bar',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
             barWidth: '40%',
             barGap:'20%',
             data:[10, 52]
