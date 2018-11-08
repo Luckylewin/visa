@@ -16,23 +16,18 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
 
 </style>
 
-<div class="col-md-12 text-center">
-    <?php echo Html::a('<i class="fa fa-hand-o-right"></i>昨日数据对比', ['order/chart'], ['class' => 'btn btn-link']) ?>
-    &nbsp;
-    <?php echo Html::a('<i class="fa fa-hand-o-right"></i>指定日期统计', ['order/statics'], ['class' => 'btn btn-link']) ?>
-</div>
 
-<div>
+<div class="col-md-10 col-md-offset-1">
     <?php if($data): ?>
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped table-condensed">
 
             <thead>
             <tr>
                 <th></th>
-                <th colspan="3"><?= isset($data[0]) ? $data[0]['title'] : '' ?></th>
-                <th colspan="3"><?= isset($data[1]) ? $data[1]['title'] : '' ?></th>
-                <th colspan="3"><?= isset($data[2]) ? $data[2]['title'] : '' ?></th>
-                <th colspan="3"><?= isset($data[3]) ? $data[3]['title'] : '' ?></th>
+                <th class="text-center" colspan="3"><?= isset($data[0]) ? $data[0]['title'] : '' ?></th>
+                <th class="text-center" colspan="3"><?= isset($data[1]) ? $data[1]['title'] : '' ?></th>
+                <th class="text-center" colspan="3"><?= isset($data[2]) ? $data[2]['title'] : '' ?></th>
+                <th class="text-center" colspan="3"><?= isset($data[3]) ? $data[3]['title'] : '' ?></th>
             </tr>
             <tr>
                 <th>统计维度</th>
@@ -136,4 +131,12 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
 
 
     <?php endif; ?>
+</div>
+
+
+
+<div class="col-md-12 text-center">
+    <?php echo Html::a('<i class="fa fa-hand-o-right"></i>昨日数据对比', ['order/chart'], ['class' => 'btn btn-link']) ?>
+    &nbsp;
+    <?php echo Html::a('<i class="fa fa-hand-o-right"></i>指定日期统计', ['order/statics'], ['class' => 'btn btn-link']) ?>
 </div>

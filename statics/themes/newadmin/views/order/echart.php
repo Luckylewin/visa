@@ -50,7 +50,7 @@ option = {
     title: {
         text: '数据对比'
     },
-    color: ['#3398DB'],
+    color: ['#3398DB', '#2398DB'],
     tooltip : {
         trigger: 'axis',
         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -80,8 +80,18 @@ option = {
     series : [
         {
             name:'直接访问',
+            itemStyle: {
+                    normal: {
+                    // 定制显示（按顺序）
+                    color: function(params) { 
+                        var colorList = ['#3398DB', '#0AAF9F','#E89589','#16A085','#4A235A','#C39BD3 ','#F9E79F','#BA4A00','#ECF0F1','#616A6B','#EAF2F8','#4A235A','#3498DB' ]; 
+                        return colorList[params.dataIndex] 
+                    }
+            }
+        },
             type:'bar',
-            barWidth: '88%',
+            barWidth: '40%',
+            barGap:'20%',
             data:[10, 52]
         }
     ]
