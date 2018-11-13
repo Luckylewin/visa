@@ -377,6 +377,7 @@ class Order extends \yii\db\ActiveRecord
         if (!is_null($snapShot)) {
             $this->order_classify = $snapShot->combo_classify;
             $this->combo_id       = $snapShot->id;
+            $this->cost           = $snapShot->combo_cost;
         } else {
 
             $combo = Combo::findOne(['combo_id' => (int)$this->combo_id]);
