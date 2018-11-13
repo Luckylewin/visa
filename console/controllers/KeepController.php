@@ -12,16 +12,21 @@ use common\models\Order;
 use common\models\Snapshot;
 use yii\console\Controller;
 
-class MaintenanceController extends Controller
+class KeepController extends Controller
 {
     public function actionWork()
     {
-        // 查询所有快照
-        $snapshots = Snapshot::find()->all();
-        foreach ($snapshots as $snapshot) {
-            Order::updateAll(['cost' => $snapshot->combo_cost], [
-               'combo_id' => $snapshot->id
-            ]);
+        // 查询所有订单
+        $orders = Order::find()->all();
+        foreach ($orders as $key => $order) {
+            echo "{$key}".PHP_EOL;
+            //记录快照
+            $snapShot = Snapshot::findOne(['id' => (int)($order->combo_id)]);
+            if (!empty($snapShot)) {
+                    Order::updateAll(['cost' => $snapShot->combo_cost], [
+                        'id' => $order->id
+                    ]);
+            }
         }
 
         echo "完成";

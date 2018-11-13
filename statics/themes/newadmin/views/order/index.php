@@ -190,8 +190,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
                             return '-';
                         }
                     },
-                    //'options' => ['style'=>'width:60px;'],
-                    'contentOptions' => ['style'=>'font-size:12px;'],
+
                 ],
                 [
                     'attribute' => 'combo_id',
