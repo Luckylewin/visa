@@ -62,7 +62,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
                     <td><?= isset($data[0]['data'][$field]['total_person']) ? $data[0]['data'][$field]['total_person'] : 0 ?></td>
                     <td>
 
-                            <?php $earning = isset($data[0]['data'][$field]) ? $data[0]['data'][$field]['sale_total'] - $data[0]['data'][$field]['cost_total'] : 0; ?>
+                            <?php $earning = $data[0]['data'][$field]['fee'] ?>
                             <?php if($earning > 0 ): ?>
                                 <b><?= Html::tag('font', $earning, ['color' => 'green' ]); ?></b>
                             <?php elseif($earning == 0): ?>
@@ -76,8 +76,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
                     <td><?= isset($data[1]['data'][$field]['sale_total']) ? $data[1]['data'][$field]['sale_total'] : '0' ?></td>
                     <td><?= isset($data[1]['data'][$field]['total_person']) ? $data[1]['data'][$field]['total_person'] : '0' ?></td>
                     <td>
-
-                            <?php $earning = isset($data[1]['data'][$field]) ? $data[1]['data'][$field]['sale_total'] - $data[1]['data'][$field]['cost_total'] : 0; ?>
+                            <?php $earning = $data[1]['data'][$field]['fee'] ?>
                             <?php if($earning > 0 ): ?>
                                 <b><?= Html::tag('font', $earning, ['color' => 'green' ]); ?></b>
                             <?php elseif($earning == 0): ?>
@@ -91,7 +90,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
                     <td><?= isset($data[2]['data'][$field]['sale_total']) ? $data[2]['data'][$field]['sale_total'] : '0' ?></td>
                     <td><?= isset($data[2]['data'][$field]['total_person']) ? $data[2]['data'][$field]['total_person'] : '0' ?></td>
                     <td>
-                            <?php $earning = isset($data[2]['data'][$field]) ? $data[2]['data'][$field]['sale_total'] - $data[2]['data'][$field]['cost_total'] : 0; ?>
+                            <?php $earning = $data[2]['data'][$field]['fee'] ?>
                             <?php if($earning > 0 ): ?>
                                 <b><?= Html::tag('font', $earning, ['color' => 'green' ]); ?>  </b>
                             <?php elseif($earning == 0): ?>
@@ -105,8 +104,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
                     <td><?= isset($data[3]['data'][$field]['sale_total']) ? $data[3]['data'][$field]['sale_total'] : '0' ?></td>
                     <td><?= isset($data[3]['data'][$field]['total_person']) ? $data[3]['data'][$field]['total_person'] : '0' ?></td>
                     <td>
-
-                            <?php $earning = isset($data[3]['data'][$field]) ? $data[3]['data'][$field]['sale_total'] - $data[3]['data'][$field]['cost_total'] : 0; ?>
+                            <?php $earning = $data[3]['data'][$field]['fee'] ?>
                             <?php if($earning > 0 ): ?>
                                 <b><?= Html::tag('font', $earning, ['color' => 'green' ]); ?> </b>
                             <?php elseif($earning == 0): ?>

@@ -77,6 +77,7 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'order_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
+                    'autocomplete' => 'off',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
@@ -172,6 +173,7 @@ $tranlator = new Transator();
                     'class' => 'form-control layer-date date-status',
                     'status' => '2',
                     'placeholder' => '请选择日期',
+                    'autocomplete' => 'off',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
@@ -180,6 +182,7 @@ $tranlator = new Transator();
                     'class' => 'form-control layer-date date-status',
                     'status' => '3',
                     'placeholder' => '请选择日期',
+                    'autocomplete' => 'off',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
@@ -188,6 +191,7 @@ $tranlator = new Transator();
                     'class' => 'form-control layer-date date-status',
                     'status' => '4',
                     'placeholder' => '请选择日期',
+                    'autocomplete' => 'off',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
@@ -209,6 +213,7 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'delivergood_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
+                    'autocomplete' => 'off',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
@@ -230,6 +235,7 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'pay_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
+                    'autocomplete' => 'off',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
@@ -237,6 +243,7 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'receipt_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
+                    'autocomplete' => 'off',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
@@ -244,6 +251,7 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'company_receipt_date')->textInput([
                     'class' => 'form-control layer-date',
                     'placeholder' => '请选择日期',
+                    'autocomplete' => 'off',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>

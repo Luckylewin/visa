@@ -41,6 +41,20 @@ class Statics
             ->one();
     }
 
+    private static function getSelectField()
+    {
+       return $selectField = "combo_id,
+                            sum(cost*total_person) as cost_total,
+                            sum(flushphoto_sum*combo_charge) as flushphoto_total,
+                            sum(output_flushphoto_sum) as output_flushphoto_total,
+                            sum(carrier_sum*combo_charge) as carrier_total,
+                            sum(output_carrier_sum) as output_carrier_total,
+                            sum(balance_sum*combo_charge) as balance_total,
+                            sum(output_balance_sum) as output_balance_total,
+                            sum(single_sum*total_person*combo_charge) as sale_total,
+                            sum(total_person) as total_person";
+    }
+
     public static function getTypeStatics($start, $end)
     {
         $data = [];
@@ -60,12 +74,11 @@ class Statics
                 'cost_total'   => 0,
                 'sale_total'   => 0,
                 'total_person' => 0,
+                'fee'          => 0,
             ];
 
-
-
             if ($start == $end) {
-                $query = Order::find()->select("combo_id,sum(cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
+                $query = Order::find()->select(self::getSelectField())
                                       ->joinWith('snapshot',false, 'LEFT JOIN')
                                       ->where(['=', 'order_date', $start]);
                 // 重新计算订单人数
@@ -75,7 +88,7 @@ class Statics
                                                  ->andwhere(['NOT IN', 'yii2_snapshot.id', $balances]);
 
             } else {
-                $query = Order::find()->select("combo_id,sum(cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
+                $query = Order::find()->select(self::getSelectField())
                                       ->joinWith('snapshot',false, 'LEFT JOIN')
                                       ->where(['>=', 'order_date', $start])
                                       ->andWhere(['<=', 'order_date', $end ]);
@@ -91,6 +104,14 @@ class Statics
             $status                 = self::getQuery($query, $key);
             $totalPersonQuery       = self::getQuery( $totalPersonQuery, $key);
             $status['total_person'] = $totalPersonQuery['total_person'];
+            $status['income']       = $status['sale_total'] + $status['carrier_total'] + $status['balance_total'] + $status['flushphoto_total'];
+            $status['output']       = $status['cost_total'] + $status['output_carrier_total'] + $status['output_balance_total'] + $status['output_flushphoto_total'];
+            $status['fee']          = sprintf('%.2f', $status['income'] - $status['output']);
+            $status['cost_total']   = sprintf('%.2f',  $status['cost_total']);
+            $status['sale_total']   = sprintf('%.2f',  $status['sale_total']);
+
+
+
 
             $data[$classifies[$key]] = $status ? $status : $classify_data;
         }
@@ -128,10 +149,8 @@ class Statics
         if (!empty($products)) {
             foreach ($products as $product) {
                 $query = Order::find()
-                            ->select("combo_id,sum(cost*total_person) as cost_total,sum(single_sum*total_person) as sale_total,sum(total_person) as total_person")
+                            ->select(self::getSelectField())
                             ->joinWith('snapshot',false, 'Left JOIN');
-
-
 
                 if ($start == $end) {
                     $query->where(['=', 'order_date', $start]);
@@ -157,6 +176,11 @@ class Statics
                 $order                 = self::getProductQuery($query, $product);
                 $totalPersonQuery      = self::getProductQuery($totalPersonQuery, $product);
                 $order['total_person'] = $totalPersonQuery['total_person'];
+                $order['income']       = $order['sale_total'] + $order['carrier_total'] + $order['balance_total'] + $order['flushphoto_total'];
+                $order['output']       = $order['cost_total'] + $order['output_carrier_total'] + $order['output_balance_total'] + $order['output_flushphoto_total'];
+                $order['fee']          = sprintf('%.2f', $order['income'] - $order['output']);
+                $order['cost_total']   = sprintf('%.2f',  $order['cost_total']);
+                $order['sale_total']   = sprintf('%.2f',  $order['sale_total']);
 
                 $data[$product] = $order;
             }
