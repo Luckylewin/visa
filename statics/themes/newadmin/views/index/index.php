@@ -1,16 +1,43 @@
+<?php
+use common\models\Type;
+use yii\helpers\Url;
+
+?>
 <div class="container">
     <div class="jumbotron" style="margin-top: 30px;">
         <h2>签证订单管理系统</h2>
         <h2> <p id="localtime"></p></h2>
         <p></p>
+
+        <?php if(Type::isServicer() || Type::isOperator()): ?>
         <p>
-            <a class="btn btn-primary btn-lg" href="<?= \yii\helpers\Url::to(['order/create']) ?>" role="button">
+            <a class="btn btn-primary btn-lg" href="<?= Url::to(['order/create']) ?>" role="button">
                <i class="fa-plus-square-o fa"></i> 录入订单
             </a>
-            <a class="btn btn-info btn-lg" href="<?= \yii\helpers\Url::to(['excel/import']) ?>" role="button">
+            <a class="btn btn-info btn-lg" href="<?= Url::to(['excel/import']) ?>" role="button">
                <i class="fa-file-excel-o fa"></i> 导入Excel
             </a>
         </p>
+        <?php elseif (Type::isFinancial()): ?>
+            <p>
+                <a class="btn btn-info btn-lg" href="<?= \yii\helpers\Url::to(['order/index']) ?>" role="button">
+                    <i class="fa-list fa"></i> 订单管理
+                </a>
+                <a class="btn btn-primary btn-lg" href="<?= Url::to(['order/report']) ?>" role="button">
+                    <i class="fa fa-jpy"></i> 订单统计
+                </a>
+            </p>
+        <?php else: ?>
+            <p>
+                <a class="btn btn-primary btn-lg" href="<?= Url::to(['order/create']) ?>" role="button">
+                    <i class="fa-plus-square-o fa"></i> 录入订单
+                </a>
+                <a class="btn btn-info btn-lg" href="<?= Url::to(['excel/import']) ?>" role="button">
+                    <i class="fa-file-excel-o fa"></i> 导入Excel
+                </a>
+            </p>
+        <?php endif; ?>
+
     </div>
 </div>
 

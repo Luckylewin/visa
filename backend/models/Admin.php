@@ -17,7 +17,8 @@ use yii\web\IdentityInterface;
  */
 class Admin extends ActiveRecord implements IdentityInterface
 {
-    const SUPER_ADMIN = '超级管理员';
+    const SUPER_ADMIN     = '超级管理员';
+    const FINANCIAL_STAFF = '财务';
 
     public $password;
 

@@ -18,6 +18,8 @@ use Yii;
 class Type
 {
 
+    public static $roleName;
+
     public static function getYesOrNo()
     {
         return [
@@ -108,15 +110,38 @@ class Type
         return ArrayHelper::map($data,'id','username');
     }
 
+    public static function getCurrentRoleName()
+    {
+        if (empty(self::$roleName)) {
+            $authManager    = Yii::$app->authManager;
+            $role           = $authManager->getRolesByUser(Yii::$app->user->id);
+            self::$roleName = isset(current($role)->name)? current($role)->name : false;
+        }
+
+        return self::$roleName;
+    }
+
+    public static function isFinancial()
+    {
+        $role = self::getCurrentRoleName();
+
+        return $role == Admin::FINANCIAL_STAFF;
+    }
+
+    public static function isSuperAdminOrFinancial()
+    {
+        $role = self::getCurrentRoleName();
+
+        return $role == Admin::SUPER_ADMIN || $role == Admin::FINANCIAL_STAFF;
+    }
+
     /**
      * 查询当前用户是否为超级管理员
      * @return bool
      */
     public static function isSuperAdmin()
     {
-        $authManager = Yii::$app->authManager;
-        $role = $authManager->getRolesByUser(Yii::$app->user->id);
-        $role = isset(current($role)->name)? current($role)->name : false;
+        $role = self::getCurrentRoleName();
 
         return $role == Admin::SUPER_ADMIN;
     }

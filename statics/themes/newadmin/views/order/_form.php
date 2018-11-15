@@ -259,7 +259,7 @@ $tranlator = new Transator();
 
                 <?= $form->field($model, 'pay_account')->textInput(); ?>
 
-                <?php if(Type::isSuperAdmin()): ?>
+                <?php if(Type::isSuperAdminOrFinancial()): ?>
                     <?= $form->field($model, 'refund_status')->radioList(Type::getRefundStatus()); ?>
                     <?= $form->field($model, 'draw_bill_status')->radioList(Type::getYesOrNo()); ?>
                 <?php else: ?>
