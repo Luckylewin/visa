@@ -20,7 +20,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/toastr/toastr.min.js'
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= isset(Yii::$app->params['basic']['sitename']) ? Yii::$app->params['basic']['sitename'] . ' - ' : '' . Html::encode($this->title) ?></title>
+    <title>签证订单管理系统</title>
     <?php $this->head() ?>
     <link href="/statics/themes/newadmin/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="/statics/themes/newadmin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
