@@ -71,7 +71,7 @@ $allMenus = Menu::getActualMenu();
                             </li>
                         </ul>
                     </div>
-                    <div class="logo-element">H+
+                    <div class="logo-element">签证
                     </div>
                 </li>
 
