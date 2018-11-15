@@ -24,7 +24,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/toastr/toastr.min.js'
     <?php $this->head() ?>
     <link href="/statics/themes/newadmin/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="/statics/themes/newadmin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="/statics/themes/newadmin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/statics/css/font-awesome-4.7.0/css/font-awesome.min.css?v=4.7.0" rel="stylesheet">
     <link href="/statics/themes/newadmin/css/plugins/toastr/toastr.min.css" rel="stylesheet">
 
 <body>

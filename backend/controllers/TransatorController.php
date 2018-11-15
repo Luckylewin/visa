@@ -167,14 +167,16 @@ class TransatorController extends BaseController
 
     public function actionClear()
     {
-        $transators = Transator::find()->select('tid')->all();
+
         $deleteTotal = 0;
 
-        foreach ($transators as $transator) {
-            $flag = OrderToTransactor::clearTransator($transator->tid);
-            if ($flag === false) {
-                $transator->delete();
-                $deleteTotal++;
+        foreach (Transator::find()->select('tid')->batch(100) as $transators) {
+            foreach ($transators as $transator) {
+                $flag = OrderToTransactor::clearTransator($transator->tid);
+                if ($flag === false) {
+                    $transator->delete();
+                    $deleteTotal++;
+                }
             }
         }
         if ($deleteTotal) {

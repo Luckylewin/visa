@@ -23,6 +23,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
             width: 6px;
             height: 19px;
             background-color: #F5F5F5;
+            margin-bottom: 10px;
         }
 
         /*定义滚动条轨道 内阴影+圆角*/
@@ -365,12 +366,14 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 </div>
 
 <div style="margin-top: 30px;">
-    <?= Html::a('创建订单', ['create'], ['class' => 'btn btn-primary']) ?>
-    <?= Html::button('导出excel', ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
-    <?= Html::a("批量删除", "javascript:void(0);", ["class" => "btn btn-danger gridview"]) ?>
+    <?= Html::a(Html::tag('i', ' 创建订单', ['class'=>'fa fa-pencil']), ['create'], ['class' => 'btn btn-primary']) ?>
+    <?= Html::button(Html::tag('i', ' 导出excel', ['class' => 'fa fa-file-excel-o']), ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
+    <?= Html::a(Html::tag('i', ' 导入excel', ['class' => 'fa fa-file-excel-o']), \yii\helpers\Url::to(['excel/import']), ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
 
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <?= Html::a('导入excel', \yii\helpers\Url::to(['excel/import']), ['class' => 'btn btn-info', 'id'=>'export_link']) ?>
+    <?= Html::a(Html::tag('i',' 新窗口打开本页', ['class' => 'fa fa-window-restore']), \yii\helpers\Url::to(['order/index']), ['class' => 'btn btn-info', 'id'=>'export_link', 'target' => '_blank']) ?>
+
+    <?= Html::a(Html::tag('i', ' 批量删除', ['class' => 'fa fa-trash-o']), "javascript:void(0);", ["class" => "btn btn-danger gridview"]) ?>
 </div>
 
 <?php \common\widgets\Jsblock::begin() ?>
