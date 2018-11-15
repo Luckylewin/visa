@@ -239,7 +239,7 @@ class OrderController extends BaseController
         foreach ($fields as $field) {
             $flag = false;
             for ($i=0; $i<=3; $i++) {
-                if (!empty($data[$i]['data'][$field]['cost_total']) || !empty($data[$i]['data'][$field]['sale_total'])) {
+                if (empty($data[$i]['data'][$field]['cost_total']) > 0 || $data[$i]['data'][$field]['sale_total'] > 0) {
                     $flag = true;
                 }
             }
