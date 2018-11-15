@@ -358,7 +358,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
 </div>
 
 
-<div class="progress progress-striped active" style="display: none">
+<div class="progress progress-striped active" style="display: none;margin-top: 30px;">
     <div style="width: 0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="75" role="progressbar" class="progress-bar progress-bar-info" >
         <span class="sr-only">40% Complete (success)</span>
     </div>

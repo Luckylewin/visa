@@ -39,6 +39,13 @@ class ExcelController extends BaseController
            return $this->redirect(Yii::$app->request->referrer);
         }
 
+        $total = count($data);
+
+        if ($total > 800) {
+            Yii::$app->session->setFlash('error', "导出{$total}条,已超出最大支持数:800条");
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
         $file_name = "订单" . date('Y_m_d');
         if (isset($queryParams['OrderQuery']['order_classify']) && !empty($queryParams['OrderQuery']['order_classify'])) {
             $classify = Type::getComboClassify();
