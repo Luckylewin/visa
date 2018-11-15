@@ -144,7 +144,7 @@ $tranlator = new Transator();
                     <i class="fa fa-plus-square-o add-transator" style="position: absolute;top: 42%;left: 89%;font-size: 36px;cursor: pointer"></i>
                 </div>
 
-                <?= $form->field($model, 'customer_id')->textInput() ?>
+                <?= $form->field($model, 'customer_id')->textInput(['autocomplete' => 'off']) ?>
 
                 <div style="margin-top: 540px;"></div>
 
@@ -199,16 +199,17 @@ $tranlator = new Transator();
                 <?= $form->field($model, 'putsign_date')->textInput([
                     'class' => 'form-control layer-date date-status',
                     'status' => '5',
+                    'autocomplete' => 'off',
                     'placeholder' => '请选择日期',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
-                <?= $form->field($model, 'back_address')->textarea(['rows'=>3,'maxlength' => true]) ?>
+                <?= $form->field($model, 'back_address')->textarea(['rows'=>3,'autocomplete' => 'off']) ?>
 
-                <?= $form->field($model, 'back_addressee')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'back_addressee')->textInput(['autocomplete' => 'off']) ?>
 
-                <?= $form->field($model, 'back_telphone')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'back_telphone')->textInput(['autocomplete' => 'off']) ?>
 
                 <?= $form->field($model, 'delivergood_date')->textInput([
                     'class' => 'form-control layer-date',
@@ -218,7 +219,7 @@ $tranlator = new Transator();
                     'style' => 'display:block!important;max-width:350px!important'
                 ]) ?>
 
-                <?= $form->field($model, 'deliver_order')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'deliver_order')->textInput(['autocomplete' => 'off']) ?>
 
                 <?= $form->field($model, 'delivercompany')->textInput() ?>
 
