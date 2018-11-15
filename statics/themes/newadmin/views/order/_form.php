@@ -288,8 +288,11 @@ $tranlator = new Transator();
     </div>
 
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '创建' : '更新', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <div class="form-group text-right">
+        <?= Html::submitButton($model->isNewRecord ?
+            Html::tag('i', ' 创建订单', ['class' => 'fa fa-save']) :
+            Html::tag('i', ' 更新订单', ['class' => 'fa fa-save']),
+            ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
         <?= Html::a('返回', strpos(Yii::$app->request->referrer,'r=') !== false ? Yii::$app->request->referrer : \yii\helpers\Url::to(['index/index']), ['class' => 'btn btn-default']) ?>
 

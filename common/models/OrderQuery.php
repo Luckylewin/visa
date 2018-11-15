@@ -60,7 +60,7 @@ class OrderQuery extends Order
                     'operator', 'back_address', 'back_addressee', 'back_telphone',
                     'delivergood_date', 'deliver_order', 'remark', 'receipt_date',
                     'pay_date', 'audit_status', 'cid', 'company_receipt_date',
-                    'is_pay', 'is_company_receipt','is_shop_receipt'
+                    'is_pay', 'is_company_receipt','is_shop_receipt','draw_bill_status','refund_status'
                 ], 'safe'],
             [['single_sum', 'balance_sum', 'flushphoto_sum', 'carrier_sum'], 'number'],
         ];
@@ -223,23 +223,25 @@ class OrderQuery extends Order
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'customer_id' => $this->customer_id,
+            'id'                 => $this->id,
+            'customer_id'        => $this->customer_id,
             'custom_servicer_id' => $this->custom_servicer_id,
-            'transactor_id' => $this->transactor_id,
-            'total_person' => $this->total_person,
-            'cid' => $this->cid,
-            'order_classify' => $this->order_classify,
-            'order_type' => $this->order_type,
+            'transactor_id'      => $this->transactor_id,
+            'total_person'       => $this->total_person,
+            'cid'                => $this->cid,
+            'order_classify'     => $this->order_classify,
+            'order_type'         => $this->order_type,
+            'draw_bill_status'   => $this->draw_bill_status,
+            'refund_status'      => $this->refund_status
         ]);
 
         $query->andFilterWhere(['like', 'carrier_order', $this->carrier_order])
-            ->andFilterWhere(['like', 'operator', $this->operator])
-            ->andFilterWhere(['like', 'back_address', $this->back_address])
-            ->andFilterWhere(['like', 'order_num', $this->order_num])
-            ->andFilterWhere(['like', 'back_addressee', $this->back_addressee])
-            ->andFilterWhere(['like', 'back_telphone', $this->back_telphone])
-            ->andFilterWhere(['like', 'deliver_order', $this->deliver_order]);
+              ->andFilterWhere(['like', 'operator', $this->operator])
+              ->andFilterWhere(['like', 'back_address', $this->back_address])
+              ->andFilterWhere(['like', 'order_num', $this->order_num])
+              ->andFilterWhere(['like', 'back_addressee', $this->back_addressee])
+              ->andFilterWhere(['like', 'back_telphone', $this->back_telphone])
+              ->andFilterWhere(['like', 'deliver_order', $this->deliver_order]);
 
         if (isset($ids) && isset($transator_name)) {
 

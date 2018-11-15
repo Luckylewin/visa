@@ -62,13 +62,13 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/layer.min.js', 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= $this->render('_search', ['model' => $searchModel]); ?>
-        
 
     <?php
 
     try {
         echo GridView::widget([
-                'layout' => '{summary}{items}{pager}<div class="scrollbar"></div>',
+            'layout' => '{summary}{items}{pager}<div class="scrollbar"></div>',
+            'emptyText' => '<h4><div class="col-md-12 text-center">'.Html::tag('i',' 没有找到相关的订单', ['class'=>'fa fa-info-circle']).'</div></h4>',
             'tableOptions' => ['class' => 'innerbox table text-nowrap table-hover table-bordered table-responsive'],
             //分页
             'dataProvider' => $dataProvider,

@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use \common\models\Type;
+use \common\models\Order;
 /* @var $this yii\web\View */
 /* @var $model common\models\OrderQuery */
 /* @var $form yii\widgets\ActiveForm */
@@ -338,9 +339,6 @@ $this->registerCssFile('/statics/themes/newadmin/js/plugins/select2/select2.min.
                                 产品名称
                             </label>
                             <div class="form-group">
-
-
-
                                 <?php $product = \yii\helpers\ArrayHelper::map(\common\models\Product::getAll(), 'name', 'name'); ?>
                                 <?= $form->field($model, 'total_person')->dropDownList($product, [
                                     'class' => 'js-example-basic-single',
@@ -351,6 +349,16 @@ $this->registerCssFile('/statics/themes/newadmin/js/plugins/select2/select2.min.
                                 <?= $form->field($model, 'combo_id')->hiddenInput([
                                     'id' => 'combo_id'
                                 ])->label(false); ?>
+
+                                <?php $model->refund_status = isset($model->refund_status) ? $model->refund_status : Order::REFUND_STATUS_PENDING ?>
+                                <?= $form->field($model, 'refund_status')->radioList(Type::getRefundStatus(), [
+                                        'class' => 'form-control'
+                                ]); ?>
+
+                                <?php $model->draw_bill_status = isset($model->draw_bill_status) ? $model->draw_bill_status : Order::STATUS_NO ?>
+                                <?= $form->field($model, 'draw_bill_status')->radioList(Type::getYesOrNo(), [
+                                        'class' => 'form-control'
+                                ]); ?>
 
                             </div>
                         </div>
