@@ -269,6 +269,8 @@ class Order extends \yii\db\ActiveRecord
             $this->mod_operator_id = Yii::$app->getUser()->id;
             // 退款状态监听
             $this->listenRefundStatus();
+            // 公司收款状态监听
+            $this->listCompanyReceiptStatus();
         }
 
         //记录操作用户 在送证日(deliver_date)和入馆日(entry_date)被填写后，除超级管理员外都不能修改
@@ -284,6 +286,16 @@ class Order extends \yii\db\ActiveRecord
         $this->setAuditStatus();
 
         return parent::beforeSave($insert);
+    }
+
+    protected function listCompanyReceiptStatus()
+    {
+        if ($this->getOldAttribute('company_receipt_date') != $this->company_receipt_date) {
+            // 判断是否为财务 以及 超级管理员
+            if (Type::isSuperAdminOrFinancial() == false) {
+                $this->company_receipt_date = $this->getOldAttribute('company_receipt_date');
+            }
+        }
     }
 
     protected function listenRefundStatus()

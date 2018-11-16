@@ -250,7 +250,8 @@ $tranlator = new Transator();
                 ]) ?>
 
                 <?= $form->field($model, 'company_receipt_date')->textInput([
-                    'class' => 'form-control layer-date',
+                    'class'    => 'form-control layer-date',
+                    'disabled' => Type::isSuperAdminOrFinancial() ? false : true,
                     'placeholder' => '请选择日期',
                     'autocomplete' => 'off',
                     'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD'})",
