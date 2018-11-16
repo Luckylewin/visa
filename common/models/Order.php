@@ -310,7 +310,9 @@ class Order extends \yii\db\ActiveRecord
                 $this->cost       = 0;
             } else if($this->refund_status == self::REFUND_STATUS_DENIED) {
                 // 直接删除掉收款，这个订单的最终金额为亏成本
-                $this->single_sum = 0;
+                $this->single_sum     = 0;
+                $this->carrier_sum    = 0;
+                $this->flushphoto_sum = 0;
             }
         } else {
             $this->refund_status = $this->getOldAttribute('refund_status');
