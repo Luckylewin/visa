@@ -84,7 +84,7 @@ return [
                 'username' => '876505905@qq.com',
                 'password' => '****************',
                 'port' => '465',
-                'encryption' => 'tls',
+                'encryption' => 'ssl',
             ],
             'messageConfig'=>[
                 'charset'=>'UTF-8',
