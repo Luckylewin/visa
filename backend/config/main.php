@@ -74,14 +74,23 @@ return [
         'errorHandler' => [
             'errorAction' => 'index/error',
         ],
-        //
-        /*'urlManager' => [
-            'enablePrettyUrl' => true,  //开启url规则
-            'showScriptName' => false,  //是否显示url中的index.php
-            'suffix' => '.html',    //后缀
-            'rules' => [
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@common/mail',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.qq.com',
+                'username' => '876505905@qq.com',
+                'password' => '*************',
+                'port' => '25',
+                'encryption' => 'tls',
             ],
-        ],*/
+            'messageConfig'=>[
+                'charset'=>'UTF-8',
+                'from'=>['876505905@qq.com'=>'十年']
+            ],
+        ],
     ],
     'params' => $params,
     'timeZone'=>'Asia/Shanghai',

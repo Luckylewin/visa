@@ -1,8 +1,12 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\form\ResetAdminPasswordForm;
 use backend\models\LoginForm;
+use backend\models\form\PasswordResetRequestForm;
 use Yii;
+use yii\base\InvalidParamException;
+use yii\web\BadRequestHttpException;
 
 class IndexController extends BaseController
 {
@@ -46,5 +50,48 @@ class IndexController extends BaseController
     {
         Yii::$app->user->logout();
         return $this->goHome();
+    }
+
+
+    public function actionRequestPasswordReset()
+    {
+        $model = new PasswordResetRequestForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            try {
+                if ($model->sendEmail()) {
+                    Yii::$app->session->setFlash('success', '请检查你的邮箱是否有新的邮件');
+                    return $this->goHome();
+                } else {
+                    Yii::$app->session->setFlash('error', '抱歉，邮箱配置有误，暂时不能通过邮箱重置密码');
+                }
+            }catch (\Exception $e) {
+                Yii::$app->session->setFlash('error', '抱歉，邮箱配置有误，暂时不能通过邮箱重置密码');
+            }
+
+        }
+
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
+        ]);
+    }
+
+
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetAdminPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', '新密码已经生效');
+
+            return $this->goHome();
+        }
+
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
     }
 }

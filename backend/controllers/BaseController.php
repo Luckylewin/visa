@@ -18,7 +18,7 @@ class BaseController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'except' => ['error','login'], //except是除了以外
+                'except' => ['error','login','request-password-reset', 'reset-password'], //except是除了以外
                 'rules' => [
                     //行为过滤器
                    /* [

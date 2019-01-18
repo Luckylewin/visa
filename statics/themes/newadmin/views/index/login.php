@@ -40,8 +40,11 @@ $this->title = '管理员登录';
         <?= Html::submitButton('<i class="fa fa-check"></i>', ['class' => 'btn btn-lg btn-login btn-block', 'name' => 'login-button']) ?>
 
         <label class="checkbox"><?= $form->field($model, 'rememberMe')->checkbox() ?></label>
+        <div ><?= Html::a('忘记密码', ['index/request-password-reset']) ?></div>
 
     </div>
+
+
     <?php ActiveForm::end();?>
 </div>
 <?php $this->endBody() ?>
