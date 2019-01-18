@@ -1,5 +1,6 @@
 <?php
 return [
+    'name' => '签证订单管理系统',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'language' => 'zh-CN',  //目标语言
     'runtimePath'  => dirname(dirname(__DIR__)) . '/storage/runtime',
@@ -11,8 +12,7 @@ return [
             'password' => '12345678',
             'charset' => 'utf8',
             'tablePrefix' => 'yii2_',
-            'enableSchemaCache' => true,
-            'schemaCacheDuration' => 86400
+            'enableSchemaCache' => false,
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

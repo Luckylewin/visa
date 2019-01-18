@@ -82,8 +82,8 @@ return [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.qq.com',
                 'username' => '876505905@qq.com',
-                'password' => '*************',
-                'port' => '25',
+                'password' => '****************',
+                'port' => '465',
                 'encryption' => 'tls',
             ],
             'messageConfig'=>[
