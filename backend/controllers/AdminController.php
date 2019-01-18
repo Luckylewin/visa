@@ -59,7 +59,7 @@ class AdminController extends BaseController
     {
         $model = $this->findModel($id);
         $model->scenario = 'update';
-        var_dump(Yii::$app->user->id != $id);
+       
         if (Yii::$app->user->id != $id) {
             Yii::$app->session->setFlash('danger', '只能修改自己的信息');
             return $this->redirect(['index']);
