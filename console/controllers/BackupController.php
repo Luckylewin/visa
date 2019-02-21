@@ -26,10 +26,10 @@ class BackupController extends Controller
             $dataArray[] = $columns;
         }
 
-        ArrayHelper::multisort($dataArray, ['create_at'], [SORT_DESC]);
+        ArrayHelper::multisort($dataArray, ['id'], [SORT_DESC]);
 
         if (!empty($dataArray)) {
-            return end($dataArray);
+            return current($dataArray);
         }
 
         return false;
@@ -43,9 +43,8 @@ class BackupController extends Controller
             $dumper->runAction('create',['_aliases' => ['db'=>'db','gz'=>1,'s'=>1]]);
         } catch (\Exception $e) {
             echo $e->getMessage();
-            exit;
         }
-
+        
         $file = $this->getBackupFile();
 
         if ($file) {
@@ -61,7 +60,7 @@ class BackupController extends Controller
                 $this->stdout('发送失败');
             }
         }
-        
+
     }
 
     public function actionHello()
