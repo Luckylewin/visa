@@ -32,7 +32,7 @@ class Operator extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['admin_id'], 'integer'],
             [['name'], 'string', 'max' => 50],
-            [['is_del'], 'default', 'value' => 1],
+            [['is_del'], 'default', 'value' => 0],
         ];
     }
 
