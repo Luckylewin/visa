@@ -25,10 +25,11 @@ class BackupController extends Controller
             $columns['path'] = $file;
             $dataArray[] = $columns;
         }
+
         ArrayHelper::multisort($dataArray, ['create_at'], [SORT_DESC]);
 
         if (!empty($dataArray)) {
-            return current($dataArray);
+            return end($dataArray);
         }
 
         return false;
@@ -37,11 +38,17 @@ class BackupController extends Controller
     public function actionCreate()
     {
         $dumper = new DumpController('db-manager', Yii::$app->getModule('db-manager'));
-        $dumper->runAction('create');
+
+        try {
+            $dumper->runAction('create',['_aliases' => ['db'=>'db','gz'=>1,'s'=>1]]);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            exit;
+        }
 
         $file = $this->getBackupFile();
-        if ($file) {
 
+        if ($file) {
             $message = Yii::$app->mailer->compose();
             $message->attachContent('Attachment content', ['fileName' => basename($file['path']), 'contentType' => 'text/plain']);
             $message->setTo(Yii::$app->params['adminEmail']);
@@ -54,8 +61,7 @@ class BackupController extends Controller
                 $this->stdout('发送失败');
             }
         }
-
-
+        
     }
 
     public function actionHello()
