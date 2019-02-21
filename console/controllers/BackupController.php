@@ -50,7 +50,7 @@ class BackupController extends Controller
 
         if ($file) {
             $message = Yii::$app->mailer->compose();
-            $message->attachContent('Attachment content', ['fileName' => basename($file['path']), 'contentType' => 'text/plain']);
+            $message->attachContent(file_get_contents($file['path']), ['fileName' => basename($file['path']), 'contentType' => 'text/plain']);
             $message->setTo(Yii::$app->params['adminEmail']);
             $message->setSubject(date('Y年m月d日') . "网站数据库备份文件");
             $res = $message->send();
