@@ -23,10 +23,11 @@ class BackupController extends Controller
             $columns = [];
             $columns['id'] = $id;
             $columns['path'] = $file;
+            $columns['createdAt'] = filectime($file);
             $dataArray[] = $columns;
         }
 
-        ArrayHelper::multisort($dataArray, ['id'], [SORT_DESC]);
+        ArrayHelper::multisort($dataArray, ['createdAt'], [SORT_DESC]);
 
         if (!empty($dataArray)) {
             return current($dataArray);
@@ -44,7 +45,7 @@ class BackupController extends Controller
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-        
+
         $file = $this->getBackupFile();
 
         if ($file) {
