@@ -6,7 +6,7 @@ class m180906_071819_add_column_servicer extends Migration
 {
     public function up()
     {
-        $this->addColumn('yii2_servicer', 'is_del', "char(1) not null default '0'");
+      //  $this->addColumn('yii2_servicer', 'is_del', "char(1) not null default '0'");
     }
 
     public function down()
