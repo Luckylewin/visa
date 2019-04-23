@@ -6,7 +6,7 @@ class m180906_075235_add_columnb_operator extends Migration
 {
     public function up()
     {
-        $this->addColumn('yii2_operator', 'is_del', "char(1) not null default '0'");
+ //       $this->addColumn('yii2_operator', 'is_del', "char(1) not null default '0'");
     }
 
     public function down()
