@@ -76,7 +76,7 @@ $this->registerJsFile('/statics/themes/newadmin/js/plugins/layer/laydate/laydate
                     <td><?= isset($data[1]['data'][$field]['sale_total']) ? $data[1]['data'][$field]['sale_total'] : '0' ?></td>
                     <td><?= isset($data[1]['data'][$field]['total_person']) ? $data[1]['data'][$field]['total_person'] : '0' ?></td>
                     <td>
-                            <?php $earning = $data[1]['data'][$field]['fee'] ?>
+                            <?php $earning = isset($data[1]['data'][$field]['fee']) ? $data[1]['data'][$field]['fee'] : 0; ?>
                             <?php if($earning > 0 ): ?>
                                 <b><?= Html::tag('font', $earning, ['color' => 'green' ]); ?></b>
                             <?php elseif($earning == 0): ?>

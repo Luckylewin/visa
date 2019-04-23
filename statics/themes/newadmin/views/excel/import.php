@@ -39,12 +39,18 @@ $this->registerCssFile('/statics/themes/newadmin/plugins/drag/dropzone.min.css')
         <?= \yii\helpers\Html::a('返回', ['order/index'], ['class' => 'btn btn-default']) ?>
     </div>
 
+
+<?php
+$js=<<<JS
+    Dropzone.autoDiscover = false;
+JS;
+$this->registerJs($js,\yii\web\View::POS_END);
+?>
 <?php
 
 $uploadUrl = Url::to(['excel/import']);
-
 $js =<<<JS
-            Dropzone.autoDiscover = false;
+
             var csrf = $('meta[name="csrf-token"]').attr('content');
             
             var myDropzone = new Dropzone("#my-awesome-dropzone", {
@@ -79,7 +85,7 @@ $js =<<<JS
             });
 JS;
 
-$this->registerJs($js);
+$this->registerJs($js,\yii\web\View::POS_READY);
 ?>
 
 
