@@ -76,5 +76,32 @@ class Product extends \yii\db\ActiveRecord
         }
     }
 
+    public function beforeSave($insert)
+    {
+        if ($this->isNewRecord == false) {
+            // 判断名称是否有更改 如果更改了则修改数据
+            if ($this->getOldAttribute('name') != $this->name) {
+                $this->cutRelation();
+            }
+        }
 
+        return true;
+    }
+
+    /**
+     * 切断该产品下面的所有套餐与快照的联系
+     */
+    private function cutRelation()
+    {
+        $comboId = Combo::find()->where(['product_id' => $this->id])->select('combo_id')->column();
+        if (!empty($comboId)) {
+            $snapshots = Snapshot::find()->where(['in','snap_combo_id',$comboId])->all();
+            if (!is_null($snapshots)) {
+                foreach ($snapshots as $snapshot) {
+                    $snapshot->snap_combo_id = 0;
+                    $snapshot->save(false);
+                }
+            }
+        }
+    }
 }

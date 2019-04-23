@@ -122,15 +122,15 @@ $tranlator = new Transator();
                     ])->label('当前套餐'); ?>
                 <?php endif; ?>
 
-                <?= $form->field($model, 'single_sum')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'single_sum')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
 
                 <?= $form->field($model, 'total_person')->textInput() ?>
 
-                <?= $form->field($model, 'balance_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空']) ?>
+                <?= $form->field($model, 'balance_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空','autocomplete' => 'off']) ?>
 
-                <?= $form->field($model, 'flushphoto_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空']) ?>
+                <?= $form->field($model, 'flushphoto_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空','autocomplete' => 'off']) ?>
 
-                <?= $form->field($model, 'carrier_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空']) ?>
+                <?= $form->field($model, 'carrier_order')->textInput(['maxlength' => true, 'placeholder'=>'默认为空','autocomplete' => 'off']) ?>
             </div>
             <div class="col-md-3">
                 <div style="position: relative;">
@@ -149,19 +149,19 @@ $tranlator = new Transator();
                 <div style="margin-top: 540px;"></div>
 
                 <div class="col-md-6">
-                    <?= $form->field($model, 'balance_sum')->textInput(['maxlength' => true,'placeholder'=>'￥']) ?>
+                    <?= $form->field($model, 'balance_sum')->textInput(['maxlength' => true,'placeholder'=>'￥','autocomplete' => 'off']) ?>
 
-                    <?= $form->field($model, 'flushphoto_sum')->textInput(['maxlength' => true,'placeholder'=>'￥']) ?>
+                    <?= $form->field($model, 'flushphoto_sum')->textInput(['maxlength' => true,'placeholder'=>'￥','autocomplete' => 'off']) ?>
 
-                    <?= $form->field($model, 'carrier_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥']) ?>
+                    <?= $form->field($model, 'carrier_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥','autocomplete' => 'off']) ?>
                 </div>
 
                 <div class="col-md-6">
-                    <?= $form->field($model, 'output_balance_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥']) ?>
+                    <?= $form->field($model, 'output_balance_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥','autocomplete' => 'off']) ?>
 
-                    <?= $form->field($model, 'output_flushphoto_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥']) ?>
+                    <?= $form->field($model, 'output_flushphoto_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥','autocomplete' => 'off']) ?>
 
-                    <?= $form->field($model, 'output_carrier_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥']) ?>
+                    <?= $form->field($model, 'output_carrier_sum')->textInput(['maxlength' => true, 'placeholder'=>'￥','autocomplete' => 'off']) ?>
                 </div>
 
 
